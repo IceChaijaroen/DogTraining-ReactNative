@@ -22,22 +22,35 @@ export default function testtest() {
     const [visible2, setVisible2] = useState(false);
     const [udata, setUdata] = useState([]);
     const [user, setValue] = useState([]);
+    const [dogdata, setDogdata] = useState([]);
 
     useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
-                axios.get('http://34.87.28.196/showudogid.php', {
-                    params: {
-                        id: 2
-                    }
-                })
-                    .then(response => {
-                        setUdata(response.data);
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
+            })
+       {/* axios.get('http://34.87.28.196/showudogid.php', {
+            params: {
+                id: user
+            }
+        })
+            .then(response => {
+                setUdata(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+      **/}   axios.get('http://34.87.28.196/showuserdog.php',
+            {
+                params: {
+                    id: user
+                }
+            })
+            .then(response => {
+                setDogdata(response.data);
+            })
+            .catch(err => {
+                console.log(err)
             })
     })
 
@@ -120,7 +133,7 @@ export default function testtest() {
 
 
             <FlatList
-                data={udata}
+                data={dogdata}
                 renderItem={
                     ({ item }) => (
 
@@ -140,7 +153,7 @@ export default function testtest() {
                                             <View style={{ width: '60%', paddingLeft: 20, justifyContent: 'center' }}>
                                                 <Image
                                                     style={{ width: 90, height: 90 }}
-                                                    source={{uri:item.udogimg}}
+                                                    source={{ uri: item.udogimg }}
                                                 />
                                             </View>
                                             <View style={{ width: '40%', justifyContent: 'center', }}>
@@ -255,7 +268,7 @@ export default function testtest() {
                 title={"something"}
                 animationType={"fade"}
                 closePopup={close}
-                data={udata}
+                data={dogdata}
                 haveOutsideTouch={true}
             />
 

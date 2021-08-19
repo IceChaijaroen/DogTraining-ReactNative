@@ -1,62 +1,68 @@
-import Carousel from 'react-native-snap-carousel';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import { Input } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, Animated } from "react-native";
 import React, { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
-import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
-import { useFonts } from 'expo-font';
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FlatList } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import AppLoading from 'expo-app-loading';
-import Paginator from './Paginator';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFonts } from 'expo-font';
 
 
-
-export default testdata = () => {
-
-    const [text, setText] = useState('');
-
-    const saveData = async () => {
-        try {
-            await AsyncStorage.setItem('id', text)
-            alert('Data successfully saved')
-        } catch (e) {
-            alert('Failed to use the data to the storage')
-        }
-    }
-
-    const redData = async () => {
-        try {
-            const userText = await AsyncStorage.getItem('id')
-            if (userText !== null) {
-                setText(userText)
-            }
-        } catch (e) {
-            alert('Failed to fath the data from storage')
-        }
-    }
+export default function testdata() {
+    const [second, setSecound] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+    const [uid, setUid] = useState(1);
+    const [count, setCount] = useState(null);
+    const [submit, setSubmit] = useState("");
+    const [lastest, setLastest] = useState([]);
 
     useEffect(() => {
-        redData()
-    }, [])
-
-    const clearStorage = async () => {
-        try {
-            await AsyncStorage.clear()
-            alert("Storage successfully cleared")
-        } catch (e) {
-            alert('Failed to clear the async storage')
+        let interval = null;
+        if (isRunning) {
+            setCount(count => count + 1)
+            interval = setInterval(() => {
+                setSecound(second => second + 1)
+            }, 1000);
+        } else {
+            clearInterval(interval)
         }
-    }
+        return () => clearInterval(interval)
+    }, [isRunning])
 
-    const onChangeText = userText => setText(userText)
+    useEffect(() => {
+        const authenticate = async () => {
 
-    const onSumitEditing = () => {
-        if (!text)
-            return
-        saveData(text)
-        setText('')
-    }
+            axios
+                .post(
+                    "http://34.87.28.196/insertstatis2.php",
+                    JSON.stringify({
+                        second: second,
+                        uid: uid,
+                        count: count
+                    })
+                )
+                .then((response) => {
+                    alert(JSON.stringify(response.data));
+                    setSecound(0);
+                    setIsRunning(false);
+                    setSubmit(false);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }; if (submit) authenticate();
+    }, [submit]);
+
+
+    useEffect(() => {
+        axios.get('http://34.87.28.196/showcountlastest.php')
+            .then(response => {
+                setLastest(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
 
 
     let [fontsLoaded] = useFonts({
@@ -67,71 +73,70 @@ export default testdata = () => {
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
-        return (
-
-            <View style={styles.container}>
-                <View style={styles.InputContent}>
-                    <View style={styles.InputStyle}>
-                        <Input
-                        value={text}
-                            placeholder=' Username'
-                            leftIcon={
-                                <Icon
-                                    name='user'
-                                    size={20}
-                                    color='#9C9C9C'
-                                />
-                            }
-                            onChangeText={onChangeText}
-                            onSubmitEditing={onSumitEditing}
-                        />
-                    </View>
-                    <View style={{ width: '60%', height: 25, alignItems: 'flex-end' }}>
-                        <TouchableOpacity>
-                            <Text style={{ color: '#555555', fontWeight: 'bold' }}>{text}</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={clearStorage} style={{ width: '35%', alignItems: 'center' }}>
-                        <View style={styles.ButtonLog}>
-                            <Text style={{ color: 'white', fontWeight: 'bold' }}>เข้าสู่ระบบ</Text>
+        if (isRunning == true) {
+            return (
+                <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => setSubmit(true)} >
+                        <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                            <Text style={{ color: 'white', fontSize: 40, fontFamily: 'FC_Iconic' }}>{second}</Text>
                         </View>
                     </TouchableOpacity>
+                    <View style={{ marginTop: 20 }}>
+                        {lastest.map(item => (
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
+                        ))}
+                    </View>
+
                 </View>
-            </View>
-        );
+            );
+        } else {
+            return (
+                <>
+                    <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => setIsRunning(true)} >
+                            <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
+                                <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={{ marginTop: 20 }}>
+                            {lastest.map(item => (
+                                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
+                            ))}
+                        </View>
+
+                    </View>
+                </>
+            );
+        }
+
     }
 }
+{/**
+return (
+    <>
+        <View style={{ width: '100%', alignItems: 'center', height: '50%', justifyContent: 'flex-end' }}>
+            <Text>{second}</Text>
+        </View>
+        <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
 
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '100%',
-        width: '100%'
-    },
-    InputContent: {
-        width: '100%',
-        height: 170,
-        alignItems: 'center'
-    },
-    InputStyle: {
-        width: '60%',
-        height: 80,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    ButtonLog: {
-        width: '100%',
-        height: 50,
-        backgroundColor: '#064BA6',
-        borderRadius: 30,
-        justifyContent: 'center',
-        alignItems: 'center',
-        elevation: 5
-    },
-});
-
-
+            <TouchableOpacity onPress={() => setIsRunning(true)} >
+                <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                    <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
+                    <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
+                </View>
+            </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, padding: 20, height: '50%', justifyContent: 'center', flexDirection: 'row' }}>
+            <TouchableOpacity onPress={() => setIsRunning(true)} style={{ width: '30%', alignItems: 'center' }}>
+                <Text>เริ่ม</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setIsRunning(false)} style={{ width: '30%', alignItems: 'center' }}>
+                <Text>หยุด</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setSubmit(true)} style={{ width: '30%', alignItems: 'center' }}>
+                <Text>รีเซ็ท</Text>
+            </TouchableOpacity>
+        </View>
+    </>
+) */}

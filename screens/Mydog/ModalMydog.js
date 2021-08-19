@@ -27,18 +27,26 @@ export default class BottomPopup extends Component {
                     }}>
                     <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ width: '80%', height: 70, backgroundColor: 'white', elevation: 5, borderRadius: 20, flexDirection: 'row' }}>
-                            <View style={{ width: '20%', alignItems: 'center', justifyContent: 'center' }}>
-                                {item.Image}
+                            <View style={{ width: '30%', alignItems: 'center', justifyContent: 'center' }}>
+                                <Image 
+                                    source={{uri:item.udogimg}}
+                                    style={{
+                                        width:'60%',
+                                        height:'60%'
+                                    }}
+                                />
                             </View>
                             <View style={{ width: '30%', justifyContent: 'center' }}>
                                 <Text style={{ fontWeight: 'bold', fontSize: 10, color: '#747474' }}>ชื่อ : {item.udogname}</Text>
-                                <Text style={{ fontWeight: 'bold', fontSize: 10, color: '#747474' }}>อายุ : {item.breed}</Text>
-                                <Text style={{ fontWeight: 'bold', fontSize: 10, color: '#747474' }}>สถานะ : {item.status}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 10, color: '#747474' }}>อายุ : {item.udogbreed}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 10, color: '#747474' }}>สถานะ : {item.udogstatus}</Text>
                             </View>
-                            <View style={{ width: '60%', justifyContent: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 10, height: '20%', color: '#747474' }}>Level {item.udoglevel}</Text>
+                            <View style={{ width: '50%', justifyContent: 'center' }}>
+                                <Text style={{ fontWeight: 'bold', fontSize: 10, height: '20%', color: '#747474' }}>Level : {item.udoglevel}</Text>
                                 <View style={{ width: '70%', height: '50%', justifyContent: 'center' }}>
-                                    
+                                    <View >
+                                        <Text>this is capsule </Text>
+                                    </View>
                                 </View>
                             </View>
                         </View>

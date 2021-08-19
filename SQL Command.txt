@@ -1,0 +1,59 @@
+select dog.dogimages.path FROM dog.doginfo inner JOIN dog.dogimages on dog.doginfo.iddoginfo = dog.dogimages.iddog where dog.doginfo.iddoginfo = 1;
+
+
+select dog.traindescrip.* FROM dog.dogtrain inner JOIN dog.traindescrip on dog.dogtrain.idtrain = dog.traindescrip.iddes where dog.dogtrain.idtrain = 2;
+
+
+SELECT dog.dogtrain.idtrain , dog.traindescrip.*
+FROM dog.dogtrain
+INNER JOIN dog.traindescrip ON dog.dogtrain.iddes = dog.traindescrip.iddes;
+
+
+
+SELECT dog.dogtrain.idtrain ,dog.dogtrain.trainname , 
+dog.traindescrip.desname , dog.traindescrip.des1, dog.traindescrip.des2 , dog.traindescrip.des3, 
+dog.traindescrip.des4 , dog.traindescrip.des5 , dog.traindescrip.des6
+FROM dog.dogtrain
+INNER JOIN dog.traindescrip ON dog.dogtrain.idtrain = dog.traindescrip.iddes;
+
+
+SELECT dogtrain.idtrain ,dogtrain.trainname ,traindescrip.* 
+FROM dogtrain
+INNER JOIN traindescrip ON dogtrain.idtrain = traindescrip.iddes WHERE idtrain = '".$id."';
+
+
+--------------------------คำสั่ง inner join ระหว่าง user และ user_dog--------------------
+select dog.user.*, dog.user_dog.* 
+from dog.user inner join dog.user_dog on dog.user.iduser = user_dog.userid where iduser = 1;
+
+
+--------------แสดงค่าผลรวมใน column นั้นๆ------------------
+SELECT 
+    SUM(sit) result
+FROM
+    dog.statis_exer
+;
+
+
+-------------แสดงข้อมูลมากสุด  column นั้นๆ---------------------
+SELECT count FROM statis_exer ORDER BY count DESC LIMIT 1
+
+
+--------------เพิ่มข้อมูล +1 ต่อจากค่ามากที่สุดใน column นั้นๆ------------------------------------
+INSERT INTO statis_exer( sit,count ) SELECT 50 , MAX( count ) + 1 FROM statis_exer;
+
+
+statis.map(item => {
+                    return (
+                        //this is y-axis
+                        item.sit
+                        /*you need to add your data here from JSON, and remember the data you are requesting should be integer because it is line chart*/
+                    )
+                })
+
+
+<FlatList
+              data={info}
+              keyExtractor={item => item.iddoginfo}
+              renderItem={renderItem}
+            />

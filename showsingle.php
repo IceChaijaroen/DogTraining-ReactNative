@@ -32,10 +32,10 @@ $conn->close();
 <?php
 include 'connect.php';
 
-$iduser = $_GET["id"];
+$sum = $_GET["id"];
 
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT * FROM user WHERE iduser = '".$iduser."'";
+$sql = "SELECT SUM(sit) sumsit FROM dog.statis_exer where uid = '".$sum."'";
 
 $result = $conn->query($sql);
 

@@ -3,7 +3,7 @@
 include 'connect.php';
 
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT * FROM dogtrain";
+$sql = "SELECT * FROM dog.statis_exer ORDER BY count DESC LIMIT 1";
 
 $result = $conn->query($sql);
 

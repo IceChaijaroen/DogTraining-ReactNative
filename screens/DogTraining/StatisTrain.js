@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
 import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
@@ -12,16 +12,116 @@ import {
     ContributionGraph,
     StackedBarChart
 } from "react-native-chart-kit";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+
+const Progress = ({ step, steps, height }) => {
+    const [width, setWidth] = useState(0);
+    const animatedValue = useRef(new Animated.Value(-1000)).current;
+    const reactive = useRef(new Animated.Value(-1000)).current;
+
+    useEffect(() => {
+        Animated.timing(animatedValue, {
+            toValue: reactive,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    }, []);
+
+    useEffect(() => {
+        reactive.setValue(-width + (width * step) / steps);
+    }, [step, width]);
+
+    return (
+        <>
+            <Text>
+                {step} / {steps}
+            </Text>
+            <View
+                onLayout={(e) => {
+                    const newWidth = e.nativeEvent.layout.width;
+
+                    setWidth(newWidth);
+                }}
+                style={{
+                    height,
+                    backgroundColor: '#F5F5F5',
+                    borderRadius: height,
+                    overflow: 'hidden'
+                }} >
+                <Animated.View
+                    style={{
+                        height,
+                        width: '100%',
+                        borderRadius: height,
+                        backgroundColor: '#FFB97D',
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        transform: [{
+                            translateX: animatedValue
+                        }]
+                    }}
+                />
+            </View>
+        </>
+    )
+}
+
+const data = [
+    {
+        id: 1,
+        sit: 4
+    },
+    {
+        id: 2,
+        sit: 3
+    }
+
+]
 
 
 export default function StatisTrain({ navigation }) {
+    const [sum, SetSum] = useState([]);
+    const [statis, setStatis] = useState([]);
+    const [user, setValue] = useState([]);
+
+    useEffect(() => {
+        AsyncStorage.getItem('id')
+            .then((value) => {
+                setValue(value);
+            })
+        axios.get('http://34.87.28.196/showsum.php', {
+            params: {
+                id: 1
+            }
+        })
+            .then(response => {
+                SetSum(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
+
+    useEffect(() => {
+        axios.get('http://34.87.28.196/showstatisexer.php')
+            .then(response => {
+                setStatis(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
+
 
     const [text, onChangeText] = React.useState("น้องโบ้");
     const alldata = {
-        labels: ["1", "2", "3", "4", "5", "6"],
+        labels: ["1", "2", "3", "4",],
         datasets: [
             {
-                data: [80, 62, 44, 23, 20, 0],
+                data: [20,55,64]
+                ,
                 color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                 strokeWidth: 2 // optional
             }
@@ -52,8 +152,11 @@ export default function StatisTrain({ navigation }) {
         useShadowColorFromDataset: false // optional
     };
 
+    
     return (
+        
         <>
+        
             {/** -----------Header------------------ */}
             <View style={styles.headercontainer}>
                 <View style={styles.header}>
@@ -150,11 +253,20 @@ export default function StatisTrain({ navigation }) {
                         <View style={{ width: '100%', justifyContent: 'center', height: 20, marginLeft: 20 }}>
                             <Text style={{ fontWeight: 'bold', color: '#737373' }}>ระดับความสำเร็จ</Text>
                         </View>
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', }}>
-                            <View style={styles.capsule}>
-                                <View style={styles.incapsule}>
-                                </View>
-                            </View>
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text>{statis.map(item => (
+                                   item.sit
+                               ))}</Text>
+                               
+
+                            <FlatList
+                                width={'80%'}
+                                data={sum}
+                                renderItem={({ item }) => (
+                                    <Progress step={item.sumsit} steps={100} height={20} />
+                                )}
+                            />
+
                         </View>
                     </View>
                     <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
@@ -205,7 +317,7 @@ const styles = StyleSheet.create({
         color: '#676767'
     },
     capsule: {
-        width: '90%',
+        width:'90%',
         height: 10,
         borderRadius: 15,
         backgroundColor: '#F5F5F5',

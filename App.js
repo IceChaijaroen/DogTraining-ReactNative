@@ -15,11 +15,12 @@ import Carousel from './component/Corousel/Carousel';
 import testdata from './testdata';
 import Training from './screens/DogTraining/Training';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import StatisTrain from './screens/DogTraining/StatisTrain';
 
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [id, setId] = useState();
+  const [id, setId] = useState(1);
     useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
@@ -30,19 +31,20 @@ export default function App() {
 
 
     
-  if (id == null) {
+  if (id != null) {
     return (
       <>
         <NavigationContainer>
           <Stack.Navigator>
+          <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
             <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
+            <Stack.Screen name="StatisTrain" component={StatisTrain} options={{ headerShown: false }} />
             <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="AddDog" component={AddDog} options={{ headerShown: false }} />
-            <Stack.Screen name="Test" component={Test} options={{ headerShown: false }} />
+            
           </Stack.Navigator>
         </NavigationContainer>
       </>
