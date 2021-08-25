@@ -1,8 +1,5 @@
-import Carousel from 'react-native-snap-carousel';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, useWindowDimensions, Animated } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
+import { StyleSheet, useWindowDimensions, Animated } from 'react-native';
+import React from 'react';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 

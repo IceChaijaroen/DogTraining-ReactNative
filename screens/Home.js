@@ -20,6 +20,7 @@ import axios from 'axios';
 
 export default function Home({ navigation }) {
   const [user, setValue] = useState();
+  const [id, setId] = useState(1);
 
   useEffect(() => {
     AsyncStorage.getItem('id')
@@ -80,7 +81,7 @@ export default function Home({ navigation }) {
             <TouchableOpacity
               
               onPress={() =>
-                navigation.navigate('Mydog')
+                navigation.navigate('Mydog', { id: id })
               }>
               <View style={styles.minicard}>
                 <Image

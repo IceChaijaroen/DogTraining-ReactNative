@@ -1,142 +1,431 @@
-import { View, Text, Animated } from "react-native";
+import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { FlatList } from "react-native-gesture-handler";
-import { TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated, Dimensions } from 'react-native';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
+import { LocaleConfig } from 'react-native-calendars';
+import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
+import {
+    LineChart,
+    BarChart,
+    PieChart,
+    ProgressChart,
+    ContributionGraph,
+    StackedBarChart
+} from "react-native-chart-kit";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 import AppLoading from 'expo-app-loading';
-import { useFonts } from 'expo-font';
 
-
-export default function testdata() {
-    const [second, setSecound] = useState(0);
-    const [isRunning, setIsRunning] = useState(false);
-    const [uid, setUid] = useState(1);
-    const [count, setCount] = useState(null);
-    const [submit, setSubmit] = useState("");
-    const [lastest, setLastest] = useState([]);
+const Progress = ({ step, steps, height }) => {
+    const [width, setWidth] = useState(0);
+    const animatedValue = useRef(new Animated.Value(-1000)).current;
+    const reactive = useRef(new Animated.Value(-1000)).current;
 
     useEffect(() => {
-        let interval = null;
-        if (isRunning) {
-            setCount(count => count + 1)
-            interval = setInterval(() => {
-                setSecound(second => second + 1)
-            }, 1000);
-        } else {
-            clearInterval(interval)
-        }
-        return () => clearInterval(interval)
-    }, [isRunning])
+        Animated.timing(animatedValue, {
+            toValue: reactive,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    }, []);
 
     useEffect(() => {
-        const authenticate = async () => {
+        reactive.setValue(-width + (width * step) / steps);
+    }, [step, width]);
 
-            axios
-                .post(
-                    "http://34.87.28.196/insertstatis2.php",
-                    JSON.stringify({
-                        second: second,
-                        uid: uid,
-                        count: count
-                    })
-                )
-                .then((response) => {
-                    alert(JSON.stringify(response.data));
-                    setSecound(0);
-                    setIsRunning(false);
-                    setSubmit(false);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }; if (submit) authenticate();
-    }, [submit]);
+    return (
+        <>
+            <View
+                onLayout={(e) => {
+                    const newWidth = e.nativeEvent.layout.width;
+
+                    setWidth(newWidth);
+                }}
+                style={{
+                    height,
+                    backgroundColor: '#F5F5F5',
+                    borderRadius: height,
+                    overflow: 'hidden'
+                }} >
+                <Animated.View
+                    style={{
+                        height,
+                        width: '100%',
+                        borderRadius: height,
+                        backgroundColor: '#FFB97D',
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        transform: [{
+                            translateX: animatedValue
+                        }]
+                    }}
+                />
+            </View>
+        </>
+    )
+}
+
+const data = [
+    {
+        id: 1,
+        sit: 4
+    },
+    {
+        id: 2,
+        sit: 3
+    },
+    {
+        id: 3,
+        sit: 4
+    },
+    {
+        id: 3,
+        sit: 4
+    },
+    {
+        id: 4,
+        sit: 12
+    },
+    {
+        id: 5,
+        sit: 11
+    }
+
+]
 
 
-    useEffect(() => {
-        axios.get('http://34.87.28.196/showcountlastest.php')
+
+export default function StatisTrain({ navigation }) {
+    const [sum, SetSum] = useState([]);
+    const [statis, setStatis] = useState([]);
+    const [user, setValue] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    {/**  useEffect(() => {
+        AsyncStorage.getItem('id')
+            .then((value) => {
+                setValue(value);
+            })
+        axios.get('http://34.87.28.196/showsum.php', {
+            params: {
+                id: 1
+            }
+        })
             .then(response => {
-                setLastest(response.data);
+                SetSum(response.data);
             })
             .catch(err => {
                 console.log(err)
             })
     })
+*/}
+    useEffect(() => {
+        axios.get('http://34.87.28.196/showstatisexer.php')
+            .then(response => {
+                setStatis(response.data);
+                setIsLoading(false);
+            })
+            .catch(error => setIsLoading(false))
+    })
 
 
-    let [fontsLoaded] = useFonts({
-        'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
-        'bahnschrift': require('./assets/fonts/bahnschrift.ttf'),
-        'FC_Iconic': require('./assets/fonts/FC_Iconic_Bold.ttf'),
-    });
-    if (!fontsLoaded) {
-        return <AppLoading />;
-    } else {
-        if (isRunning == true) {
-            return (
-                <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => setSubmit(true)} >
-                        <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                            <Text style={{ color: 'white', fontSize: 40, fontFamily: 'FC_Iconic' }}>{second}</Text>
+
+
+    const [text, onChangeText] = React.useState("น้องโบ้");
+    const alldata = {
+        labels: statis.map(item => (
+            item.count
+        )),
+        datasets: [
+            {
+                data: statis.map(item => (
+                    item.sit
+                ))
+                ,
+                color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                strokeWidth: 2 // optional
+            }
+        ],
+        legend: ["Dog stastic"] // optional
+    };
+
+    const eachdata = {
+        labels: ["1", "2", "3", "4", "5", "6"],
+        datasets: [
+            {
+                data: [20, 10, 50, 77, 5, 66],
+                color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                strokeWidth: 2 // optional
+            }
+        ],
+        legend: ["Dog stance stastic"] // optional
+    };
+
+    const chartConfig = {
+        backgroundGradientFrom: "#000000",
+        backgroundGradientFromOpacity: 0,
+        backgroundGradientTo: "#FFFFFF",
+        backgroundGradientToOpacity: 0.5,
+        color: (opacity = 1) => `rgba(163, 163, 163, ${opacity})`,
+        strokeWidth: 2, // optional, default 3
+        barPercentage: 0.5,
+        useShadowColorFromDataset: false, // optional
+        propsForDots: {
+            r: "6",
+            strokeWidth: "2",
+            stroke: "#ffa726"
+        }
+    };
+
+
+
+    function getIndex(count) {
+        return statis.findIndex(obj => obj.count === 2);
+    }
+
+    const screenWidth = Dimensions.get('window').width;
+
+    return (
+
+        <>
+
+            {/** -----------Header------------------ */}
+            <View style={styles.headercontainer}>
+                <View style={styles.header}>
+                    <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
+                        <View style={{ width: '50%' }}>
+                            <TouchableOpacity
+                                style={{ marginLeft: 15 }}
+                                onPress={() => navigation.openDrawer()}
+                            >
+                                <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                    <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
+                                </View>
+                            </TouchableOpacity>
                         </View>
-                    </TouchableOpacity>
-                    <View style={{ marginTop: 20 }}>
-                        {lastest.map(item => (
-                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
-                        ))}
+                        <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                            <TouchableOpacity
+                                style={{ marginRight: 15 }}
+                                onPress={() => navigation.navigate('Noti')}
+                            >
+                                <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                    <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+                    <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
+                        <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                            <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                <Image
+                                    source={require('./img/dog.png')}
+                                    style={{
+                                        width: '55%',
+                                        height: '55%',
 
+                                    }}
+                                />
+                            </View>
+
+                        </View>
+                        <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
+                            <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
+                                <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
+                                </View>
+                                <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
+                                    <View style={styles.capsule}>
+                                        <View style={styles.incapsule}></View>
+                                    </View>
+                                </View>
+                            </View>
+                            <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
+                                <View style={{ width: '80%', height: '100%' }}>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
+                                </View>
+                                <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
+                                    <Feather
+                                        name='triangle'
+                                        size={15}
+                                        color="#FFFFFF"
+                                        style={{
+                                            marginRight: 10,
+                                            transform: [{ rotate: "180deg" }],
+                                        }}
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                    </View>
                 </View>
-            );
-        } else {
-            return (
-                <>
-                    <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                        <TouchableOpacity onPress={() => setIsRunning(true)} >
-                            <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                                <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
-                                <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
+            </View>
+            {/** -----------Header------------------ */}
+
+
+
+            <View style={styles.container}>
+                <View style={styles.card}>
+                    <View style={{ height: 70, width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30, backgroundColor: '#555555', borderTopLeftRadius: 40, borderTopRightRadius: 40 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 35, color: 'white' }}>สถิติ</Text>
+                    </View>
+                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: 20, marginBottom: 10 }}>
+                        <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#555555' }}>ท่านั่ง</Text>
+                    </View>
+                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
+
+                        {!isLoading ? (
+                            <ScrollView style={{ width: '90%'}} horizontal={true}>
+                                <View style={{ width: '100%',height:290 }}>
+
+                                    <LineChart
+                                    style={{ flex: 1,width:'90%',height:'100%' }}
+                                        data={{
+                                            labels: statis.map(item => (
+                                                item.count
+                                            )),
+                                            datasets: [
+                                                {
+                                                    data: statis.map(item => (
+                                                        item.sit
+                                                    )),
+                                                    color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                                    strokeWidth: 2 // optional
+                                                }
+                                            ],
+                                            legend: ["Dog stastic"] // optional
+                                        }}
+                                        width={'1000'}
+                                        height={255}
+                                        verticalLabelRotation={10}
+                                        chartConfig={chartConfig}
+                                        bezier
+                                    />
+                                </View>
+                            </ScrollView>
+                            // If there is a delay in data, let's let the user know it's loading
+                        ) : (
+                            <Text>Loading...</Text>
+                        )}
+                    </View>
+                    <View style={{ width: '100%', height: 60 }}>
+                        <View style={{ width: '100%', justifyContent: 'center', height: 30, marginLeft: 20 }}>
+                            <Text style={{ fontWeight: 'bold', color: '#737373' }}>ระดับความสำเร็จ</Text>
+                        </View>
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+
+
+                        </View>
+                    </View>
+                    <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
+                        <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '25%', height: '70%' }}>
+                            <View style={styles.nextbutton}>
+                                <Text style={styles.textinbutton} >ถัดไป</Text>
+                                <FontAwesome5
+                                    name='arrow-right'
+                                    color={'white'}
+                                />
                             </View>
                         </TouchableOpacity>
-                        <View style={{ marginTop: 20 }}>
-                            {lastest.map(item => (
-                                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
-                            ))}
-                        </View>
-
                     </View>
-                </>
-            );
-        }
-
-    }
-}
-{/**
-return (
-    <>
-        <View style={{ width: '100%', alignItems: 'center', height: '50%', justifyContent: 'flex-end' }}>
-            <Text>{second}</Text>
-        </View>
-        <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
-
-            <TouchableOpacity onPress={() => setIsRunning(true)} >
-                <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                    <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
-                    <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
                 </View>
-            </TouchableOpacity>
-        </View>
-        <View style={{ flex: 1, padding: 20, height: '50%', justifyContent: 'center', flexDirection: 'row' }}>
-            <TouchableOpacity onPress={() => setIsRunning(true)} style={{ width: '30%', alignItems: 'center' }}>
-                <Text>เริ่ม</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setIsRunning(false)} style={{ width: '30%', alignItems: 'center' }}>
-                <Text>หยุด</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSubmit(true)} style={{ width: '30%', alignItems: 'center' }}>
-                <Text>รีเซ็ท</Text>
-            </TouchableOpacity>
-        </View>
-    </>
-) */}
+
+            </View>
+
+        </>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: '2%',
+        height: '100%',
+        marginBottom: 5
+    },
+    headercontainer: {
+        width: '100%',
+        height: '27%',
+    },
+    header: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        backgroundColor: '#30475E',
+        borderBottomLeftRadius: 35,
+        borderBottomRightRadius: 35,
+        elevation: 5,
+        justifyContent: 'center',
+    },
+    headertext: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#676767'
+    },
+    capsule: {
+        width: '90%',
+        height: 10,
+        borderRadius: 15,
+        backgroundColor: '#F5F5F5',
+        justifyContent: 'center'
+    },
+    incapsule: {
+        width: '30%',
+        height: 8,
+        borderRadius: 15,
+        backgroundColor: '#FFB97D',
+        marginLeft: 3
+    },
+    card: {
+        width: '90%',
+        height: '99%',
+        backgroundColor: 'white',
+        borderRadius: 40,
+        elevation: 5,
+        marginBottom: 5
+    },
+    minicardcontainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: '5%',
+        height: 90
+    },
+    minicard: {
+        width: '90%',
+        height: '100%',
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 25,
+        elevation: 10,
+        alignItems: 'center'
+    },
+    subtextcontainer: {
+        width: '60%',
+        alignItems: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    subtext: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#676767'
+    },
+    nextbutton: {
+        width: '100%',
+        backgroundColor: '#555555',
+        height: '100%',
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        elevation: 5
+    },
+    textinbutton: {
+        fontWeight: 'bold',
+        fontSize: 18,
+        color: 'white',
+        marginRight: 10
+    }
+});

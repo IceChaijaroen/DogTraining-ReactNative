@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Modal, Dimensions, Pressable, FlatList, TouchableOpacity, Alert, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { NavigationActions } from 'react-navigation';
+
 
 export default class BottomPopup extends Component {
 
@@ -11,14 +13,19 @@ export default class BottomPopup extends Component {
         haveOutsideTouch: false,
         data: []
     }
+    
 
     renderItem = ({ item, inde }) => {
         const { disabled } = this.props;
+        const { navigation } = this.props;
+        const { closePopup } = this.props;
         return (
             <>
                 <TouchableOpacity
                     activeOpacity={disabled ? 1 : 0.9}
-                    onPress={() => { }}
+                    onPress={() => {
+                        closePopup(),{id:item.udogid}
+                    }}
                     style={{
                         height: 90,
                         flex: 1,
@@ -28,11 +35,11 @@ export default class BottomPopup extends Component {
                     <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ width: '80%', height: 70, backgroundColor: 'white', elevation: 5, borderRadius: 20, flexDirection: 'row' }}>
                             <View style={{ width: '30%', alignItems: 'center', justifyContent: 'center' }}>
-                                <Image 
-                                    source={{uri:item.udogimg}}
+                                <Image
+                                    source={{ uri: item.udogimg }}
                                     style={{
-                                        width:'60%',
-                                        height:'60%'
+                                        width: '60%',
+                                        height: '60%'
                                     }}
                                 />
                             </View>
@@ -118,15 +125,15 @@ export default class BottomPopup extends Component {
                         <View style={{ width: '65%', justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity activeOpacity={disabled ? 1 : 0.7} style={{ width: '100%', height: '100%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <View style={{ width: '20%' }}>
-                                    <View style={{width:'70%',borderRadius:50,elevation:3,justifyContent:'center',alignItems:'center',height:'60%'}}>
+                                    <View style={{ width: '70%', borderRadius: 50, elevation: 3, justifyContent: 'center', alignItems: 'center', height: '60%' }}>
                                         <Icon
-                                        name='plus-circle'
-                                        size={40}
-                                        color={'white'}
-                                        backgroundColor={'grey'}
-                                    />
+                                            name='plus-circle'
+                                            size={40}
+                                            color={'white'}
+                                            backgroundColor={'grey'}
+                                        />
                                     </View>
-                                    
+
                                 </View>
                                 <View style={{ width: '80%', alignItems: 'flex-start' }}>
                                     <Text style={{ fontSize: 14, fontWeight: 'bold', color: '#555555' }}>เพิ่มสุนัขตัวใหม่</Text>

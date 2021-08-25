@@ -16,22 +16,22 @@ import axios from 'axios';
 
 
 
-export default function testtest() {
+export default function testtest({route}) {
     const [isshow, setIsshow] = useState(false);
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [udata, setUdata] = useState([]);
     const [user, setValue] = useState([]);
     const [dogdata, setDogdata] = useState([]);
-
+    
     useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
             })
-       {/* axios.get('http://34.87.28.196/showudogid.php', {
+        axios.get('http://34.87.28.196/showudogid.php', {
             params: {
-                id: user
+                id: 1
             }
         })
             .then(response => {
@@ -40,7 +40,7 @@ export default function testtest() {
             .catch(err => {
                 console.log(err)
             })
-      **/}   axios.get('http://34.87.28.196/showuserdog.php',
+       {/**   axios.get('http://34.87.28.196/showuserdog.php',
             {
                 params: {
                     id: user
@@ -52,12 +52,16 @@ export default function testtest() {
             .catch(err => {
                 console.log(err)
             })
+            */}
     })
+
 
 
     const close = () => {
         setIsshow(false);
     }
+
+
 
     return (
         <>
@@ -133,7 +137,7 @@ export default function testtest() {
 
 
             <FlatList
-                data={dogdata}
+                data={udata}
                 renderItem={
                     ({ item }) => (
 
@@ -268,7 +272,7 @@ export default function testtest() {
                 title={"something"}
                 animationType={"fade"}
                 closePopup={close}
-                data={dogdata}
+                data={udata}
                 haveOutsideTouch={true}
             />
 

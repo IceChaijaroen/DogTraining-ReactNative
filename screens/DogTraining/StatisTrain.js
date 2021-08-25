@@ -14,6 +14,8 @@ import {
 } from "react-native-chart-kit";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const Progress = ({ step, steps, height }) => {
     const [width, setWidth] = useState(0);
@@ -34,9 +36,6 @@ const Progress = ({ step, steps, height }) => {
 
     return (
         <>
-            <Text>
-                {step} / {steps}
-            </Text>
             <View
                 onLayout={(e) => {
                     const newWidth = e.nativeEvent.layout.width;
@@ -68,25 +67,14 @@ const Progress = ({ step, steps, height }) => {
     )
 }
 
-const data = [
-    {
-        id: 1,
-        sit: 4
-    },
-    {
-        id: 2,
-        sit: 3
-    }
-
-]
-
 
 export default function StatisTrain({ navigation }) {
     const [sum, SetSum] = useState([]);
     const [statis, setStatis] = useState([]);
     const [user, setValue] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
+    {/**   useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
@@ -102,12 +90,13 @@ export default function StatisTrain({ navigation }) {
             .catch(err => {
                 console.log(err)
             })
-    })
+    })*/}
 
     useEffect(() => {
         axios.get('http://34.87.28.196/showstatisexer.php')
             .then(response => {
                 setStatis(response.data);
+                setIsLoading(false);
             })
             .catch(err => {
                 console.log(err)
@@ -115,12 +104,14 @@ export default function StatisTrain({ navigation }) {
     })
 
 
+
+
     const [text, onChangeText] = React.useState("น้องโบ้");
     const alldata = {
         labels: ["1", "2", "3", "4",],
         datasets: [
             {
-                data: [20,55,64]
+                data: [1, 3, 52, 61]
                 ,
                 color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                 strokeWidth: 2 // optional
@@ -152,140 +143,170 @@ export default function StatisTrain({ navigation }) {
         useShadowColorFromDataset: false // optional
     };
 
-    
-    return (
-        
-        <>
-        
-            {/** -----------Header------------------ */}
-            <View style={styles.headercontainer}>
-                <View style={styles.header}>
-                    <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
-                        <View style={{ width: '50%' }}>
-                            <TouchableOpacity
-                                style={{ marginLeft: 15 }}
-                                onPress={() => navigation.openDrawer()}
-                            >
-                                <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                    <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ width: '50%', alignItems: 'flex-end' }}>
-                            <TouchableOpacity
-                                style={{ marginRight: 15 }}
-                                onPress={() => navigation.navigate('Noti')}
-                            >
-                                <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                    <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
-                        <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-                            <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                                <Image
-                                    source={require('../../img/dog.png')}
-                                    style={{
-                                        width: '55%',
-                                        height: '55%',
+    let [fontsLoaded] = useFonts({
+        'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
+        'bahnschrift': require('../../assets/fonts/bahnschrift.ttf'),
+        'FC_Iconic': require('../../assets/fonts/FC_Iconic_Bold.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
 
-                                    }}
-                                />
-                            </View>
+            <>
 
-                        </View>
-                        <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-                            <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                                <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
-                                </View>
-                                <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
-                                    <View style={styles.capsule}>
-                                        <View style={styles.incapsule}></View>
+                {/** -----------Header------------------ */}
+                <View style={styles.headercontainer}>
+                    <View style={styles.header}>
+                        <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
+                            <View style={{ width: '50%' }}>
+                                <TouchableOpacity
+                                    style={{ marginLeft: 15 }}
+                                    onPress={() => navigation.openDrawer()}
+                                >
+                                    <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                        <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
                                     </View>
-                                </View>
+                                </TouchableOpacity>
                             </View>
-                            <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                                <View style={{ width: '80%', height: '100%' }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
-                                </View>
-                                <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
-                                    <Feather
-                                        name='triangle'
-                                        size={15}
-                                        color="#FFFFFF"
+                            <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                                <TouchableOpacity
+                                    style={{ marginRight: 15 }}
+                                    onPress={() => navigation.navigate('Noti')}
+                                >
+                                    <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                        <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                        <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
+                            <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                                <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                    <Image
+                                        source={require('../../img/dog.png')}
                                         style={{
-                                            marginRight: 10,
-                                            transform: [{ rotate: "180deg" }],
+                                            width: '55%',
+                                            height: '55%',
+
                                         }}
                                     />
                                 </View>
+
+                            </View>
+                            <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
+                                <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
+                                    <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
+                                        <Text style={{ fontFamily:'FC_Iconic', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
+                                    </View>
+                                    <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
+                                        <View style={styles.capsule}>
+                                            <View style={styles.incapsule}></View>
+                                        </View>
+                                    </View>
+                                </View>
+                                <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
+                                    <View style={{ width: '80%', height: '100%' }}>
+                                        <Text style={{ fontFamily:'FC_Iconic', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
+                                    </View>
+                                    <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
+                                        <Feather
+                                            name='triangle'
+                                            size={15}
+                                            color="#FFFFFF"
+                                            style={{
+                                                marginRight: 10,
+                                                transform: [{ rotate: "180deg" }],
+                                            }}
+                                        />
+                                    </View>
+                                </View>
                             </View>
                         </View>
                     </View>
                 </View>
-            </View>
-            {/** -----------Header------------------ */}
+                {/** -----------Header------------------ */}
 
 
 
-            <View style={styles.container}>
-                <View style={styles.card}>
-                    <View style={{ height: 70, width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30, backgroundColor: '#555555', borderTopLeftRadius: 40, borderTopRightRadius: 40 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 35, color: 'white' }}>สถิติ</Text>
-                    </View>
-                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: 20, marginBottom: 30 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#555555' }}>ท่านั่ง</Text>
-                    </View>
-                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
-                        <LineChart
-                            data={alldata}
-                            width={'350'}
-                            height={256}
-                            verticalLabelRotation={30}
-                            chartConfig={chartConfig}
-                            bezier
-                        />
-                    </View>
-                    <View style={{ width: '100%', height: 50 }}>
-                        <View style={{ width: '100%', justifyContent: 'center', height: 20, marginLeft: 20 }}>
-                            <Text style={{ fontWeight: 'bold', color: '#737373' }}>ระดับความสำเร็จ</Text>
+                <View style={styles.container}>
+                    <View style={styles.card}>
+                        <View style={{ height: 70, width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30, backgroundColor: '#555555', borderTopLeftRadius: 40, borderTopRightRadius: 40 }}>
+                            <Text style={{ fontFamily:'FC_Iconic', fontSize: 40, color: 'white' }}>สถิติ</Text>
                         </View>
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                            <Text>{statis.map(item => (
-                                   item.sit
-                               ))}</Text>
-                               
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: 20, marginBottom: 30 }}>
+                            <Text style={{ fontFamily:'FC_Iconic', fontSize: 30, color: '#555555' }}>ท่านั่ง</Text>
+                        </View>
+                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
-                            <FlatList
-                                width={'80%'}
-                                data={sum}
-                                renderItem={({ item }) => (
-                                    <Progress step={item.sumsit} steps={100} height={20} />
-                                )}
-                            />
+                            {!isLoading ? (
+                                <ScrollView style={{ width: '90%' }} horizontal={true}>
+                                    <View style={{ width: '100%', height: 290 }}>
+
+                                        <LineChart
+                                            style={{ flex: 1, width: '90%', height: '100%' }}
+                                            data={{
+                                                labels: statis.map(item => (
+                                                    item.count
+                                                )),
+                                                datasets: [
+                                                    {
+                                                        data: statis.map(item => (
+                                                            item.seconds
+                                                        )),
+                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                                        strokeWidth: 2 // optional
+                                                    }
+                                                ],
+                                                legend: ["Dog stastic"] // optional
+                                            }}
+                                            width={'1000'}
+                                            height={255}
+                                            verticalLabelRotation={10}
+                                            chartConfig={chartConfig}
+                                            bezier
+                                        />
+                                    </View>
+                                </ScrollView>
+                                // If there is a delay in data, let's let the user know it's loading
+                            ) : (
+                                <Text>Loading...</Text>
+                            )}
 
                         </View>
-                    </View>
-                    <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '25%', height: '70%' }}>
-                            <View style={styles.nextbutton}>
-                                <Text style={styles.textinbutton} >ถัดไป</Text>
-                                <FontAwesome5
-                                    name='arrow-right'
-                                    color={'white'}
+                        <View style={{ width: '100%', height: 60 }}>
+                            <View style={{ width: '80%', justifyContent: 'center', height: 30, marginLeft: 40, marginBottom: 5 }}>
+                                <Text style={{ color: '#737373',fontFamily:'FC_Iconic',fontSize:18 }}>ระดับความสำเร็จ</Text>
+                            </View>
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                <FlatList
+                                    width={'80%'}
+                                    data={statis}
+                                    renderItem={({ item }) => (
+                                        <Progress step={item.count} steps={15} height={10} />
+                                    )}
                                 />
+
                             </View>
-                        </TouchableOpacity>
+                        </View>
+                        <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '25%', height: '70%' }}>
+                                <View style={styles.nextbutton}>
+                                    <Text style={styles.textinbutton} >ถัดไป</Text>
+                                    <FontAwesome5
+                                        name='arrow-right'
+                                        color={'white'}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        </View>
                     </View>
+
                 </View>
 
-            </View>
-
-        </>
-    );
+            </>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -317,7 +338,7 @@ const styles = StyleSheet.create({
         color: '#676767'
     },
     capsule: {
-        width:'90%',
+        width: '90%',
         height: 10,
         borderRadius: 15,
         backgroundColor: '#F5F5F5',
@@ -375,8 +396,8 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     textinbutton: {
-        fontWeight: 'bold',
-        fontSize: 18,
+        fontFamily:'FC_Iconic',
+        fontSize: 22,
         color: 'white',
         marginRight: 10
     }
