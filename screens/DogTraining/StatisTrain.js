@@ -104,7 +104,7 @@ export default function StatisTrain({ navigation }) {
             }
         }
         fetchData();
-    },[])
+    },[statis])
 
 
 
@@ -118,7 +118,7 @@ export default function StatisTrain({ navigation }) {
             }
         }
         fetchData();
-    },[])
+    },[sumsit])
 
 
 

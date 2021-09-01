@@ -15,11 +15,11 @@ import { useFonts } from 'expo-font';
 
 
 export default function Training({ navigation, route }) {
-    {/**  const { id } = route.params;*/ }
+    const { id } = route.params;
     const [gif, setGif] = useState([]);
     const [train, setTrain] = useState([]);
 
-    {/**   useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://34.87.28.196/gif.php',
@@ -34,7 +34,7 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchData();
-    }, [])
+    }, [gif])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -51,19 +51,15 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchData();
-    }, [])
-*/}
+    }, [train])
 
     const [second, setSecound] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
     const [uid, setUid] = useState(1);
     const [count, setCount] = useState(null);
     const [submit, setSubmit] = useState("");
-    const [lastest, setLastest] = useState([]);
-    const [goto, setGoto] = useState();
     let [minus, setMinus] = useState(5);
     const [visible, setVisible] = useState();
-    const [insertcheck, setInsertcheck] = useState("");
     const [exerid, setExerid] = useState(1);
     const [countdesc, setCountdesc] = useState([]);
 
@@ -81,9 +77,6 @@ export default function Training({ navigation, route }) {
         return () => clearInterval(interval)
     }, [isRunning])
 
-const show = countdesc.map(item => (
-    item.count
-))
 
     useEffect(() => {
         const authenticate = async () => {
@@ -112,41 +105,8 @@ const show = countdesc.map(item => (
     }, [submit]);
 
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://34.87.28.196/showcountlastest.php')
-                setLastest(response.data)
-            } catch (err) {
-                console.log('...........')
-            }
-        }
-        fetchData();
-    }, [])
-
-
-
-
 
     {/**----------------------------goto check.php--------------------------------------------------------- */ }
-
-    const [sumseconds, setSumseconds] = useState([]);
-    
-    const [sumsit, setSumsit] = useState([]);
-    const [showdata, setShowdata] = useState([]);
-    
-
-    useEffect(() => {
-        const fetchpost = async () => {
-            try {
-                const response = await axios.get('http://34.87.28.196/testphp/sumseconds.php');
-                setSumseconds(response.data);
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        fetchpost();
-    }, [sumseconds])
 
     useEffect(() => {
         const fetchpost = async () => {
@@ -160,17 +120,6 @@ const show = countdesc.map(item => (
         fetchpost();
     }, [countdesc])
 
-    {/** 
-
-    useEffect(() => {
-        axios.get('http://34.87.28.196/testphp/sumstep.php')
-            .then(response => {
-                setSumsit(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }, [])
 
 
     useEffect(() => {
@@ -179,38 +128,7 @@ const show = countdesc.map(item => (
                 .post(
                     "http://34.87.28.196/testphp/checktostep.php",
                     JSON.stringify({
-                        count: lastest,
                         exerid: exerid,
-                        sumseconds: sumseconds
-                    })
-                )
-                .then((response) => {
-                    if (response.data == 'notyet') {
-                        alert('Fuck');
-                    } else {
-                        alert(JSON.stringify(response.data));
-                        seIsLoading(true);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        if (insertcheck) authenticate();
-    }, [insertcheck]);
-*/}
-
-
-
-    useEffect(() => {
-        const authenticate = async () => {
-            axios
-                .post(
-                    "http://34.87.28.196/testphp/checktostep.php",
-                    JSON.stringify({
-                        count: countdesc,
-                        exerid: exerid,
-                        sumseconds: sumseconds
                     })
                 )
                 .then((response) => {
@@ -227,19 +145,6 @@ const show = countdesc.map(item => (
         };
         if (isRunning)authenticate();
     }, [isRunning]);
-
-
-
-    useEffect(() => {
-        axios.get('http://34.87.28.196/testphp/exer_record.php')
-            .then(response => {
-                setSumsit(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }, [])
-
 
 
     function plus() {
@@ -295,7 +200,7 @@ const show = countdesc.map(item => (
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
-        if (minus == 6) {
+        if (minus == 0) {
             { change }
             return (
                 <>
@@ -338,7 +243,7 @@ const show = countdesc.map(item => (
                             <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน</Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                            {/**  <FlatList
+                            <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
                                     <Image
@@ -351,15 +256,15 @@ const show = countdesc.map(item => (
                                 )}
                                 keyExtractor={(item) => item.idtrain}
                             />
-                            */}
+                            
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            {/**   <FlatList
+                            <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
-                             */}
+                            
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setSubmit(true)} >
@@ -388,7 +293,7 @@ const show = countdesc.map(item => (
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
 
-                            {/** <FlatList
+                            <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
                                     <Image
@@ -401,15 +306,15 @@ const show = countdesc.map(item => (
                                 )}
                                 keyExtractor={(item) => item.idtrain}
                             />
-                            */}
+                            
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            {/**  <FlatList
+                           <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
-                            */}
+                           
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setIsRunning(true)} >

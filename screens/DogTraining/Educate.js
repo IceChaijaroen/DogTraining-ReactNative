@@ -42,19 +42,21 @@ export default function Educate({ navigation, route }) {
   const { id } = route.params;
   const [gif, setGif] = useState([]);
   useEffect(() => {
-    axios.get('http://34.87.28.196/gif.php',
-      {
-        params: {
-          id: id
-        }
-      })
-      .then(response => {
+    const fetchData = async () => {
+      try{
+        const response = await axios.get('http://34.87.28.196/gif.php',
+        {
+          params: {
+            id: id
+          }
+        })
         setGif(response.data);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
+      } catch {
+        alert('error');
+      }
+    }
+    fetchData();
+  },[gif])
 
 
   let [fontsLoaded] = useFonts({

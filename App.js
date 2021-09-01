@@ -37,7 +37,6 @@ export default function App() {
       <>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Training" component={Training} options={{ headerShown: false }} />
             <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
@@ -55,9 +54,8 @@ export default function App() {
       <>
         <NavigationContainer>
           <Stack.Navigator>
-            <Stack.Screen name="Training" component={Training} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
+            
+            <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} /><Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
             <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
