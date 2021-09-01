@@ -22,22 +22,22 @@ const Stack = createStackNavigator();
 
 export default function App() {
   const [id, setId] = useState(1);
-    useEffect(() => {
-        AsyncStorage.getItem('id')
-            .then((value) => {
-                setId(value);
-            })
-    })
+  useEffect(() => {
+    AsyncStorage.getItem('id')
+      .then((value) => {
+        setId(value);
+      })
+  })
 
 
 
-    
+
   if (id != null) {
     return (
       <>
         <NavigationContainer>
           <Stack.Navigator>
-          
+            <Stack.Screen name="Training" component={Training} options={{ headerShown: false }} />
             <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
@@ -45,20 +45,20 @@ export default function App() {
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
             <Stack.Screen name="AddDog" component={AddDog} options={{ headerShown: false }} />
-            
+
           </Stack.Navigator>
         </NavigationContainer>
       </>
     )
-  } else  {
+  } else {
     return (
       <>
         <NavigationContainer>
           <Stack.Navigator>
-          
+            <Stack.Screen name="Training" component={Training} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
             <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
-<Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
+            <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
             <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
             <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />

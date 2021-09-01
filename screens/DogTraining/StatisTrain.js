@@ -72,7 +72,8 @@ export default function StatisTrain({ navigation }) {
     const [sum, SetSum] = useState([]);
     const [statis, setStatis] = useState([]);
     const [user, setValue] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [sumsit, setSumsit] = useState([]);
 
     {/**   useEffect(() => {
         AsyncStorage.getItem('id')
@@ -92,16 +93,32 @@ export default function StatisTrain({ navigation }) {
             })
     })*/}
 
-    useEffect(() => {
-        axios.get('http://34.87.28.196/showstatisexer.php')
-            .then(response => {
+    useEffect(()=>{
+        const fetchData = async () => {
+            try{
+                const response = await axios.get('http://34.87.28.196/showstatisexer.php')
                 setStatis(response.data);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
+                setIsLoading(true);
+            } catch {
+                alert('.....Error.......')
+            }
+        }
+        fetchData();
+    },[])
+
+
+
+    useEffect(() => {
+        const fetchData = async () =>{
+            try{
+                const response = await axios.get('http://34.87.28.196/testphp/sumstep.php');
+                setSumsit(response.data);
+            }catch{
+                alert('ERROR');
+            }
+        }
+        fetchData();
+    },[])
 
 
 
@@ -239,7 +256,7 @@ export default function StatisTrain({ navigation }) {
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
-                            {!isLoading ? (
+                            {isLoading ? (
                                 <ScrollView style={{ width: '90%' }} horizontal={true}>
                                     <View style={{ width: '100%', height: 290 }}>
 
@@ -281,9 +298,9 @@ export default function StatisTrain({ navigation }) {
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                 <FlatList
                                     width={'80%'}
-                                    data={statis}
+                                    data={sumsit}
                                     renderItem={({ item }) => (
-                                        <Progress step={item.count} steps={15} height={10} />
+                                        <Progress step={item.result} steps={500} height={10} />
                                     )}
                                 />
 

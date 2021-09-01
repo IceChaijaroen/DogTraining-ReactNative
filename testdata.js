@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
 import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
@@ -15,8 +15,10 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
+import { useFonts } from 'expo-font';
 
 const Progress = ({ step, steps, height }) => {
+
     const [width, setWidth] = useState(0);
     const animatedValue = useRef(new Animated.Value(-1000)).current;
     const reactive = useRef(new Animated.Value(-1000)).current;
@@ -35,6 +37,7 @@ const Progress = ({ step, steps, height }) => {
 
     return (
         <>
+            <Text>{step}</Text>
             <View
                 onLayout={(e) => {
                     const newWidth = e.nativeEvent.layout.width;
@@ -66,274 +69,208 @@ const Progress = ({ step, steps, height }) => {
     )
 }
 
-const data = [
-    {
-        id: 1,
-        sit: 4
-    },
-    {
-        id: 2,
-        sit: 3
-    },
-    {
-        id: 3,
-        sit: 4
-    },
-    {
-        id: 3,
-        sit: 4
-    },
-    {
-        id: 4,
-        sit: 12
-    },
-    {
-        id: 5,
-        sit: 11
+
+export default function testdata({ navigation }) {
+
+    const [record, setRecord] = useState(49);
+    const [step, setStep] = useState(48);
+    const [exerid, setExerid] = useState(1);
+    const [sumseconds, setSumseconds] = useState(10);
+    const [isLoading, seIsLoading] = useState(false);
+    const [tocheck, setTocheck] = useState(false);
+
+
+    const [countdesc, setCountdesc] = useState(30);
+    const [sumsit, setSumsit] = useState([]);
+    const [showdata, setShowdata] = useState([]);
+
+    {/** 
+    const fetchData = () => {
+        const countlimit = 'http://34.87.28.196/testphp/countlimit.php';
+        const sumstep = 'http://34.87.28.196/testphp/sumstep.php';
+
+        const getCountlimit = axios.get(countlimit)
+        const getSumstep = axios.get(sumstep)
+        axios.all([getCountlimit, getSumstep]).then(
+            axios.spread((...allData) => {
+                const AlldataCountlimit = allData[0].data.count
+                const AlldataSumstep = allData[1].data.result
+
+                setCountdesc(AlldataCountlimit)
+                setSumsit(AlldataSumstep)
+            })
+        )
     }
 
-]
+    useEffect(() => {
+        fetchData()
+    }, [])
+*/}
 
 
-
-export default function StatisTrain({ navigation }) {
-    const [sum, SetSum] = useState([]);
-    const [statis, setStatis] = useState([]);
-    const [user, setValue] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    {/**  useEffect(() => {
-        AsyncStorage.getItem('id')
-            .then((value) => {
-                setValue(value);
-            })
-        axios.get('http://34.87.28.196/showsum.php', {
-            params: {
-                id: 1
+    useEffect(() => {
+        const fetchpost = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/testphp/countlimit.php');
+                setCountdesc(response.data);
+            } catch (err) {
+                console.log(err)
             }
-        })
+        }
+        fetchpost();
+    }, [])
+
+
+
+
+
+
+
+    useEffect(() => {
+        axios.get('http://34.87.28.196/testphp/sumstep.php')
             .then(response => {
-                SetSum(response.data);
+                setSumsit(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [])
+
+
+
+    {/**
+
+    useEffect(() => {
+        const fetchpost = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/testphp/checktostep.php',
+                    JSON.stringify({
+                        count: countdesc,
+                        exerid: exerid,
+                        sumseconds: sumseconds
+                    })
+                )
+                console.log(response.data);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchpost();
+    }, [])
+ */}
+
+
+    useEffect(() => {
+        const authenticate = async () => {
+            axios
+                .post(
+                    "http://34.87.28.196/testphp/checktostep.php",
+                    JSON.stringify({
+                        count: countdesc,
+                        exerid: exerid,
+                        sumseconds: sumseconds
+                    })
+                )
+                .then((response) => {
+                    if (response.data == 'notyet') {
+                        alert('Fuck');
+                    } else {
+                        alert(JSON.stringify(response.data));
+                        seIsLoading(true);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        if (countdesc == 10 || countdesc == 20 ||countdesc == 30 ) authenticate();
+    }, []);
+
+
+
+
+
+
+    {/** 
+    useEffect(() => {
+        axios.get('')
+            .then(response => {
+                setCountdesc(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    })
+
+
+
+    const count = countdesc.map(item => (
+        item.count
+    ))
+
+
+    useEffect(() => {
+        axios.get('http://34.87.28.196/testphp/sumstep.php')
+            .then(response => {
+                setSumsit(response.data);
             })
             .catch(err => {
                 console.log(err)
             })
     })
 */}
-    useEffect(() => {
-        axios.get('http://34.87.28.196/showstatisexer.php')
+    {/** 
+     useEffect(() => {
+        axios.get('http://34.87.28.196/testphp/checktostep.php', {
+            params: {
+                count: countdesc,
+                exerid: exerid,
+                sumseconds: sumseconds
+            }
+        })
             .then(response => {
-                setStatis(response.data);
-                setIsLoading(false);
+                setRecord(response.data);
+                setIsLoading(true);
             })
-            .catch(error => setIsLoading(false))
+            .catch(err => {
+                console.log(err)
+            })
     })
+   */}
 
 
 
 
-    const [text, onChangeText] = React.useState("น้องโบ้");
-    const alldata = {
-        labels: statis.map(item => (
-            item.count
-        )),
-        datasets: [
-            {
-                data: statis.map(item => (
-                    item.sit
-                ))
-                ,
-                color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                strokeWidth: 2 // optional
-            }
-        ],
-        legend: ["Dog stastic"] // optional
-    };
-
-    const eachdata = {
-        labels: ["1", "2", "3", "4", "5", "6"],
-        datasets: [
-            {
-                data: [20, 10, 50, 77, 5, 66],
-                color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                strokeWidth: 2 // optional
-            }
-        ],
-        legend: ["Dog stance stastic"] // optional
-    };
-
-    const chartConfig = {
-        backgroundGradientFrom: "#000000",
-        backgroundGradientFromOpacity: 0,
-        backgroundGradientTo: "#FFFFFF",
-        backgroundGradientToOpacity: 0.5,
-        color: (opacity = 1) => `rgba(163, 163, 163, ${opacity})`,
-        strokeWidth: 2, // optional, default 3
-        barPercentage: 0.5,
-        useShadowColorFromDataset: false, // optional
-        propsForDots: {
-            r: "6",
-            strokeWidth: "2",
-            stroke: "#ffa726"
-        }
-    };
 
 
+    let [fontsLoaded] = useFonts({
+        'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
+        'bahnschrift': require('./assets/fonts/bahnschrift.ttf'),
+        'FC_Iconic': require('./assets/fonts/FC_Iconic_Bold.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    } else {
+        return (
+            <>
+                {isLoading ? (
 
-    function getIndex(count) {
-        return statis.findIndex(obj => obj.count === 2);
+                    <View style={{ flex: 1, justifyContent: 'center' }}>
+
+                        {sumsit.map(item => (
+                            <Progress step={item.result} steps={500} height={10} />
+                        ))}
+
+
+                    </View>
+
+
+                ) : (
+                    <Text style={{ fontSize: 100 }}>Loading...</Text>
+                )}
+            </>
+        )
     }
-
-    const screenWidth = Dimensions.get('window').width;
-
-    return (
-
-        <>
-
-            {/** -----------Header------------------ */}
-            <View style={styles.headercontainer}>
-                <View style={styles.header}>
-                    <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
-                        <View style={{ width: '50%' }}>
-                            <TouchableOpacity
-                                style={{ marginLeft: 15 }}
-                                onPress={() => navigation.openDrawer()}
-                            >
-                                <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                    <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ width: '50%', alignItems: 'flex-end' }}>
-                            <TouchableOpacity
-                                style={{ marginRight: 15 }}
-                                onPress={() => navigation.navigate('Noti')}
-                            >
-                                <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                    <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                    <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
-                        <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-                            <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                                <Image
-                                    source={require('./img/dog.png')}
-                                    style={{
-                                        width: '55%',
-                                        height: '55%',
-
-                                    }}
-                                />
-                            </View>
-
-                        </View>
-                        <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-                            <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                                <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
-                                </View>
-                                <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
-                                    <View style={styles.capsule}>
-                                        <View style={styles.incapsule}></View>
-                                    </View>
-                                </View>
-                            </View>
-                            <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                                <View style={{ width: '80%', height: '100%' }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
-                                </View>
-                                <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
-                                    <Feather
-                                        name='triangle'
-                                        size={15}
-                                        color="#FFFFFF"
-                                        style={{
-                                            marginRight: 10,
-                                            transform: [{ rotate: "180deg" }],
-                                        }}
-                                    />
-                                </View>
-                            </View>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            {/** -----------Header------------------ */}
-
-
-
-            <View style={styles.container}>
-                <View style={styles.card}>
-                    <View style={{ height: 70, width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30, backgroundColor: '#555555', borderTopLeftRadius: 40, borderTopRightRadius: 40 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 35, color: 'white' }}>สถิติ</Text>
-                    </View>
-                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: 20, marginBottom: 10 }}>
-                        <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#555555' }}>ท่านั่ง</Text>
-                    </View>
-                    <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
-
-                        {!isLoading ? (
-                            <ScrollView style={{ width: '90%'}} horizontal={true}>
-                                <View style={{ width: '100%',height:290 }}>
-
-                                    <LineChart
-                                    style={{ flex: 1,width:'90%',height:'100%' }}
-                                        data={{
-                                            labels: statis.map(item => (
-                                                item.count
-                                            )),
-                                            datasets: [
-                                                {
-                                                    data: statis.map(item => (
-                                                        item.sit
-                                                    )),
-                                                    color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                                                    strokeWidth: 2 // optional
-                                                }
-                                            ],
-                                            legend: ["Dog stastic"] // optional
-                                        }}
-                                        width={'1000'}
-                                        height={255}
-                                        verticalLabelRotation={10}
-                                        chartConfig={chartConfig}
-                                        bezier
-                                    />
-                                </View>
-                            </ScrollView>
-                            // If there is a delay in data, let's let the user know it's loading
-                        ) : (
-                            <Text>Loading...</Text>
-                        )}
-                    </View>
-                    <View style={{ width: '100%', height: 60 }}>
-                        <View style={{ width: '100%', justifyContent: 'center', height: 30, marginLeft: 20 }}>
-                            <Text style={{ fontWeight: 'bold', color: '#737373' }}>ระดับความสำเร็จ</Text>
-                        </View>
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-
-
-                        </View>
-                    </View>
-                    <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '25%', height: '70%' }}>
-                            <View style={styles.nextbutton}>
-                                <Text style={styles.textinbutton} >ถัดไป</Text>
-                                <FontAwesome5
-                                    name='arrow-right'
-                                    color={'white'}
-                                />
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-            </View>
-
-        </>
-    );
 }
 
 const styles = StyleSheet.create({
@@ -423,8 +360,8 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     textinbutton: {
-        fontWeight: 'bold',
-        fontSize: 18,
+        fontFamily: 'FC_Iconic',
+        fontSize: 22,
         color: 'white',
         marginRight: 10
     }

@@ -3,7 +3,7 @@
 include 'connect.php';
 
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT SUM(seconds) as sum FROM dog.sit WHERE exerid = 1 AND count BETWEEN 0 AND 10;";
+$sql = "SELECT * FROM sit ORDER BY count DESC LIMIT 1";
 
 $result = $conn->query($sql);
 

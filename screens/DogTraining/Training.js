@@ -15,41 +15,44 @@ import { useFonts } from 'expo-font';
 
 
 export default function Training({ navigation, route }) {
-    {/** const { id } = route.params;*/ }
+    {/**  const { id } = route.params;*/ }
     const [gif, setGif] = useState([]);
     const [train, setTrain] = useState([]);
 
     {/**   useEffect(() => {
-        axios.get('http://34.87.28.196/gif.php',
-            {
-                params: {
-                    id: id
-                }
-            })
-            .then(response => {
-                setGif(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/gif.php',
+                    {
+                        params: {
+                            id: id
+                        }
+                    })
+                setGif(response.data)
+            } catch (err) {
+                alert('Error');
+            }
+        }
+        fetchData();
+    }, [])
 
     useEffect(() => {
-        axios.get('http://34.87.28.196/educate.php',
-            {
-                params: {
-                    id: id
-                }
-            })
-            .then(response => {
-                setTrain(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/educate.php',
+                    {
+                        params: {
+                            id: id
+                        }
+                    })
+                setTrain(response.data)
+            } catch {
+                alert('.....Error.....')
+            }
+        }
+        fetchData();
+    }, [])
 */}
-
 
     const [second, setSecound] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
@@ -58,8 +61,11 @@ export default function Training({ navigation, route }) {
     const [submit, setSubmit] = useState("");
     const [lastest, setLastest] = useState([]);
     const [goto, setGoto] = useState();
-    let [minus, setMinus] = useState(1);
+    let [minus, setMinus] = useState(5);
     const [visible, setVisible] = useState();
+    const [insertcheck, setInsertcheck] = useState("");
+    const [exerid, setExerid] = useState(1);
+    const [countdesc, setCountdesc] = useState([]);
 
 
     useEffect(() => {
@@ -75,16 +81,20 @@ export default function Training({ navigation, route }) {
         return () => clearInterval(interval)
     }, [isRunning])
 
+const show = countdesc.map(item => (
+    item.count
+))
+
     useEffect(() => {
         const authenticate = async () => {
-
             axios
                 .post(
                     "http://34.87.28.196/insertstatis2.php",
                     JSON.stringify({
                         second: second,
                         uid: uid,
-                        count: count
+                        count: count,
+                        exerid:exerid
                     })
                 )
                 .then((response) => {
@@ -93,7 +103,7 @@ export default function Training({ navigation, route }) {
                     setMinus(minus => minus - 1);
                     setIsRunning(false);
                     setSubmit(false);
-                    
+
                 })
                 .catch((err) => {
                     console.log(err);
@@ -103,17 +113,145 @@ export default function Training({ navigation, route }) {
 
 
     useEffect(() => {
-        axios.get('http://34.87.28.196/showcountlastest.php')
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/showcountlastest.php')
+                setLastest(response.data)
+            } catch (err) {
+                console.log('...........')
+            }
+        }
+        fetchData();
+    }, [])
+
+
+
+
+
+    {/**----------------------------goto check.php--------------------------------------------------------- */ }
+
+    const [sumseconds, setSumseconds] = useState([]);
+    
+    const [sumsit, setSumsit] = useState([]);
+    const [showdata, setShowdata] = useState([]);
+    
+
+    useEffect(() => {
+        const fetchpost = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/testphp/sumseconds.php');
+                setSumseconds(response.data);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchpost();
+    }, [sumseconds])
+
+    useEffect(() => {
+        const fetchpost = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/testphp/countlimit.php');
+                setCountdesc(response.data);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchpost();
+    }, [countdesc])
+
+    {/** 
+
+    useEffect(() => {
+        axios.get('http://34.87.28.196/testphp/sumstep.php')
             .then(response => {
-                setLastest(response.data);
+                setSumsit(response.data);
             })
             .catch(err => {
                 console.log(err)
             })
+    }, [])
+
+
+    useEffect(() => {
+        const authenticate = async () => {
+            axios
+                .post(
+                    "http://34.87.28.196/testphp/checktostep.php",
+                    JSON.stringify({
+                        count: lastest,
+                        exerid: exerid,
+                        sumseconds: sumseconds
+                    })
+                )
+                .then((response) => {
+                    if (response.data == 'notyet') {
+                        alert('Fuck');
+                    } else {
+                        alert(JSON.stringify(response.data));
+                        seIsLoading(true);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        if (insertcheck) authenticate();
+    }, [insertcheck]);
+*/}
+
+
+
+    useEffect(() => {
+        const authenticate = async () => {
+            axios
+                .post(
+                    "http://34.87.28.196/testphp/checktostep.php",
+                    JSON.stringify({
+                        count: countdesc,
+                        exerid: exerid,
+                        sumseconds: sumseconds
+                    })
+                )
+                .then((response) => {
+                    if (response.data == 'notyet') {
+                        alert('Fuck');
+                    } else {
+                        alert(JSON.stringify(response.data));
+                        seIsLoading(true);
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        if (isRunning)authenticate();
+    }, [isRunning]);
+
+
+
+    useEffect(() => {
+        axios.get('http://34.87.28.196/testphp/exer_record.php')
+            .then(response => {
+                setSumsit(response.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [])
+
+
+
+    function plus() {
+        setMinus(5)
+        navigation.navigate('StatisTrain');
+    }
+    {/**------------------------------------------------------------------------------------- */ }
+
+
+    const change = useEffect(() => {
+        setVisible(true);
     })
-
-
-
 
 
     const renderItem = ({ item }) => {
@@ -149,17 +287,6 @@ export default function Training({ navigation, route }) {
         )
     }
 
-
-    function plus() {
-        setMinus(1)
-        navigation.navigate('StatisTrain');
-    }
-
-    const change = useEffect(() => {
-        setVisible(true);
-    })
-
-
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
         'bahnschrift': require('../../assets/fonts/bahnschrift.ttf'),
@@ -168,7 +295,7 @@ export default function Training({ navigation, route }) {
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
-        if (minus == 0) {
+        if (minus == 6) {
             { change }
             return (
                 <>
@@ -211,7 +338,7 @@ export default function Training({ navigation, route }) {
                             <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน</Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                            {/**    <FlatList
+                            {/**  <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
                                     <Image
@@ -223,14 +350,16 @@ export default function Training({ navigation, route }) {
                                     />
                                 )}
                                 keyExtractor={(item) => item.idtrain}
-                            />*/}
+                            />
+                            */}
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            <FlatList
+                            {/**   <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
+                             */}
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setSubmit(true)} >
@@ -240,8 +369,9 @@ export default function Training({ navigation, route }) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+
                             <FlatList
-                                data={lastest}
+                                data={countdesc}
                                 renderItem={({ item }) => (
                                     <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
                                 )}
@@ -257,7 +387,8 @@ export default function Training({ navigation, route }) {
                             <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน</Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                            {/**   <FlatList
+
+                            {/** <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
                                     <Image
@@ -269,14 +400,16 @@ export default function Training({ navigation, route }) {
                                     />
                                 )}
                                 keyExtractor={(item) => item.idtrain}
-                            />*/}
+                            />
+                            */}
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            <FlatList
+                            {/**  <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
+                            */}
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setIsRunning(true)} >
@@ -287,10 +420,11 @@ export default function Training({ navigation, route }) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text> {count}</Text>
                             <FlatList
-                                data={lastest}
+                                data={countdesc}
                                 renderItem={({ item }) => (
-                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่  {item.count}</Text>
+                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
                                 )}
                             />
                         </View>

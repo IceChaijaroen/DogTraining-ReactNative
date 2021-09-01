@@ -2,6 +2,7 @@
     require_once "connect.php";
 
     $json = json_decode(file_get_contents('php://input'), true);
+    
 
     $email = $json['email'];
     $password = $json['password'];

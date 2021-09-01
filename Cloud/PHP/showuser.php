@@ -1,9 +1,10 @@
-
 <?php
 include 'connect.php';
 
+$iduser = $_GET["id"];
+
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT SUM(seconds) as sum FROM dog.sit WHERE exerid = 1 AND count BETWEEN 0 AND 10;";
+$sql = "SELECT * FROM user WHERE iduser = '".$iduser."'";
 
 $result = $conn->query($sql);
 

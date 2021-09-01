@@ -1,9 +1,12 @@
-
 <?php
 include 'connect.php';
 
+$id = $_GET["id"];
+
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT SUM(seconds) as sum FROM dog.sit WHERE exerid = 1 AND count BETWEEN 0 AND 10;";
+$sql = "SELECT dogtrain.* ,traindescrip.* 
+FROM dogtrain
+INNER JOIN traindescrip ON dogtrain.idtrain = traindescrip.iddes WHERE idtrain = '".$id."';";
 
 $result = $conn->query($sql);
 
