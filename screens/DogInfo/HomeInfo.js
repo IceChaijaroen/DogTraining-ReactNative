@@ -23,19 +23,21 @@ export default function HomeInfo({ route, navigation }) {
 
 
   useEffect(() => {
-    axios.get('http://34.87.28.196/showsingle.php', {
-      params: {
-        id: dogid
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://34.87.28.196/showsingle.php',
+          {
+            params: {
+              id: dogid
+            }
+          })
+          setInfo(response.data)
+      } catch (err) {
+        alert(err)
       }
     }
-    )
-      .then(response => {
-        setInfo(response.data);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
+    fetchData();
+  },[info])
 
 
 
@@ -47,13 +49,6 @@ export default function HomeInfo({ route, navigation }) {
     images + item
   ))
 
-  const renderItem = () => {
-    return (
-      <View style={{ marginTop: -87, height: '100%', zIndex: -99, backgroundColor: 'grey', justifyContent: 'center' }}>
-        <SliderBox sliderBoxHeight={400} images={showpath} />
-      </View>
-    )
-  }
 
 
 
@@ -72,7 +67,7 @@ export default function HomeInfo({ route, navigation }) {
       <>
         {/** -----------Header------------------ */}
         <View style={{ width: '100%', height: '35%' }}>
-          <TouchableOpacity style={{ width: '10%', height: '20%', marginTop: 30,position:'absolute',zIndex:1 }} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={{ width: '10%', height: '20%', marginTop: 30, position: 'absolute', zIndex: 1 }} onPress={() => navigation.goBack()}>
             <Icon
               style={{ marginLeft: 10 }}
               name="arrow-left"
@@ -81,7 +76,7 @@ export default function HomeInfo({ route, navigation }) {
 
             />
           </TouchableOpacity>
-          <View style={{ height: '100%', backgroundColor: 'grey', justifyContent: 'center',alignItems:'center',zIndex:-99 }}>
+          <View style={{ height: '100%', backgroundColor: 'grey', justifyContent: 'center', alignItems: 'center', zIndex: -99 }}>
             <SliderBox sliderBoxHeight={400} images={showpath} />
           </View>
           <TouchableOpacity

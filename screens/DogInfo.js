@@ -20,15 +20,17 @@ export default function Doginfo({ navigation, route }) {
   useEffect(() => {
     // Post updated, do something with `route.params.post`
     // For example, send the post to the server 
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://34.87.28.196/showdoginfo.php')
+        setInfo(response.data)
+      } catch (err) {
+        alert(err)
+      }
+    }
+    fetchData();
+  }, [info])
 
-    axios.get('http://34.87.28.196/showdoginfo.php')
-      .then(response => {
-        setInfo(response.data);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
 
   let formatData = (info, numColumns) => {
     const totalRows = Math.floor(info.length / numColumns)
@@ -51,13 +53,13 @@ export default function Doginfo({ navigation, route }) {
         })}>
           <View style={styles.card}>
             <ImageBackground
-              source={{ uri: item.habit+path }}
+              source={{ uri: item.habit + path }}
               style={{ width: '100%', height: '100%' }}
               imageStyle={{ borderRadius: 10 }}
             >
               <View style={styles.cardcontent}>
                 <View style={{ width: '80%', height: '20%', backgroundColor: '#4E4E4E', marginBottom: 10, borderBottomRightRadius: 10, borderTopRightRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
-                  <Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic', width: '90%',marginLeft:10 }}>
+                  <Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic', width: '90%', marginLeft: 10 }}>
                     {item.dogname}
                   </Text>
                 </View>

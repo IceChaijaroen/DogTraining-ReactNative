@@ -62,6 +62,30 @@ export default function Training({ navigation, route }) {
     const [visible, setVisible] = useState();
     const [exerid, setExerid] = useState(1);
     const [countdesc, setCountdesc] = useState([]);
+    const [minute, setMinute] = useState(1);
+    const [perseconds, setPersecound] = useState(59);
+    const [timestop, setTimestop] = useState(true);
+
+
+    useEffect(() => {
+        if (perseconds < 0) {
+            setMinute(minute => minute - 1)
+            setPersecound(59);
+        }
+    }, [perseconds])
+
+
+    useEffect(() => {
+        let interval = null;
+        if (timestop) {
+            interval = setInterval(() => {
+                setPersecound(perseconds => perseconds - 1)
+            }, 1000);
+        } else {
+            clearInterval(interval)
+        }
+        return () => clearInterval(interval)
+    }, [timestop])
 
 
     useEffect(() => {
@@ -87,7 +111,7 @@ export default function Training({ navigation, route }) {
                         second: second,
                         uid: uid,
                         count: count,
-                        exerid:exerid
+                        exerid: exerid
                     })
                 )
                 .then((response) => {
@@ -143,7 +167,7 @@ export default function Training({ navigation, route }) {
                     console.log(err);
                 });
         };
-        if (isRunning)authenticate();
+        if (isRunning) authenticate();
     }, [isRunning]);
 
 
@@ -156,6 +180,9 @@ export default function Training({ navigation, route }) {
 
     const change = useEffect(() => {
         setVisible(true);
+        if (minute == 0) {
+            setTimestop(false);
+        }
     })
 
 
@@ -200,7 +227,7 @@ export default function Training({ navigation, route }) {
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
-        if (minus == 0) {
+        if (minute == 0) {
             { change }
             return (
                 <>
@@ -240,7 +267,12 @@ export default function Training({ navigation, route }) {
                 return (
                     <View style={styles.container}>
                         <View style={{ width: '100%', marginTop: '5%', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน</Text>
+                            {perseconds != -1 ?
+                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:{perseconds} </Text>)
+                                :
+                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:5 </Text>)}
+
+                            <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
                             <FlatList
@@ -256,7 +288,7 @@ export default function Training({ navigation, route }) {
                                 )}
                                 keyExtractor={(item) => item.idtrain}
                             />
-                            
+
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
                             <FlatList
@@ -264,7 +296,7 @@ export default function Training({ navigation, route }) {
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
-                            
+
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setSubmit(true)} >
@@ -289,7 +321,12 @@ export default function Training({ navigation, route }) {
                 return (
                     <View style={styles.container}>
                         <View style={{ width: '100%', marginTop: '5%', alignItems: 'center' }}>
-                            <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน</Text>
+                            {perseconds != -1 ?
+                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:{perseconds} </Text>)
+                                :
+                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:5 </Text>)
+                            }
+                            <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
 
@@ -306,20 +343,20 @@ export default function Training({ navigation, route }) {
                                 )}
                                 keyExtractor={(item) => item.idtrain}
                             />
-                            
+
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                           <FlatList
+                            <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
-                           
+
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setIsRunning(true)} >
                                 <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                                    <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>{minus} กดปุ่ม</Text>
+                                    <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
                                     <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
                                 </View>
                             </TouchableOpacity>

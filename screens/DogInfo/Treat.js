@@ -12,17 +12,21 @@ export default function Treat() {
 
 
   useEffect(() => {
-    axios.get('http://34.87.28.196/showsingle.php', {
-      params: {
-        id: 2
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://34.87.28.196/showsingle.php',
+          {
+            params: {
+              id: dogid
+            }
+          })
+          setInfo(response.data)
+      } catch (err) {
+        alert(err)
       }
     }
-    )
-      .then(response => {
-        setInfo(response.data);
-
-      });
-  })
+    fetchData();
+  },[info])
   
   return (
     <>

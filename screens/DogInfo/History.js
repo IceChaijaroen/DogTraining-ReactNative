@@ -16,17 +16,21 @@ const [info, setInfo] = useState([]);
 
 
 useEffect(() => {
- 
-    axios.get('http://34.87.28.196/showsingle.php', {
-        params: {
+  const fetchData = async () => {
+    try {
+      const response = await axios.get('http://34.87.28.196/showsingle.php',
+        {
+          params: {
             id: dogid
-        }
-      }
-    )
-      .then(response => {
-          setInfo(response.data);
-      });
-})
+          }
+        })
+        setInfo(response.data)
+    } catch (err) {
+      alert(err)
+    }
+  }
+  fetchData();
+},[info])
 
 
 

@@ -8,39 +8,68 @@ import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import Progress from '../component/Progress';
 
 
 export default function Dogtraining({ navigation }, disabled) {
   const [train, setTrain] = useState([]);
+  const [success, setSuccess] = useState([]);
 
   useEffect(() => {
-    axios.get('http://34.87.28.196/showdogtrain.php')
-      .then(response => {
-        setTrain(response.data);
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  })
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://34.87.28.196/testphp/sumstep.php')
+        setSuccess(response.data)
+      } catch (err) {
+        alert(err)
+      }
+    }
+    fetchData();
+  }, [success])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://34.87.28.196/showdogtrain.php')
+        setTrain(response.data)
+      } catch (err) {
+        alert(err)
+      }
+    }
+    fetchData();
+  }, [train])
+
 
 
   const level0 = ({ item, index }) => {
     if (item.trainlevel == '0') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', {id: item.idtrain})} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Image
-                  source={{ uri: item.trainimg }}
-                  style={{
-                    width: '65%',
-                    height: '65%',
-                  }}
-                />
+              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+                  <Image
+                    source={{ uri: item.trainimg }}
+                    style={{
+                      width: '65%',
+                      height: '65%',
+                    }}
+                  />
+                </View>
+                <View style={styles.subtextcontainer}>
+                  <Text style={styles.subtext}> {item.trainname}</Text>
+                </View>
               </View>
-              <View style={styles.subtextcontainer}>
-                <Text style={styles.subtext}> {item.trainname}</Text>
+              <View style={{ width: '90%', height: 5 }}>
+                <FlatList
+                  width={'100%'}
+                  data={success}
+                  renderItem={({ item }) => (
+                    <Progress step={item.result} steps={500} height={5} />
+                  )}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -58,19 +87,30 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '1') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', {id: item.idtrain})} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Image
-                  source={{ uri: item.trainimg }}
-                  style={{
-                    width: '65%',
-                    height: '65%',
-                  }}
-                />
+              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+                  <Image
+                    source={{ uri: item.trainimg }}
+                    style={{
+                      width: '65%',
+                      height: '65%',
+                    }}
+                  />
+                </View>
+                <View style={styles.subtextcontainer}>
+                  <Text style={styles.subtext}> {item.trainname}</Text>
+                </View>
               </View>
-              <View style={styles.subtextcontainer}>
-                <Text style={styles.subtext}> {item.trainname}</Text>
+              <View style={{ width: '90%', height: 5 }}>
+                <FlatList
+                  width={'100%'}
+                  data={success}
+                  renderItem={({ item }) => (
+                    <Progress step={item.result} steps={500} height={5} />
+                  )}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -87,19 +127,30 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '2') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', {id: item.idtrain})} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Image
-                  source={{ uri: item.trainimg }}
-                  style={{
-                    width: '65%',
-                    height: '65%',
-                  }}
-                />
+              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+                  <Image
+                    source={{ uri: item.trainimg }}
+                    style={{
+                      width: '65%',
+                      height: '65%',
+                    }}
+                  />
+                </View>
+                <View style={styles.subtextcontainer}>
+                  <Text style={styles.subtext}> {item.trainname}</Text>
+                </View>
               </View>
-              <View style={styles.subtextcontainer}>
-                <Text style={styles.subtext}> {item.trainname}</Text>
+              <View style={{ width: '90%', height: 5 }}>
+                <FlatList
+                  width={'100%'}
+                  data={success}
+                  renderItem={({ item }) => (
+                    <Progress step={item.result} steps={500} height={5} />
+                  )}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -117,19 +168,30 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '3') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', {id: item.idtrain})} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
-                <Image
-                  source={{ uri: item.trainimg }}
-                  style={{
-                    width: '65%',
-                    height: '65%',
-                  }}
-                />
+              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+                  <Image
+                    source={{ uri: item.trainimg }}
+                    style={{
+                      width: '65%',
+                      height: '65%',
+                    }}
+                  />
+                </View>
+                <View style={styles.subtextcontainer}>
+                  <Text style={styles.subtext}> {item.trainname}</Text>
+                </View>
               </View>
-              <View style={styles.subtextcontainer}>
-                <Text style={styles.subtext}> {item.trainname}</Text>
+              <View style={{ width: '90%', height: 5 }}>
+                <FlatList
+                  width={'100%'}
+                  data={success}
+                  renderItem={({ item }) => (
+                    <Progress step={item.result} steps={500} height={5} />
+                  )}
+                />
               </View>
             </View>
           </TouchableOpacity>
@@ -152,155 +214,155 @@ export default function Dogtraining({ navigation }, disabled) {
   if (!fontsLoaded) {
     return <AppLoading />;
   } else {
-  return (
-    <>
-      {/** -----------Header------------------ */}
-      <View style={styles.headercontainer}>
-        <View style={styles.header}>
-          <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
-            <View style={{ width: '50%' }}>
-              <TouchableOpacity
-                style={{ marginLeft: 15 }}
-                onPress={() => navigation.openDrawer()}
-              >
-                <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                  <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
-                </View>
-              </TouchableOpacity>
-            </View>
-            <View style={{ width: '50%', alignItems: 'flex-end' }}>
-              <TouchableOpacity
-                style={{ marginRight: 15 }}
-                onPress={() => navigation.navigate('Noti')}
-              >
-                <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                  <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
-                </View>
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
-            <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-              <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                <Image
-                  source={require('../img/dog.png')}
-                  style={{
-                    width: '55%',
-                    height: '55%',
-
-                  }}
-                />
-              </View>
-
-            </View>
-            <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-              <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
-                  <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
-                </View>
-                <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
-                  <View style={styles.capsule}>
-                    <View style={styles.incapsule}></View>
+    return (
+      <>
+        {/** -----------Header------------------ */}
+        <View style={styles.headercontainer}>
+          <View style={styles.header}>
+            <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
+              <View style={{ width: '50%' }}>
+                <TouchableOpacity
+                  style={{ marginLeft: 15 }}
+                  onPress={() => navigation.openDrawer()}
+                >
+                  <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                    <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
                   </View>
-                </View>
+                </TouchableOpacity>
               </View>
-              <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                <View style={{ width: '80%', height: '100%' }}>
-                  <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
-                </View>
-                <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
-                  <Feather
-                    name='triangle'
-                    size={15}
-                    color="#FFFFFF"
+              <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                <TouchableOpacity
+                  style={{ marginRight: 15 }}
+                  onPress={() => navigation.navigate('Noti')}
+                >
+                  <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                    <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
+              <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
+                  <Image
+                    source={require('../img/dog.png')}
                     style={{
-                      marginRight: 10,
-                      transform: [{ rotate: "180deg" }],
+                      width: '55%',
+                      height: '55%',
+
                     }}
                   />
                 </View>
+
+              </View>
+              <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
+                <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
+                  <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
+                  </View>
+                  <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
+                    <View style={styles.capsule}>
+                      <View style={styles.incapsule}></View>
+                    </View>
+                  </View>
+                </View>
+                <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
+                  <View style={{ width: '80%', height: '100%' }}>
+                    <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
+                  </View>
+                  <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
+                    <Feather
+                      name='triangle'
+                      size={15}
+                      color="#FFFFFF"
+                      style={{
+                        marginRight: 10,
+                        transform: [{ rotate: "180deg" }],
+                      }}
+                    />
+                  </View>
+                </View>
               </View>
             </View>
           </View>
         </View>
-      </View>
-      {/** -----------Header------------------ */}
+        {/** -----------Header------------------ */}
 
 
-      <ScrollView >
-        <View style={styles.container}>
-          <View style={styles.card}>
-            <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-              <Text style={styles.headertext}> Level 0 :  ปรับพฤติกรรม </Text>
+        <ScrollView >
+          <View style={styles.container}>
+            <View style={styles.card}>
+              <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                <Text style={styles.headertext}> Level 0 :  ปรับพฤติกรรม </Text>
+              </View>
+              <FlatList
+                data={train}
+                renderItem={level0}
+                keyExtractor={(item, index) => index.toString()}
+              />
+
+
+              {/**------------------------------------------------------------------------------------------- */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+              </View>
+              {/**------------------------------------------------------------------------------------------- */}
+
+
+              <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                <Text style={styles.headertext}> Level 1 :  ท่าพื้นฐาน </Text>
+              </View>
+              <FlatList
+                data={train}
+                renderItem={level1}
+                keyExtractor={(item, index) => index.toString()}
+              />
+
+
+              {/**------------------------------------------------------------------------------------------- */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+              </View>
+              {/**------------------------------------------------------------------------------------------- */}
+
+
+              <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                <Text style={styles.headertext}> Level 2 :  ท่ายาก </Text>
+              </View>
+              <FlatList
+                data={train}
+                renderItem={level2}
+                keyExtractor={(item, index) => index.toString()}
+              />
+
+
+              {/**------------------------------------------------------------------------------------------- */}
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+              </View>
+              {/**------------------------------------------------------------------------------------------- */}
+
+
+              <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                <Text style={styles.headertext}> Level 3 :  ท่าพิเศษ </Text>
+              </View>
+              <FlatList
+                data={train}
+                renderItem={level3}
+                keyExtractor={(item, index) => index.toString()}
+              />
+
+
             </View>
-            <FlatList
-              data={train}
-              renderItem={level0}
-              keyExtractor={(item, index) => index.toString()}
-            />
-
-
-            {/**------------------------------------------------------------------------------------------- */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-              <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-            </View>
-            {/**------------------------------------------------------------------------------------------- */}
-
-
-            <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-              <Text style={styles.headertext}> Level 1 :  ท่าพื้นฐาน </Text>
-            </View>
-            <FlatList
-              data={train}
-              renderItem={level1}
-              keyExtractor={(item, index) => index.toString()}
-            />
-
-
-            {/**------------------------------------------------------------------------------------------- */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-              <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-            </View>
-            {/**------------------------------------------------------------------------------------------- */}
-
-
-            <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-              <Text style={styles.headertext}> Level 2 :  ท่ายาก </Text>
-            </View>
-            <FlatList
-              data={train}
-              renderItem={level2}
-              keyExtractor={(item, index) => index.toString()}
-            />
-
-
-            {/**------------------------------------------------------------------------------------------- */}
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-              <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-            </View>
-            {/**------------------------------------------------------------------------------------------- */}
-
-
-            <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-              <Text style={styles.headertext}> Level 3 :  ท่าพิเศษ </Text>
-            </View>
-            <FlatList
-              data={train}
-              renderItem={level3}
-              keyExtractor={(item, index) => index.toString()}
-            />
-
-
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
 
-    </>
-  );
-}
+      </>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -326,7 +388,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headertext: {
-    fontFamily:'FC_Iconic',
+    fontFamily: 'FC_Iconic',
     fontSize: 25,
     color: '#676767'
   },
@@ -362,7 +424,6 @@ const styles = StyleSheet.create({
   minicard: {
     width: '90%',
     height: '99%',
-    flexDirection: 'row',
     backgroundColor: '#FFFFFF',
     borderRadius: 25,
     elevation: 10,
@@ -375,7 +436,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   subtext: {
-    fontFamily:'FC_Iconic',
+    fontFamily: 'FC_Iconic',
     fontSize: 23,
     color: '#676767'
   }

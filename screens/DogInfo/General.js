@@ -13,16 +13,21 @@ export default function General() {
   const dogid = React.useContext(NetworkContext);
 
   useEffect(() => {
-    axios.get('http://34.87.28.196/showsingle.php', {
-      params: {
-        id: dogid
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://34.87.28.196/showsingle.php',
+          {
+            params: {
+              id: dogid
+            }
+          })
+        setInfo(response.data)
+      } catch (err) {
+        alert(err)
       }
     }
-    )
-      .then(response => {
-        setInfo(response.data);
-      });
-  })
+    fetchData();
+  }, [info])
 
   return (
     <>
@@ -37,12 +42,12 @@ export default function General() {
                 />
               </View>
               <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-              {info.map((item,index) => {
-                <Text key={index} style={styles.headfont}>
+                {info.map((item, index) => {
+                  <Text key={index} style={styles.headfont}>
                     {item.dogname}
-                </Text>
-              })}
-                
+                  </Text>
+                })}
+
 
 
               </View>
