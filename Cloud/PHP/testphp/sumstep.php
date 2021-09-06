@@ -1,8 +1,10 @@
 <?php
 include 'connect.php';
 
+$idtrain=$_GET["idtrain"];
+
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT *, SUM(step) result FROM exer_record;";
+$sql = "SELECT SUM(step) result FROM successexer WHERE idtrain = '$idtrain' ;";
 
 $result = $conn->query($sql);
 

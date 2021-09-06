@@ -7,16 +7,19 @@
     $second=$DecodedData['second'];
     $uid=$DecodedData['uid'];
     $count=$DecodedData['count'];
+    $idtrain=$DecodedData['idtrain'];
 
-    $search = mysqli_query($conn,"SELECT * FROM sit WHERE count = '$count'");
+    $show = json_encode($count);
+
+    $search = mysqli_query($conn,"SELECT * FROM recordexer WHERE count = '$count'");
     $objResult = mysqli_fetch_array($search);
     if($objResult){
-            $query1 = "INSERT INTO sit (seconds,uid,count) SELECT $second , $uid , MAX( count ) + 1 FROM sit;";
+            $query1 = "INSERT INTO recordexer (seconds,uid,count,idtrain) SELECT $second , $uid , MAX( count ) + 1 , $idtrain FROM recordexer where idtrain = '$idtrain';";
             $query_output = mysqli_query($conn, $query1);
             $message = '+1';
             echo json_encode($message);     
     } else {
-        $query1 = "INSERT INTO sit (seconds,uid,count) VALUES ('$second','$uid','$count');";
+        $query1 = "INSERT INTO recordexer (seconds,uid,count,idtrain) VALUES ('$second','$uid','$count','$idtrain');";
         $query_output = mysqli_query($conn, $query1);
         echo json_encode('Success');
     } 

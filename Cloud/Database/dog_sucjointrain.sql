@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.25, for Win64 (x86_64)
 --
--- Host: 34.87.79.237    Database: test
+-- Host: 34.87.79.237    Database: dog
 -- ------------------------------------------------------
 -- Server version	5.7.34-google-log
 
@@ -15,39 +15,40 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-
+SET @@SESSION.SQL_LOG_BIN= 0;
 
 --
 -- GTID state at the beginning of the backup 
 --
 
-
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549928';
 
 --
--- Table structure for table `test`
+-- Table structure for table `sucjointrain`
 --
 
-DROP TABLE IF EXISTS `test`;
+DROP TABLE IF EXISTS `sucjointrain`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `test` (
-  `idtest` int(11) NOT NULL AUTO_INCREMENT,
-  `testcol` varchar(45) DEFAULT NULL,
-  `testcol1` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`idtest`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+CREATE TABLE `sucjointrain` (
+  `idjoin` int(11) NOT NULL AUTO_INCREMENT,
+  `sumstep` int(11) DEFAULT NULL,
+  `uid` int(11) DEFAULT NULL,
+  `idexer` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idjoin`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `test`
+-- Dumping data for table `sucjointrain`
 --
 
-LOCK TABLES `test` WRITE;
-/*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` VALUES (1,'11','111'),(2,'22','22');
-/*!40000 ALTER TABLE `test` ENABLE KEYS */;
+LOCK TABLES `sucjointrain` WRITE;
+/*!40000 ALTER TABLE `sucjointrain` DISABLE KEYS */;
+INSERT INTO `sucjointrain` VALUES (1,410,1,1),(2,110,1,2),(10,120,1,3);
+/*!40000 ALTER TABLE `sucjointrain` ENABLE KEYS */;
 UNLOCK TABLES;
-
+SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -58,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-30 16:43:31
+-- Dump completed on 2021-09-06 17:47:25

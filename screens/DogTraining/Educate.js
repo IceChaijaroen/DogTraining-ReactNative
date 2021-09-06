@@ -39,7 +39,7 @@ export default function Educate({ navigation, route }) {
   }
 
 
-  const { id } = route.params;
+  const { idtrain } = route.params;
   const [gif, setGif] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -47,7 +47,7 @@ export default function Educate({ navigation, route }) {
         const response = await axios.get('http://34.87.28.196/gif.php',
         {
           params: {
-            id: id
+            idtrain: idtrain
           }
         })
         setGif(response.data);
@@ -223,7 +223,7 @@ export default function Educate({ navigation, route }) {
               </View>
             </View>
             <View style={{ width: '100%', height: '8%', justifyContent: 'center', alignItems: 'center' }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Training', { id: id })} style={{ width: '30%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#F37575', borderRadius: 20 }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Training', { idtrain: idtrain })} style={{ width: '30%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#F37575', borderRadius: 20 }}>
                 <Text style={{ fontFamily: 'FC_Iconic', fontSize: 20, color: 'white' }}>เริ่มฝึกฝน</Text>
               </TouchableOpacity>
             </View>

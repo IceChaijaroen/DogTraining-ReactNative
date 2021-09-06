@@ -2,8 +2,10 @@
 <?php
 include 'connect.php';
 
+$idtrain = $_GET["idtrain"];
+
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT count FROM sit ORDER BY count DESC LIMIT 1";
+$sql = "SELECT count FROM recordexer where idtrain = '$idtrain' ORDER BY count DESC LIMIT 1";
 
 $result = $conn->query($sql);
 

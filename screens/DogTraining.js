@@ -13,20 +13,6 @@ import Progress from '../component/Progress';
 
 export default function Dogtraining({ navigation }, disabled) {
   const [train, setTrain] = useState([]);
-  const [success, setSuccess] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://34.87.28.196/testphp/sumstep.php')
-        setSuccess(response.data)
-      } catch (err) {
-        alert(err)
-      }
-    }
-    fetchData();
-  }, [success])
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +32,7 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '0') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
               <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
                 <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -63,13 +49,7 @@ export default function Dogtraining({ navigation }, disabled) {
                 </View>
               </View>
               <View style={{ width: '90%', height: 5 }}>
-                <FlatList
-                  width={'100%'}
-                  data={success}
-                  renderItem={({ item }) => (
-                    <Progress step={item.result} steps={500} height={5} />
-                  )}
-                />
+                    <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
           </TouchableOpacity>
@@ -87,7 +67,7 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '1') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
               <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
                 <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -104,13 +84,7 @@ export default function Dogtraining({ navigation }, disabled) {
                 </View>
               </View>
               <View style={{ width: '90%', height: 5 }}>
-                <FlatList
-                  width={'100%'}
-                  data={success}
-                  renderItem={({ item }) => (
-                    <Progress step={item.result} steps={500} height={5} />
-                  )}
-                />
+              <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
           </TouchableOpacity>
@@ -127,7 +101,7 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '2') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
               <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
                 <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -144,13 +118,7 @@ export default function Dogtraining({ navigation }, disabled) {
                 </View>
               </View>
               <View style={{ width: '90%', height: 5 }}>
-                <FlatList
-                  width={'100%'}
-                  data={success}
-                  renderItem={({ item }) => (
-                    <Progress step={item.result} steps={500} height={5} />
-                  )}
-                />
+              <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
           </TouchableOpacity>
@@ -168,7 +136,7 @@ export default function Dogtraining({ navigation }, disabled) {
     if (item.trainlevel == '3') {
       return (
         <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { id: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
               <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
                 <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
@@ -185,13 +153,7 @@ export default function Dogtraining({ navigation }, disabled) {
                 </View>
               </View>
               <View style={{ width: '90%', height: 5 }}>
-                <FlatList
-                  width={'100%'}
-                  data={success}
-                  renderItem={({ item }) => (
-                    <Progress step={item.result} steps={500} height={5} />
-                  )}
-                />
+              <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
           </TouchableOpacity>

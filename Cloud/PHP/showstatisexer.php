@@ -1,8 +1,10 @@
 <?php
 include 'connect.php';
 
+$idtrain = $_GET["idtrain"];
+
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT * FROM sit";
+$sql = "SELECT * FROM recordexer WHERE idtrain= '$idtrain'";
 
 $result = $conn->query($sql);
 

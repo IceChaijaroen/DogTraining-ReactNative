@@ -8,13 +8,13 @@ import axios from 'axios';
 
 
 export default function Recommend({ navigation, route }) {
-  const { id } = route.params;
+  const { idtrain } = route.params;
 
   useEffect(() => {
     axios.get('http://34.87.28.196/showsingledogtrain.php',
       {
         params: {
-          id: id
+          id: idtrain
         }
       })
       .then(response => {
@@ -119,7 +119,7 @@ export default function Recommend({ navigation, route }) {
               <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#4D4D4D' }}>จำเป็นต้องมีปลอกคอและเชือกจูง</Text>
             </View>
             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-              <TouchableOpacity onPress={() => navigation.navigate('Educate', { id: id })} style={{ width: '40%', height: 50, alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: idtrain })} style={{ width: '40%', height: 50, alignItems: 'center' }}>
                 <View style={{ width: '80%', height: '100%', backgroundColor: '#515151', borderRadius: 30, elevation: 5, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                   <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18, marginRight: 10 }}>เข้าใจ</Text>
                   <FontAwesome5

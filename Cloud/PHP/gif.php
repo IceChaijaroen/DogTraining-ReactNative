@@ -1,10 +1,10 @@
 <?php
 include 'connect.php';
 
-$id = $_GET["id"];
+$idtrain = $_GET["idtrain"];
 
 // Creating SQL command to fetch all records from Table.
-$sql = "SELECT * FROM traingif WHERE gifid = '".$id."'";
+$sql = "SELECT * FROM traingif WHERE gifid = '".$idtrain."'";
 
 $result = $conn->query($sql);
 

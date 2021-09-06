@@ -21,33 +21,32 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-493917';
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549928';
 
 --
--- Table structure for table `sit`
+-- Table structure for table `successexer`
 --
 
-DROP TABLE IF EXISTS `sit`;
+DROP TABLE IF EXISTS `successexer`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `sit` (
-  `idsit` int(11) NOT NULL AUTO_INCREMENT,
-  `seconds` float DEFAULT NULL,
-  `count` int(11) DEFAULT NULL,
-  `uid` int(11) DEFAULT NULL,
-  `exerid` int(11) DEFAULT NULL,
-  PRIMARY KEY (`idsit`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
+CREATE TABLE `successexer` (
+  `idsuccess` int(11) NOT NULL AUTO_INCREMENT,
+  `sumexer` int(11) DEFAULT NULL,
+  `step` int(11) DEFAULT NULL,
+  `idtrain` int(11) DEFAULT NULL,
+  PRIMARY KEY (`idsuccess`)
+) ENGINE=InnoDB AUTO_INCREMENT=1159 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `sit`
+-- Dumping data for table `successexer`
 --
 
-LOCK TABLES `sit` WRITE;
-/*!40000 ALTER TABLE `sit` DISABLE KEYS */;
-INSERT INTO `sit` VALUES (1,5,1,1,1),(2,4,2,1,1),(3,5,3,1,1),(4,4,4,1,1),(5,3,5,1,1),(6,4,6,1,1),(7,10,7,1,1),(8,4,8,1,1),(9,5,9,1,1),(10,11,10,1,1),(11,1,11,NULL,1),(12,1,12,NULL,1),(13,1,13,NULL,1),(14,1,14,NULL,1),(15,1,15,NULL,1),(16,1,16,NULL,1),(17,1,17,NULL,1),(18,1,18,NULL,1),(19,1,19,NULL,1),(20,1,20,NULL,1),(21,1,21,NULL,1),(22,1,22,NULL,1),(23,1,23,NULL,1),(24,1,24,NULL,1),(25,1,25,NULL,1),(26,1,26,NULL,1),(27,1,27,NULL,1),(49,21,28,1,NULL),(66,0,29,1,NULL),(68,NULL,30,NULL,NULL);
-/*!40000 ALTER TABLE `sit` ENABLE KEYS */;
+LOCK TABLES `successexer` WRITE;
+/*!40000 ALTER TABLE `successexer` DISABLE KEYS */;
+INSERT INTO `successexer` VALUES (1,33,30,1),(2,46,30,1),(3,65,20,1),(4,36,30,1),(5,12,30,1),(6,23,NULL,1),(7,27,30,1),(8,12,30,1),(9,12,30,1),(10,19,30,1),(11,27,30,1),(12,87,20,2),(1146,55,20,2),(1147,17,30,1),(1148,17,30,1),(1149,17,30,1),(1150,55,20,2),(1151,55,20,2),(1152,11,30,1),(1153,11,30,2),(1155,33,30,3),(1156,31,30,3),(1157,31,30,3),(1158,30,30,3);
+/*!40000 ALTER TABLE `successexer` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -60,4 +59,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-08-30 16:33:53
+-- Dump completed on 2021-09-06 17:47:24

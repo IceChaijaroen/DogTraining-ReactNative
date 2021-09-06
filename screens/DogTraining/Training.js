@@ -15,7 +15,7 @@ import { useFonts } from 'expo-font';
 
 
 export default function Training({ navigation, route }) {
-    const { id } = route.params;
+    const { idtrain } = route.params;
     const [gif, setGif] = useState([]);
     const [train, setTrain] = useState([]);
 
@@ -25,12 +25,12 @@ export default function Training({ navigation, route }) {
                 const response = await axios.get('http://34.87.28.196/gif.php',
                     {
                         params: {
-                            id: id
+                            idtrain: idtrain
                         }
                     })
                 setGif(response.data)
             } catch (err) {
-                alert('Error');
+                alert('gif.php//Error');
             }
         }
         fetchData();
@@ -42,12 +42,12 @@ export default function Training({ navigation, route }) {
                 const response = await axios.get('http://34.87.28.196/educate.php',
                     {
                         params: {
-                            id: id
+                            idtrain: idtrain
                         }
                     })
                 setTrain(response.data)
             } catch {
-                alert('.....Error.....')
+                alert('.....Educate.php//Error.....')
             }
         }
         fetchData();
@@ -60,9 +60,9 @@ export default function Training({ navigation, route }) {
     const [submit, setSubmit] = useState("");
     let [minus, setMinus] = useState(5);
     const [visible, setVisible] = useState();
-    const [exerid, setExerid] = useState(1);
+    const [exerid, setExerid] = useState(0);
     const [countdesc, setCountdesc] = useState([]);
-    const [minute, setMinute] = useState(1);
+    const [minute, setMinute] = useState(0);
     const [perseconds, setPersecound] = useState(59);
     const [timestop, setTimestop] = useState(true);
 
@@ -111,7 +111,7 @@ export default function Training({ navigation, route }) {
                         second: second,
                         uid: uid,
                         count: count,
-                        exerid: exerid
+                        idtrain: idtrain
                     })
                 )
                 .then((response) => {
@@ -135,10 +135,14 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         const fetchpost = async () => {
             try {
-                const response = await axios.get('http://34.87.28.196/testphp/countlimit.php');
+                const response = await axios.get('http://34.87.28.196/testphp/countlimit.php', {
+                    params: {
+                        idtrain: idtrain
+                    }
+                });
                 setCountdesc(response.data);
             } catch (err) {
-                console.log(err)
+                alert('countlimit.php//error')
             }
         }
         fetchpost();
@@ -152,7 +156,7 @@ export default function Training({ navigation, route }) {
                 .post(
                     "http://34.87.28.196/testphp/checktostep.php",
                     JSON.stringify({
-                        exerid: exerid,
+                        idtrain: idtrain,
                     })
                 )
                 .then((response) => {
@@ -252,7 +256,7 @@ export default function Training({ navigation, route }) {
                                 <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}> เดี๋ยวสุนัขของคุณจะเบื่อเอานะ</Text>
                             </View>
                             <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={plus} style={{ width: '40%', height: '95%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                <TouchableOpacity onPress={() => navigation.navigate('StatisTrain', { idtrain: idtrain })} style={{ width: '40%', height: '95%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
                                     <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
                                 </TouchableOpacity>
                             </View>
@@ -306,7 +310,6 @@ export default function Training({ navigation, route }) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-
                             <FlatList
                                 data={countdesc}
                                 renderItem={({ item }) => (
@@ -362,7 +365,6 @@ export default function Training({ navigation, route }) {
                             </TouchableOpacity>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                            <Text> {count}</Text>
                             <FlatList
                                 data={countdesc}
                                 renderItem={({ item }) => (

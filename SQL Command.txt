@@ -42,6 +42,13 @@ SELECT count FROM statis_exer ORDER BY count DESC LIMIT 1
 --------------เพิ่มข้อมูล +1 ต่อจากค่ามากที่สุดใน column นั้นๆ------------------------------------
 INSERT INTO statis_exer( sit,count ) SELECT 50 , MAX( count ) + 1 FROM statis_exer;
 
+------------------join table เทียบค่า success ของท่าฝึกนั้นๆ ของ user นั้นๆ-------------------------------------------------
+SELECT * FROM 
+(SELECT * FROM dog.dogtrain) a
+LEFT JOIN (SELECT * FROM dog.sucjointrain where idtrain = idtrain and uid = 1 ) b
+ON a.idtrain = b.idtrain;
+
+
 
 statis.map(item => {
                     return (

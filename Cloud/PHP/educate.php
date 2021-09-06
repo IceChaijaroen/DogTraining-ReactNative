@@ -1,12 +1,12 @@
 <?php
 include 'connect.php';
 
-$id = $_GET["id"];
+$idtrain = $_GET["idtrain"];
 
 // Creating SQL command to fetch all records from Table.
 $sql = "SELECT dogtrain.* ,traindescrip.* 
 FROM dogtrain
-INNER JOIN traindescrip ON dogtrain.idtrain = traindescrip.iddes WHERE idtrain = '".$id."';";
+INNER JOIN traindescrip ON dogtrain.idtrain = traindescrip.iddes WHERE idtrain = '".$idtrain."';";
 
 $result = $conn->query($sql);
 

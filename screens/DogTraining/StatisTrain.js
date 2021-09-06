@@ -68,12 +68,13 @@ const Progress = ({ step, steps, height }) => {
 }
 
 
-export default function StatisTrain({ navigation }) {
+export default function StatisTrain({ navigation, route }) {
     const [sum, SetSum] = useState([]);
     const [statis, setStatis] = useState([]);
     const [user, setValue] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [sumsit, setSumsit] = useState([]);
+    const { idtrain } = route.params;
 
     {/**   useEffect(() => {
         AsyncStorage.getItem('id')
@@ -93,10 +94,14 @@ export default function StatisTrain({ navigation }) {
             })
     })*/}
 
-    useEffect(()=>{
+    useEffect(() => {
         const fetchData = async () => {
-            try{
-                const response = await axios.get('http://34.87.28.196/showstatisexer.php')
+            try {
+                const response = await axios.get('http://34.87.28.196/showstatisexer.php', {
+                    params: {
+                        idtrain: idtrain
+                    }
+                })
                 setStatis(response.data);
                 setIsLoading(true);
             } catch {
@@ -104,21 +109,25 @@ export default function StatisTrain({ navigation }) {
             }
         }
         fetchData();
-    },[statis])
+    }, [statis])
 
 
 
     useEffect(() => {
-        const fetchData = async () =>{
-            try{
-                const response = await axios.get('http://34.87.28.196/testphp/sumstep.php');
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://34.87.28.196/testphp/sumstep.php',{
+                    params:{
+                        idtrain:idtrain
+                    }
+                });
                 setSumsit(response.data);
-            }catch{
+            } catch {
                 alert('ERROR');
             }
         }
         fetchData();
-    },[sumsit])
+    }, [sumsit])
 
 
 
@@ -214,7 +223,7 @@ export default function StatisTrain({ navigation }) {
                             <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
                                 <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
                                     <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
-                                        <Text style={{ fontFamily:'FC_Iconic', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
+                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
                                     </View>
                                     <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
                                         <View style={styles.capsule}>
@@ -224,7 +233,7 @@ export default function StatisTrain({ navigation }) {
                                 </View>
                                 <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
                                     <View style={{ width: '80%', height: '100%' }}>
-                                        <Text style={{ fontFamily:'FC_Iconic', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
+                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
                                     </View>
                                     <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
                                         <Feather
@@ -249,10 +258,10 @@ export default function StatisTrain({ navigation }) {
                 <View style={styles.container}>
                     <View style={styles.card}>
                         <View style={{ height: 70, width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30, backgroundColor: '#555555', borderTopLeftRadius: 40, borderTopRightRadius: 40 }}>
-                            <Text style={{ fontFamily:'FC_Iconic', fontSize: 40, color: 'white' }}>สถิติ</Text>
+                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 40, color: 'white' }}>สถิติ</Text>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: 20, marginBottom: 30 }}>
-                            <Text style={{ fontFamily:'FC_Iconic', fontSize: 30, color: '#555555' }}>ท่านั่ง</Text>
+                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>ท่านั่ง</Text>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
@@ -293,7 +302,7 @@ export default function StatisTrain({ navigation }) {
                         </View>
                         <View style={{ width: '100%', height: 60 }}>
                             <View style={{ width: '80%', justifyContent: 'center', height: 30, marginLeft: 40, marginBottom: 5 }}>
-                                <Text style={{ color: '#737373',fontFamily:'FC_Iconic',fontSize:18 }}>ระดับความสำเร็จ</Text>
+                                <Text style={{ color: '#737373', fontFamily: 'FC_Iconic', fontSize: 18 }}>ระดับความสำเร็จ</Text>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                 <FlatList
@@ -413,7 +422,7 @@ const styles = StyleSheet.create({
         elevation: 5
     },
     textinbutton: {
-        fontFamily:'FC_Iconic',
+        fontFamily: 'FC_Iconic',
         fontSize: 22,
         color: 'white',
         marginRight: 10
