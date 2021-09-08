@@ -18,7 +18,7 @@ const [info, setInfo] = useState([]);
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://34.87.28.196/showsingle.php',
+      const response = await axios.get('http://35.187.253.40/showsingle.php',
         {
           params: {
             id: dogid
@@ -53,7 +53,7 @@ useEffect(() => {
               </View>
               <View style={{ width: '100%', height: 50, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                 <Image
-                  source={{uri:'http://34.87.28.196/images/home.png'}}
+                  source={{uri:'http://35.187.253.40/images/home.png'}}
                   style={{ width: '30%', height: 60 }}
                 />
                 <Text style={styles.popupFont}>แหล่งกำเนิด</Text>
@@ -105,7 +105,7 @@ useEffect(() => {
               <View style={{ width: '20%' }}>
                 <Image
                   style={{ width: '100%', height: '50%', borderRadius: 30 }}
-                  source={{uri:'http://34.87.28.196/images/home.png'}}
+                  source={{uri:'http://35.187.253.40/images/home.png'}}
                 />
               </View>
               <View style={{ marginLeft: 20, width: '55%' }}>
@@ -136,7 +136,7 @@ useEffect(() => {
               <View style={{ width: '20%' }}>
                 <Image
                   style={{ width: '100%', height: '50%', borderRadius: 30 }}
-                  source={{uri:'http://34.87.28.196/images/origin.png'}}
+                  source={{uri:'http://35.187.253.40/images/origin.png'}}
                 />
               </View>
               <View style={{ marginLeft: 20, width: '55%' }}>

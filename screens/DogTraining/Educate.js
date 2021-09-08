@@ -44,7 +44,7 @@ export default function Educate({ navigation, route }) {
   useEffect(() => {
     const fetchData = async () => {
       try{
-        const response = await axios.get('http://34.87.28.196/gif.php',
+        const response = await axios.get('http://35.187.253.40/gif.php',
         {
           params: {
             idtrain: idtrain

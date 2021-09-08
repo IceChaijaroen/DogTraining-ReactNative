@@ -15,13 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
+
 
 --
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549927';
+
 
 --
 -- Table structure for table `dogimages`
@@ -48,7 +48,7 @@ LOCK TABLES `dogimages` WRITE;
 INSERT INTO `dogimages` VALUES (1,'http://34.87.28.196/images/golden/01.jpg','golden',1),(2,'http://34.87.28.196/images/golden/02.jpg','golden',1),(3,'http://34.87.28.196/images/golden/03.jpg','golden',1),(4,'http://34.87.28.196/images/labrador/01.jpg','labrador',2),(5,'http://34.87.28.196/images/labrador/02.jpg','labrador',2),(6,'http://34.87.28.196/images/labrador/03.jpg','labrador',2);
 /*!40000 ALTER TABLE `dogimages` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

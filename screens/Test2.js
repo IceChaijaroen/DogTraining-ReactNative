@@ -14,7 +14,7 @@ export default function Test2 () {
         const authenticate = async () => {
             axios
                 .post(
-                    "http://35.240.159.16/insert.php",
+                    "http://35.187.253.40/insert.php",
                     JSON.stringify({
                         name: name,
                         email: email

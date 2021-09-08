@@ -15,7 +15,7 @@ export default function General() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://34.87.28.196/showsingle.php',
+        const response = await axios.get('http://35.187.253.40/showsingle.php',
           {
             params: {
               id: dogid

@@ -27,12 +27,13 @@ export function DrawerContent(props) {
     const [user, setValue] = useState();
     const [udata, setUdata] = useState([]);
     const [dogdata, setDogdata] = useState([]);
+    const [udogid, setUdogid] = useState([]);
 
     useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
-                axios.get('http://34.87.28.196/showuser.php',
+                axios.get('http://35.187.253.40/showuser.php',
                     {
                         params: {
                             id: user
@@ -44,25 +45,32 @@ export function DrawerContent(props) {
                     .catch(err => {
                         console.log(err)
                     })
-               {/** axios.get('http://34.87.28.196/showuserdog.php',
-                    {
-                        params: {
-                            id: 1
-                        }
-                    })
-                    .then(response => {
-                        setDogdata(response.data);
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    }) */}
             })
     })
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showuserdog.php',
+                    {
+                        params: {
+                            id: user
+                        }
+                    })
+                setDogdata(response.data.all);
+                setUdogid(response.data.udogid);
+            } catch {
+                alert("ERROR------getudogid.php")
+            }
+        }
+        fetchData();
+    }, [dogdata])
+
 
     async function logout() {
-        await AsyncStorage.removeItem('id')
-        props.navigation.navigate('Login')
+        await AsyncStorage.removeItem('id');
+        await AsyncStorage.removeItem('udogid');
+        props.navigation.navigate('Login');
 
     }
 
@@ -107,30 +115,38 @@ export function DrawerContent(props) {
 
                     <View style={{ marginLeft: 20 }}>
                         <Text style={{ fontWeight: 'bold' }}>สถานะการฝึก</Text>
-{/**
-                        <FlatList
-                            data={dogdata}
-                            renderItem={
-                                ({ item }) => (
-                                    <View style={style.card}>
-                                        <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                            <Avatar.Image
-                                                source={{uri:item.udogimg}}
-                                                size={35}
-                                                backgroundColor={'white'}
-                                            />
-                                        </View>
-                                        <View style={{ width: '70%', paddingTop: 10 }}>
-                                            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>ชื่อ : {item.udogname}</Text>
-                                            <Text style={{ fontSize: 10, fontWeight: 'bold' }}>สถานะ : {item.udogstatus}</Text>
-                                            <View style={style.capsule}>
-                                                <View style={style.incapsule}></View>
-                                            </View>
-                                        </View>
-                                    </View>
-                                )}
-                        />
-                                */}
+                        {dogdata == 'null' ? (
+                            <View>
+
+                            </View>
+                        ) : (
+                            <View>
+                                <FlatList
+                                    data={dogdata}
+                                    renderItem={
+                                        ({ item }) => (
+                                            <TouchableOpacity onPress={() => props.navigation.navigate('Tabs',AsyncStorage.setItem('udogid',item.udogid))}>
+                                                <View style={style.card}>
+                                                    <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <Avatar.Image
+                                                            source={{ uri: item.udogimg }}
+                                                            size={35}
+                                                            backgroundColor={'white'}
+                                                        />
+                                                    </View>
+                                                    <View style={{ width: '70%', paddingTop: 10 }}>
+                                                        <Text style={{ fontSize: 10, fontWeight: 'bold' }}>ชื่อ : {item.udogname}</Text>
+                                                        <Text style={{ fontSize: 10, fontWeight: 'bold' }}>สถานะ : {item.udogstatus}</Text>
+                                                        <View style={style.capsule}>
+                                                            <View style={style.incapsule}></View>
+                                                        </View>
+                                                    </View>
+                                                </View>
+                                            </TouchableOpacity>
+                                        )}
+                                />
+                            </View>
+                        )}
 
                         <Drawer.Section>
                             <DrawerItem

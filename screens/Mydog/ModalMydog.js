@@ -1,8 +1,12 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { Component } from 'react';
 import { View, Text, Modal, Dimensions, Pressable, FlatList, TouchableOpacity, Alert, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationActions } from 'react-navigation';
 
+function getid (){
+    AsyncStorage.getItem('dogid',)
+} 
 
 export default class BottomPopup extends Component {
 
@@ -13,7 +17,7 @@ export default class BottomPopup extends Component {
         haveOutsideTouch: false,
         data: []
     }
-    
+
 
     renderItem = ({ item, inde }) => {
         const { disabled } = this.props;
@@ -23,9 +27,7 @@ export default class BottomPopup extends Component {
             <>
                 <TouchableOpacity
                     activeOpacity={disabled ? 1 : 0.9}
-                    onPress={() => {
-                        closePopup(),{id:item.udogid}
-                    }}
+                    onPress={() => closePopup() }
                     style={{
                         height: 90,
                         flex: 1,

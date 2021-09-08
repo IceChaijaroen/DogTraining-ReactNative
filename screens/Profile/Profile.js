@@ -20,7 +20,7 @@ export default function Profile({ navigation }) {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
-                axios.get('http://34.87.28.196/showuser.php',
+                axios.get('http://35.187.253.40/showuser.php',
                     {
                         params: {
                             id: user

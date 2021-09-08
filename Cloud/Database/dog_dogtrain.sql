@@ -15,13 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
+
 
 --
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549928';
+
 
 --
 -- Table structure for table `dogtrain`
@@ -50,7 +50,7 @@ LOCK TABLES `dogtrain` WRITE;
 INSERT INTO `dogtrain` VALUES (1,'ฝึกการตั้งตัวเป็นจ่าฝูง',0,'ยังไม่มีฝึกการตั้งตัวเป็นจ่าฝูง','http://34.87.28.196/images/trainimg/sergeant.PNG',NULL),(2,'ฝึกนั่ง',1,'ยังไม่มีฝึกนั่ง','http://34.87.28.196/images/trainimg/sit.png',NULL),(3,'ขอมือ',2,'ยังไม่มีขอมือ','http://34.87.28.196/images/trainimg/handgrey.png',NULL),(4,'โดนยิง',3,'ยังไม่มีโดนยิง','http://34.87.28.196/images/trainimg/gun.png',NULL),(5,'เรียกชื่อสุนัข',0,'ยังไม่มีเรียกชื่อสุนัข','http://34.87.28.196/images/trainimg/callname.png',NULL);
 /*!40000 ALTER TABLE `dogtrain` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

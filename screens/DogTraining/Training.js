@@ -22,7 +22,7 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://34.87.28.196/gif.php',
+                const response = await axios.get('http://35.187.253.40/gif.php',
                     {
                         params: {
                             idtrain: idtrain
@@ -39,7 +39,7 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://34.87.28.196/educate.php',
+                const response = await axios.get('http://35.187.253.40/educate.php',
                     {
                         params: {
                             idtrain: idtrain
@@ -62,7 +62,7 @@ export default function Training({ navigation, route }) {
     const [visible, setVisible] = useState();
     const [exerid, setExerid] = useState(0);
     const [countdesc, setCountdesc] = useState([]);
-    const [minute, setMinute] = useState(0);
+    const [minute, setMinute] = useState(1);
     const [perseconds, setPersecound] = useState(59);
     const [timestop, setTimestop] = useState(true);
 
@@ -106,7 +106,7 @@ export default function Training({ navigation, route }) {
         const authenticate = async () => {
             axios
                 .post(
-                    "http://34.87.28.196/insertstatis2.php",
+                    "http://35.187.253.40/insertstatis2.php",
                     JSON.stringify({
                         second: second,
                         uid: uid,
@@ -135,7 +135,7 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         const fetchpost = async () => {
             try {
-                const response = await axios.get('http://34.87.28.196/testphp/countlimit.php', {
+                const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
                     params: {
                         idtrain: idtrain
                     }
@@ -154,7 +154,7 @@ export default function Training({ navigation, route }) {
         const authenticate = async () => {
             axios
                 .post(
-                    "http://34.87.28.196/testphp/checktostep.php",
+                    "http://35.187.253.40/testphp/checktostep.php",
                     JSON.stringify({
                         idtrain: idtrain,
                     })

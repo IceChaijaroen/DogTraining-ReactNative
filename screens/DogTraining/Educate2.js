@@ -16,7 +16,7 @@ export default function Educate2({ navigation, route }) {
     const [train, setTrain] = useState([]);
 
     useEffect(() => {
-        axios.get('http://34.87.28.196/educate.php',
+        axios.get('http://35.187.253.40/educate.php',
             {
                 params: {
                     id: id

@@ -19,7 +19,7 @@ export default function Register (props,disabled) {
             const authenticate = async () => {
                 axios
                     .post(
-                        "http://34.87.28.196/insert.php",
+                        "http://35.187.253.40/insert.php",
                         JSON.stringify({
                             username : username,
                             email : email,

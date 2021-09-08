@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity } from 'react-native';
 import {
   LineChart,
@@ -12,9 +12,61 @@ import {
 import { Dimensions } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { NavigationActions } from 'react-navigation';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const screenWidth = Dimensions.get("window").width;
 
 export default function MydogInfo({ navigation }) {
+  const [udata, setUdata] = useState([]);
+  const [user, setValue] = useState([]);
+  const [getudog, setGetudog] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    AsyncStorage.getItem('id')
+      .then((value) => {
+        setValue(value);
+      })
+  })
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showudogid.php', {
+          params: {
+            id: user,
+            udogid: getudog
+          }
+        })
+        setUdata(response.data);
+        setIsLoading(true);
+      } catch {
+        alert("ERROR------getudogid.php")
+      }
+    }
+    fetchData();
+  })
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('http://35.187.253.40/getudogid.php', {
+                params: {
+                    id: user
+                }
+            })
+            setGetudog(response.data);
+        } catch {
+            alert("ERROR------getudogid.php")
+        }
+    }
+    fetchData();
+}, [getudog])
+
+
+
   const [text, onChangeText] = React.useState("น้องโบ้");
   const alldata = {
     labels: ["January", "February", "March", "April", "May", "June"],
@@ -55,48 +107,55 @@ export default function MydogInfo({ navigation }) {
     <>
       <ScrollView>
         <View style={styles.container}>
-
-          <View style={styles.card}>
-            <TouchableOpacity onPress={() => navigation.navigate('showGraph')} style={{ width: '100%' }}>
-              <View style={{ width: '100%', height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>สถิติโดยรวม</Text>
-                <Image
-                  source={require('../../img/allgraph.png')}
-                  style={{
-                    width: 100,
-                    height: 50,
-                    marginRight:'5%'
-                  }}
-                />
-                <MaterialCommunityIcons
-                  name='arrow-right-drop-circle'
-                  size={20}
-                  color={'#555555'}
-                />
+          {udata == 'null' ? (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <Text style={{ fontSize: 50 }}>คุณยังไม่มีสุนัข กรุณาเพิ่มสุนัขของคุณ</Text>
+            </View>
+          ) : (
+            <>
+              <View style={styles.card}>
+                <TouchableOpacity onPress={() => navigation.navigate('showGraph')} style={{ width: '100%' }}>
+                  <View style={{ width: '100%', height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>สถิติโดยรวม</Text>
+                    <Image
+                      source={require('../../img/allgraph.png')}
+                      style={{
+                        width: 100,
+                        height: 50,
+                        marginRight: '5%'
+                      }}
+                    />
+                    <MaterialCommunityIcons
+                      name='arrow-right-drop-circle'
+                      size={20}
+                      color={'#555555'}
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
 
-          <View style={styles.card}>
-            <TouchableOpacity onPress={() => navigation.navigate('showGraph2')} style={{ width: '100%' }}>
-              <View style={{ width: '100%', height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>สถิติแต่ละท่า</Text>
-                <Image
-                  source={require('../../img/eachgraph.png')}
-                  style={{
-                    width: 100,
-                    height: 50,
-                    marginRight:'5%'
-                  }}
-                />
-                <MaterialCommunityIcons
-                  name='arrow-right-drop-circle'
-                  size={20}
-                  color={'#555555'}
-                />
+              <View style={styles.card}>
+                <TouchableOpacity onPress={() => navigation.navigate('showGraph2')} style={{ width: '100%' }}>
+                  <View style={{ width: '100%', height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>สถิติแต่ละท่า</Text>
+                    <Image
+                      source={require('../../img/eachgraph.png')}
+                      style={{
+                        width: 100,
+                        height: 50,
+                        marginRight: '5%'
+                      }}
+                    />
+                    <MaterialCommunityIcons
+                      name='arrow-right-drop-circle'
+                      size={20}
+                      color={'#555555'}
+                    />
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-          </View>
+            </>
+          )}
         </View>
       </ScrollView>
 

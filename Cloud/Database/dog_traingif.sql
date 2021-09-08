@@ -15,13 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
+
 
 --
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549928';
+
 
 --
 -- Table structure for table `traingif`
@@ -52,7 +52,7 @@ LOCK TABLES `traingif` WRITE;
 INSERT INTO `traingif` VALUES (1,'ฝึกการตั้งตัวเป็นจ่าฝูง','','http://34.87.28.196/images/trainimg/gif/test1.gif','ให้สุนัขเดินเข้าออกประตู หลังเราเสมอ คือ ฝึกให้สุนัขนั่งรอก่อน เราเดินเข้า แล้วค่อยเรียกให้สุนัขตามเข้ามา',1,'http://34.87.28.196/images/trainimg/sergeant.PNG','ขั้นตอนที่ 1'),(2,'ฝึกการตั้งตัวเป็นจ่าฝูง',NULL,'http://34.87.28.196/images/trainimg/gif/test2.gif','เวลาเดินในสายจูง ต้องไม่ให้สุนัขดึงเรา เราเดินนำหน้าเสมอ (ต้องฝึก)',1,'http://34.87.28.196/images/trainimg/sergeant.PNG','ขั้นตอนที่ 2'),(3,'ฝึกการตั้งตัวเป็นจ่าฝูง',NULL,'http://34.87.28.196/images/trainimg/gif/testgif.gif','ฝึกเรียกให้มาหาเรา (Recall) เราจะไม่เดินหรือวิ่งตามสุนัข จ่าฝูงไม่เคยเดินตามลูกฝูง',1,'http://34.87.28.196/images/trainimg/sergeant.PNG','ขั้นตอนที่ 3'),(4,'เรียกชื่อสุนัข',NULL,'http://34.87.28.196/images/trainimg/gif/test2.gif','เรียกให้มาหา',2,'http://34.87.28.196/images/trainimg/sit.png','ขั้นตอนที่ 1'),(5,'เรียกชื่อสุนัข',NULL,'http://34.87.28.196/images/trainimg/gif/testgif.gif','บอกให้นั่ง',2,'http://34.87.28.196/images/trainimg/sit.png','ขั้นตอนที่ 2'),(6,'เรียกชื่อสุนัข',NULL,'http://34.87.28.196/images/trainimg/gif/test1.gif','ให้อาหาร',2,'http://34.87.28.196/images/trainimg/sit.png','ขั้นตอนที่ 3'),(7,NULL,NULL,NULL,NULL,3,NULL,NULL),(8,NULL,NULL,NULL,NULL,3,NULL,NULL);
 /*!40000 ALTER TABLE `traingif` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

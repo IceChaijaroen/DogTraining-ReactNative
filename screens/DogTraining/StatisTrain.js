@@ -97,7 +97,7 @@ export default function StatisTrain({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://34.87.28.196/showstatisexer.php', {
+                const response = await axios.get('http://35.187.253.40/showstatisexer.php', {
                     params: {
                         idtrain: idtrain
                     }
@@ -116,7 +116,7 @@ export default function StatisTrain({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://34.87.28.196/testphp/sumstep.php',{
+                const response = await axios.get('http://35.187.253.40/testphp/sumstep.php',{
                     params:{
                         idtrain:idtrain
                     }

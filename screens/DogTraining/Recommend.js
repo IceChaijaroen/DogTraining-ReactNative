@@ -11,7 +11,7 @@ export default function Recommend({ navigation, route }) {
   const { idtrain } = route.params;
 
   useEffect(() => {
-    axios.get('http://34.87.28.196/showsingledogtrain.php',
+    axios.get('http://35.187.253.40/showsingledogtrain.php',
       {
         params: {
           id: idtrain

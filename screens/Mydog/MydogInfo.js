@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, Component, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, SafeAreaView, TextInput, Image, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Image, TouchableOpacity, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,31 +16,86 @@ import axios from 'axios';
 
 
 
-export default function testtest({route}) {
+export default function testtest({ route }) {
     const [isshow, setIsshow] = useState(false);
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
     const [udata, setUdata] = useState([]);
     const [user, setValue] = useState([]);
     const [dogdata, setDogdata] = useState([]);
-    
+    const [isLoading, setIsLoading] = useState(false);
+    const [udogid, setUdogid] = useState();
+    const [getudog, setGetudog] = useState();
+
+
     useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
             })
-        axios.get('http://34.87.28.196/showudogid.php', {
-            params: {
-                id: 1
-            }
-        })
-            .then(response => {
+        AsyncStorage.getItem('udogid')
+            .then((value) => {
+                setUdogid(value);
+            })
+    })
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showudogid.php', {
+                    params: {
+                        id: user,
+                        udogid: getudog
+                    }
+                })
                 setUdata(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-       {/**   axios.get('http://34.87.28.196/showuserdog.php',
+                setIsLoading(true);
+            } catch {
+                alert("ERROR------showudogid.php.php")
+            }
+        }
+        fetchData();
+    })
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/getudogid.php', {
+                    params: {
+                        id: user
+                    }
+                })
+                setGetudog(response.data);
+            } catch {
+                alert("ERROR------getudogid.php")
+            }
+        }
+        fetchData();
+    }, [getudog])
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showuserdogfromuser.php',
+                    {
+                        params: {
+                            id: user,
+                            udogid:udogid
+                        }
+                    })
+                setDogdata(response.data);
+            } catch {
+                alert("ERROR------getudogid.php")
+            }
+        }
+        fetchData();
+    }, [udogid])
+
+
+    {/**  
+         axios.get('http://35.187.253.40/showuserdog.php',
             {
                 params: {
                     id: user
@@ -52,15 +107,13 @@ export default function testtest({route}) {
             .catch(err => {
                 console.log(err)
             })
-            */}
-    })
-
+            */
+    }
 
 
     const close = () => {
         setIsshow(false);
     }
-
 
 
     return (
@@ -136,150 +189,170 @@ export default function testtest({route}) {
             </ModalPopup>
 
 
-            <FlatList
-                data={udata}
-                renderItem={
-                    ({ item }) => (
+            {!isLoading ? (
+                <View style={{ flex: 1, fontSize: 100 }}>
+                    <Text>Loading .. </Text>
+                </View>
+                // If there is a delay in data, let's let the user know it's loading
+            ) : (
 
-                        <ScrollView>
-                            <View style={styles.container}>
-                                <View style={styles.card}>
-                                    <View style={{ padding: 30, width: '90%' }}>
-                                        <View style={{ width: '100%', alignItems: 'flex-end' }}>
-                                            <TouchableOpacity onPress={() => setIsshow(true)}>
-                                                <Icon
-                                                    name='swap'
-                                                    size={15}
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={styles.rowcontent}>
-                                            <View style={{ width: '60%', paddingLeft: 20, justifyContent: 'center' }}>
-                                                <Image
-                                                    style={{ width: 90, height: 90 }}
-                                                    source={{ uri: item.udogimg }}
-                                                />
+                <>
+                    {udata == 'null' ? (
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 50 }}>คุณยังไม่มีสุนัข กรุณาเพิ่มสุนัขของคุณ</Text>
+                        </View>
+                    ) : (
+                        <View>
+                        
+                            <FlatList
+                                data={dogdata}
+                                renderItem={
+                                    ({ item }) => (
+
+                                        <ScrollView>
+                                            <View style={styles.container}>
+                                                <View style={styles.card}>
+                                                    <View style={{ padding: 30, width: '90%' }}>
+                                                        <View style={{ width: '100%', alignItems: 'flex-end' }}>
+                                                            <TouchableOpacity onPress={() => setIsshow(true)}>
+                                                                <Icon
+                                                                    name='swap'
+                                                                    size={15}
+                                                                />
+                                                            </TouchableOpacity>
+                                                        </View>
+                                                        <View style={styles.rowcontent}>
+                                                            <View style={{ width: '60%', paddingLeft: 20, justifyContent: 'center' }}>
+                                                                <Image
+                                                                    style={{ width: 90, height: 90 }}
+                                                                    source={{ uri: item.udogimg }}
+                                                                />
+                                                            </View>
+                                                            <View style={{ width: '40%', justifyContent: 'center', }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>ชื่อ {udogid} </Text>
+                                                                <TextInput
+                                                                    value={item.udogname}
+                                                                    style={{
+                                                                        borderBottomWidth: 0.5,
+                                                                        width: '80%'
+                                                                    }}
+
+                                                                />
+                                                            </View>
+                                                        </View>
+                                                        <View style={styles.rowcontent}>
+                                                            <View style={{ width: '60%' }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>สายพันธุ์</Text>
+                                                                <Text style={{ fontSize: 16 }}> {item.udogbreed}</Text>
+
+                                                            </View>
+                                                            <View style={{ width: '40%', justifyContent: 'center', }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>เพศ</Text>
+                                                                <Pickersex></Pickersex>
+                                                            </View>
+                                                        </View>
+                                                        <View style={styles.rowcontent}>
+                                                            <View style={{ width: '60%', justifyContent: 'center' }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>วันเกิด</Text>
+                                                                <MyDatePicker></MyDatePicker>
+                                                            </View>
+                                                            <View style={{ width: '40%', justifyContent: 'center', }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>อายุ</Text>
+                                                                <Text style={{ fontSize: 20, color: 'red' }}>Empty</Text>
+
+                                                            </View>
+                                                        </View>
+
+
+                                                        {/**------------------------------------------------------------------------------------------- */}
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
+                                                            <View>
+                                                            </View>
+                                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
+                                                        </View>
+                                                        {/**------------------------------------------------------------------------------------------- */}
+
+
+                                                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
+                                                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>ระดับฝึกฝน : </Text>
+                                                            <View style={styles.capsule}>
+                                                                <View style={styles.incapsule}></View>
+                                                            </View>
+                                                        </View>
+
+
+                                                        {/**------------------------------------------------------------------------------------------- */}
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
+                                                            <View>
+                                                            </View>
+                                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
+                                                        </View>
+                                                        {/**------------------------------------------------------------------------------------------- */}
+
+                                                        <TouchableOpacity onPress={() => setVisible(true)}>
+                                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginRight: 10 }}>กำลังดำเนินการ</Text>
+                                                                <MaterialCommunityIcons
+                                                                    name='arrow-right-drop-circle'
+                                                                    size={15}
+                                                                />
+                                                            </View>
+                                                        </TouchableOpacity>
+
+                                                        {/**------------------------------------------------------------------------------------------- */}
+                                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
+                                                            <View>
+                                                            </View>
+                                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
+                                                        </View>
+                                                        {/**------------------------------------------------------------------------------------------- */}
+
+                                                        <TouchableOpacity onPress={() => setVisible2(true)}>
+                                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
+                                                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginRight: 10 }}>ความสำเร็จ</Text>
+                                                                <Image
+                                                                    source={require('../../img/pngtree-gold-trophy-icon-trophy-icon-winner-icon-png-image_1692648.jpg')}
+                                                                    style={{
+                                                                        width: 30,
+                                                                        height: 30
+                                                                    }}
+                                                                />
+                                                                <MaterialCommunityIcons
+                                                                    name='arrow-right-drop-circle'
+                                                                    size={15}
+                                                                />
+                                                            </View>
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                </View>
                                             </View>
-                                            <View style={{ width: '40%', justifyContent: 'center', }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>ชื่อ</Text>
-                                                <TextInput
-                                                    value={item.udogname}
-                                                    style={{
-                                                        borderBottomWidth: 0.5,
-                                                        width: '80%'
-                                                    }}
+                                        </ScrollView>
 
-                                                />
-                                            </View>
-                                        </View>
-                                        <View style={styles.rowcontent}>
-                                            <View style={{ width: '60%' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>สายพันธุ์</Text>
-                                                <Text style={{ fontSize: 16 }}> {item.udogbreed}</Text>
-
-                                            </View>
-                                            <View style={{ width: '40%', justifyContent: 'center', }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>เพศ</Text>
-                                                <Pickersex></Pickersex>
-                                            </View>
-                                        </View>
-                                        <View style={styles.rowcontent}>
-                                            <View style={{ width: '60%', justifyContent: 'center' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>วันเกิด</Text>
-                                                <MyDatePicker></MyDatePicker>
-                                            </View>
-                                            <View style={{ width: '40%', justifyContent: 'center', }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold' }}>อายุ</Text>
-                                                <Text style={{ fontSize: 20, color: 'red' }}>Empty</Text>
-
-                                            </View>
-                                        </View>
+                                    )}
+                            />
 
 
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
-                                            <View>
-                                            </View>
-                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-
-                                        <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                            <Text style={{ fontSize: 18, fontWeight: 'bold' }}>ระดับฝึกฝน : </Text>
-                                            <View style={styles.capsule}>
-                                                <View style={styles.incapsule}></View>
-                                            </View>
-                                        </View>
-
-
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
-                                            <View>
-                                            </View>
-                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-                                        <TouchableOpacity onPress={() => setVisible(true)}>
-                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginRight: 10 }}>กำลังดำเนินการ</Text>
-                                                <MaterialCommunityIcons
-                                                    name='arrow-right-drop-circle'
-                                                    size={15}
-                                                />
-                                            </View>
-                                        </TouchableOpacity>
-
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
-                                            <View>
-                                            </View>
-                                            <View style={{ flex: 1, height: 1, backgroundColor: '#E3E3E3', marginTop: 20, marginBottom: 20 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-                                        <TouchableOpacity onPress={() => setVisible2(true)}>
-                                            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                                <Text style={{ fontSize: 18, fontWeight: 'bold', marginRight: 10 }}>ความสำเร็จ</Text>
-                                                <Image
-                                                    source={require('../../img/pngtree-gold-trophy-icon-trophy-icon-winner-icon-png-image_1692648.jpg')}
-                                                    style={{
-                                                        width: 30,
-                                                        height: 30
-                                                    }}
-                                                />
-                                                <MaterialCommunityIcons
-                                                    name='arrow-right-drop-circle'
-                                                    size={15}
-                                                />
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            </View>
-                        </ScrollView>
+                            <BottomPopup
+                                show={isshow}
+                                title={"something"}
+                                animationType={"fade"}
+                                closePopup={close}
+                                data={dogdata}
+                                haveOutsideTouch={true}
+                            />
+                        </View>
 
                     )}
-            />
+                </>
+            )}
 
-
-            <BottomPopup
-                show={isshow}
-                title={"something"}
-                animationType={"fade"}
-                closePopup={close}
-                data={udata}
-                haveOutsideTouch={true}
-            />
 
         </>
     );
 }
-
 
 {/** */ }
 class MydogInfo extends Component {

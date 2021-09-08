@@ -59,7 +59,7 @@ export default function Login(props, disabled) {
         const authenticate = async () => {
             axios
                 .post(
-                    "http://34.87.28.196/login.php",
+                    "http://35.187.253.40/login.php",
                     JSON.stringify({
                         email: email,
                         password: password
@@ -69,8 +69,9 @@ export default function Login(props, disabled) {
                 .then((response) => {
                     if (response.data.onLogin == "true") {
                         props.navigation.navigate("MyDrawer");
-                        AsyncStorage.setItem('id', response.data.iduser)
-                        setSubmit(false)
+                        AsyncStorage.setItem('id', response.data.iduser);
+                        AsyncStorage.setItem('udogid', response.data.udogid);
+                        setSubmit(false);
                     } else {
                         alert(JSON.stringify(response.data));
                         //setVisible(true)

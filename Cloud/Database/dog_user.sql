@@ -15,13 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
+
 
 --
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549926';
+
 
 --
 -- Table structure for table `user`
@@ -51,7 +51,7 @@ LOCK TABLES `user` WRITE;
 INSERT INTO `user` VALUES (1,'ice','ize@gmail.com','11234','Tanawat','Chaijaroen','http://34.87.28.196/images/user/user_01.jpeg'),(2,'test','izw@gmail.com','test','namename','namename',''),(3,'a','a','a','surasak','saeung','http://34.87.28.196/images/user/surasak.jpg'),(4,'aaa','aaa','123','sudarat','ruengdee',NULL),(5,'123','123','123','rithhikhai','khantharit',NULL),(6,'1','1','1','waranon','taecha',NULL),(7,'tanawat','tanawat','04012542',NULL,NULL,NULL),(8,'surasak','surasak@gmail.com','123456',NULL,NULL,NULL),(9,'surasak','surasak1@gmail.com','1234',NULL,NULL,NULL),(10,'','','',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

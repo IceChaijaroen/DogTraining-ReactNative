@@ -15,13 +15,13 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
+
 
 --
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '159102f3-c868-11eb-86fe-42010a940004:1-549926';
+
 
 --
 -- Table structure for table `traindescrip`
@@ -59,7 +59,7 @@ LOCK TABLES `traindescrip` WRITE;
 INSERT INTO `traindescrip` VALUES (1,'นั่ง','1.ส่งสัญญาณให้สุนัขนั่ง','2.เมื่อสุนัขนั่งแล้ว ให้สุนัขคอย','3.ให้ขนมแล้วชมว่าเก่งมาก',NULL,NULL,NULL,'http://34.87.28.196/images/trainimg/gif/testgif.gif','http://34.87.28.196/images/trainimg/gif/test1.gif','http://34.87.28.196/images/trainimg/gif/test2.gif',NULL,NULL,NULL,NULL),(2,'คอย','1.คอย1','2.คอย','3.คอย','4.คอย','5.คอย',NULL,'http://34.87.28.196/images/trainimg/gif/test2.gif',NULL,NULL,NULL,NULL,NULL,NULL),(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'http://34.87.28.196/images/trainimg/gif/testgif.gif',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `traindescrip` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
