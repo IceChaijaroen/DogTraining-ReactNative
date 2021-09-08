@@ -1,273 +1,110 @@
+import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useRef, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated } from 'react-native';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { LocaleConfig } from 'react-native-calendars';
-import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
-import {
-    LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
-} from "react-native-chart-kit";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import AppLoading from 'expo-app-loading';
-import { useFonts } from 'expo-font';
-
-const Progress = ({ step, steps, height }) => {
-
-    const [width, setWidth] = useState(0);
-    const animatedValue = useRef(new Animated.Value(-1000)).current;
-    const reactive = useRef(new Animated.Value(-1000)).current;
-
-    useEffect(() => {
-        Animated.timing(animatedValue, {
-            toValue: reactive,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    }, []);
-
-    useEffect(() => {
-        reactive.setValue(-width + (width * step) / steps);
-    }, [step, width]);
-
-    return (
-        <>
-            <Text>{step}</Text>
-            <View
-                onLayout={(e) => {
-                    const newWidth = e.nativeEvent.layout.width;
-
-                    setWidth(newWidth);
-                }}
-                style={{
-                    height,
-                    backgroundColor: '#F5F5F5',
-                    borderRadius: height,
-                    overflow: 'hidden'
-                }} >
-                <Animated.View
-                    style={{
-                        height,
-                        width: '100%',
-                        borderRadius: height,
-                        backgroundColor: '#FFB97D',
-                        position: 'absolute',
-                        left: 0,
-                        top: 0,
-                        transform: [{
-                            translateX: animatedValue
-                        }]
-                    }}
-                />
-            </View>
-        </>
-    )
-}
+import { Dimensions, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated, Alert } from 'react-native';
 
 
-export default function testdata({ navigation }) {
 
-    const [record, setRecord] = useState(49);
-    const [step, setStep] = useState(48);
-    const [exerid, setExerid] = useState(1);
-    const [sumseconds, setSumseconds] = useState(10);
-    const [isLoading, seIsLoading] = useState(false);
-    const [tocheck, setTocheck] = useState(false);
+const data = [
+    {
+        id: 1,
+        url: 'https://everythingcannes.com/wp-content/uploads/2021/02/IU-3.jpg',
+        banner: 'Banner 1'
+    },
+    {
+        id: 2,
+        url: 'https://www.brighttv.co.th/wp-content/uploads/2021/07/1625707575-20210707-jisoo.jpg',
+        banner: 'Banner 2'
+    },
+    {
+        id: 3,
+        url: 'https://s.isanook.com/jo/0/ud/480/2401993/iu.jpg',
+        banner: 'Banner 2'
+    },
+    {
+        id: 4,
+        url: 'https://www.allkpop.com/upload/2021/08/content/100409/1628582984-304895-349785-1442.jpg',
+        banner: 'Banner 2'
+    },
+]
 
+const ban = data.map(item => (
+    item.banner
+))
 
-    const [countdesc, setCountdesc] = useState(30);
-    const [sumsit, setSumsit] = useState([]);
-    const [showdata, setShowdata] = useState([]);
+const { width } = Dimensions.get("window");
+const { height } = width * 100 / 60;
 
-    {/** 
-    const fetchData = () => {
-        const countlimit = 'http://34.87.28.196/testphp/countlimit.php';
-        const sumstep = 'http://34.87.28.196/testphp/sumstep.php';
+export default class testdata extends React.Component {
 
-        const getCountlimit = axios.get(countlimit)
-        const getSumstep = axios.get(sumstep)
-        axios.all([getCountlimit, getSumstep]).then(
-            axios.spread((...allData) => {
-                const AlldataCountlimit = allData[0].data.count
-                const AlldataSumstep = allData[1].data.result
-
-                setCountdesc(AlldataCountlimit)
-                setSumsit(AlldataSumstep)
-            })
-        )
+    state = {
+        active: 0,
+        info: [],
     }
 
-    useEffect(() => {
-        fetchData()
-    }, [])
-*/}
-
-
-    useEffect(() => {
-        const fetchpost = async () => {
-            try {
-                const response = await axios.get('http://34.87.28.196/testphp/countlimit.php');
-                setCountdesc(response.data);
-            } catch (err) {
-                console.log(err)
-            }
+    change = ({ nativeEvent }) => {
+        const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
+        if (slide !== this.state.active) {
+            this.setState({ active: slide });
         }
-        fetchpost();
-    }, [])
+    }
 
-
-
-
-
-
-
-    useEffect(() => {
-        axios.get('http://34.87.28.196/testphp/sumstep.php')
+    componentDidMount() {
+        axios.get('http://35.187.253.40/showsingle.php',
+            {
+                params: {
+                    id: 3
+                }
+            })
             .then(response => {
-                setSumsit(response.data);
+                this.setState({ info: response.data });
             })
-            .catch(err => {
-                console.log(err)
-            })
-    }, [])
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
-
-
-    {/**
-
-    useEffect(() => {
-        const fetchpost = async () => {
-            try {
-                const response = await axios.get('http://34.87.28.196/testphp/checktostep.php',
-                    JSON.stringify({
-                        count: countdesc,
-                        exerid: exerid,
-                        sumseconds: sumseconds
-                    })
-                )
-                console.log(response.data);
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        fetchpost();
-    }, [])
- */}
-
-
-    useEffect(() => {
-        const authenticate = async () => {
-            axios
-                .post(
-                    "http://34.87.28.196/testphp/checktostep.php",
-                    JSON.stringify({
-                        count: countdesc,
-                        exerid: exerid,
-                        sumseconds: sumseconds
-                    })
-                )
-                .then((response) => {
-                    if (response.data == 'notyet') {
-                        alert('Fuck');
-                    } else {
-                        alert(JSON.stringify(response.data));
-                        seIsLoading(true);
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        };
-        if (countdesc == 10 || countdesc == 20 ||countdesc == 30 ) authenticate();
-    }, []);
-
-
-
-
-
-
-    {/** 
-    useEffect(() => {
-        axios.get('')
-            .then(response => {
-                setCountdesc(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
-
-
-
-    const count = countdesc.map(item => (
-        item.count
-    ))
-
-
-    useEffect(() => {
-        axios.get('http://34.87.28.196/testphp/sumstep.php')
-            .then(response => {
-                setSumsit(response.data);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
-*/}
-    {/** 
-     useEffect(() => {
-        axios.get('http://34.87.28.196/testphp/checktostep.php', {
-            params: {
-                count: countdesc,
-                exerid: exerid,
-                sumseconds: sumseconds
-            }
-        })
-            .then(response => {
-                setRecord(response.data);
-                setIsLoading(true);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    })
-   */}
-
-
-
-
-
-
-    let [fontsLoaded] = useFonts({
-        'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
-        'bahnschrift': require('./assets/fonts/bahnschrift.ttf'),
-        'FC_Iconic': require('./assets/fonts/FC_Iconic_Bold.ttf'),
-    });
-    if (!fontsLoaded) {
-        return <AppLoading />;
-    } else {
+    render() {
+        const { navigation } = this.props;
         return (
             <>
-                {isLoading ? (
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-                    <View style={{ flex: 1, justifyContent: 'center' }}>
-
-                        {sumsit.map(item => (
-                            <Progress step={item.result} steps={500} height={10} />
-                        ))}
-
+                    <View style={{ width: '100%', height: '50%', justifyContent: 'center', alignItems: 'center' }}>
+                        <ScrollView
+                            pagingEnabled
+                            showsHorizontalScrollIndicator={false}
+                            onScroll={this.change}
+                            horizontal={true}
+                            style={{
+                                width,
+                                height
+                            }}>
+                            {data.map((item, index) => (
+                                <TouchableOpacity onPress={() => navigation.navigate('testdata2', { id: item.id })} style={{ width, height }}>
+                                    <Image
+                                        key={index}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%'
+                                        }}
+                                        source={{ uri: item.url }}
+                                    />
+                                </TouchableOpacity>
+                            ))}
+                        </ScrollView>
+                        <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0, alignSelf: 'center' }}>
+                            {data.map((i, k) => (
+                                <>
+                                <Text key={k} style={k == this.state.active ? { margin: 3, color: 'grey' } : { margin: 3, color: 'white' }} >⬤</Text>
+                                </>
+                            ))}
+                        </View>
 
                     </View>
 
 
-                ) : (
-                    <Text style={{ fontSize: 100 }}>Loading...</Text>
-                )}
+                </View>
             </>
         )
     }
