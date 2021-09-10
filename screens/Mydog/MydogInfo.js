@@ -29,30 +29,11 @@ export default function testtest({ route }) {
 
 
     useEffect(() => {
-        AsyncStorage.getItem('id')
-            .then((value) => {
-                setValue(value);
-            })
-        AsyncStorage.getItem('udogid')
-            .then((value) => {
-                setUdogid(value);
-            })
-    })
-
-    useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get('http://35.187.253.40/showudogid.php', {
-                    params: {
-                        id: user,
-                        udogid: getudog
-                    }
+            await AsyncStorage.getItem('id')
+                .then((value) => {
+                    setValue(value);
                 })
-                setUdata(response.data);
-                setIsLoading(true);
-            } catch {
-                alert("ERROR------showudogid.php.php")
-            }
         }
         fetchData();
     })
@@ -60,19 +41,13 @@ export default function testtest({ route }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get('http://35.187.253.40/getudogid.php', {
-                    params: {
-                        id: user
-                    }
+            await AsyncStorage.getItem('udogid')
+                .then((value) => {
+                    setUdogid(value);
                 })
-                setGetudog(response.data);
-            } catch {
-                alert("ERROR------getudogid.php")
-            }
         }
         fetchData();
-    }, [getudog])
+    })
 
 
     useEffect(() => {
@@ -82,16 +57,21 @@ export default function testtest({ route }) {
                     {
                         params: {
                             id: user,
-                            udogid:udogid
+                            udogid: udogid
                         }
                     })
-                setDogdata(response.data);
+                if (response.data == 'null') {
+                    setIsLoading(true);
+                } else {
+                    setDogdata(response.data);
+                    setIsLoading(true);
+                }
             } catch {
                 alert("ERROR------getudogid.php")
             }
         }
         fetchData();
-    }, [udogid])
+    })
 
 
     {/**  
@@ -197,13 +177,13 @@ export default function testtest({ route }) {
             ) : (
 
                 <>
-                    {udata == 'null' ? (
+                    {dogdata == 'null' ? (
                         <View style={{ flex: 1, justifyContent: 'center' }}>
                             <Text style={{ fontSize: 50 }}>คุณยังไม่มีสุนัข กรุณาเพิ่มสุนัขของคุณ</Text>
                         </View>
                     ) : (
                         <View>
-                        
+
                             <FlatList
                                 data={dogdata}
                                 renderItem={

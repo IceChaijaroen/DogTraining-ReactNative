@@ -71,10 +71,32 @@ const Progress = ({ step, steps, height }) => {
 export default function StatisTrain({ navigation, route }) {
     const [sum, SetSum] = useState([]);
     const [statis, setStatis] = useState([]);
-    const [user, setValue] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [sumsit, setSumsit] = useState([]);
     const { idtrain } = route.params;
+    const [udogid, setUdogid] = useState();
+    const [user, setUser] = useState();
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await AsyncStorage.getItem('id')
+                .then((value) => {
+                    setUser(value);
+                })
+        }
+        fetchData();
+    }, [user])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await AsyncStorage.getItem('udogid')
+                .then((value) => {
+                    setUdogid(value);
+                })
+        }
+        fetchData();
+    }, [udogid])
 
     {/**   useEffect(() => {
         AsyncStorage.getItem('id')
@@ -99,7 +121,9 @@ export default function StatisTrain({ navigation, route }) {
             try {
                 const response = await axios.get('http://35.187.253.40/showstatisexer.php', {
                     params: {
-                        idtrain: idtrain
+                        idtrain: idtrain,
+                        uid: user,
+                        udogid: udogid
                     }
                 })
                 setStatis(response.data);
@@ -116,9 +140,11 @@ export default function StatisTrain({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://35.187.253.40/testphp/sumstep.php',{
-                    params:{
-                        idtrain:idtrain
+                const response = await axios.get('http://35.187.253.40/testphp/sumstep.php', {
+                    params: {
+                        idtrain: idtrain,
+                        uid: user,
+                        udogid: udogid
                     }
                 });
                 setSumsit(response.data);
@@ -265,7 +291,7 @@ export default function StatisTrain({ navigation, route }) {
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
-                            {isLoading ? (
+                        {/**     {isLoading ? (
                                 <ScrollView style={{ width: '90%' }} horizontal={true}>
                                     <View style={{ width: '100%', height: 290 }}>
 
@@ -298,21 +324,25 @@ export default function StatisTrain({ navigation, route }) {
                             ) : (
                                 <Text>Loading...</Text>
                             )}
-
+                            */}
+                            {sumsit.map(item => (
+                                <Text>{item.sumstep} {user}{udogid}{idtrain} </Text>
+                            ))}
+                        
                         </View>
                         <View style={{ width: '100%', height: 60 }}>
                             <View style={{ width: '80%', justifyContent: 'center', height: 30, marginLeft: 40, marginBottom: 5 }}>
                                 <Text style={{ color: '#737373', fontFamily: 'FC_Iconic', fontSize: 18 }}>ระดับความสำเร็จ</Text>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                <FlatList
+                               {/** <FlatList
                                     width={'80%'}
                                     data={sumsit}
                                     renderItem={({ item }) => (
-                                        <Progress step={item.result} steps={500} height={10} />
+                                        <Progress step={item.sumstep} steps={500} height={10} />
                                     )}
                                 />
-
+ */}
                             </View>
                         </View>
                         <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>

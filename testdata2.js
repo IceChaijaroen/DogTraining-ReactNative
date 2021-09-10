@@ -28,23 +28,14 @@ const data = [
 
 ]
 
-const ban = data.map(item => (
-    item.banner
-))
 
 const { width } = Dimensions.get("window");
 const { height } = width * 100 / 60;
 
 export default function testdata2({ navigation }) {
 
-    const [active, setActive] = useState(0);
-
-    const change = ({ nativeEvent }) => {
-        const slide = Math.ceil(nativeEvent.contentOffset.x / nativeEvent.layoutMeasurement.width);
-        if (slide !== active) {
-            setActive({ active: slide });
-        }
-    }
+    const scrollX = new Animated.Value(0);
+    const position = Animated.divide(scrollX, width);
 
 
     return (
@@ -55,7 +46,9 @@ export default function testdata2({ navigation }) {
                     <ScrollView
                         pagingEnabled
                         showsHorizontalScrollIndicator={false}
-                        onScroll={change}
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { x: scrollX } } }]
+                        )}
                         horizontal={true}
                         style={{
                             width,
@@ -75,9 +68,16 @@ export default function testdata2({ navigation }) {
                         ))}
                     </ScrollView>
                     <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0, alignSelf: 'center' }}>
-                        {data.map((i, k) => (
-                            <Text key={k} style={k == active ? { margin: 3, color: 'grey' } : { margin: 3, color: 'white' }} >⬤</Text>
-                        ))}
+                        {data.map((i, k) => {
+                            let opacity = position.interpolate({
+                                inputRange: [k - 1, k, k + 1],
+                                outputRange: [0.3, 1, 0.3],
+                                extrapolate: 'clamp'
+                            })
+                            return (
+                                <Animated.View key={k} style={{ opacity, height: 10, width: 10,backgroundColor:'black',borderRadius:20,margin:5 }} />
+                            )
+                        })}
                     </View>
 
                 </View>

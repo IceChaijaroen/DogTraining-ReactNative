@@ -12,14 +12,38 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Training({ navigation, route }) {
     const { idtrain } = route.params;
     const [gif, setGif] = useState([]);
     const [train, setTrain] = useState([]);
+    const [udogid, setUdogid] = useState();
+    const [user, setUser] = useState();
+
 
     useEffect(() => {
+        const fetchData = async () => {
+            await AsyncStorage.getItem('id')
+                .then((value) => {
+                    setUser(value);
+                })
+        }
+        fetchData();
+    }, [user])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await AsyncStorage.getItem('udogid')
+                .then((value) => {
+                    setUdogid(value);
+                })
+        }
+        fetchData();
+    }, [udogid])
+
+  {/**  useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://35.187.253.40/gif.php',
@@ -52,17 +76,14 @@ export default function Training({ navigation, route }) {
         }
         fetchData();
     }, [train])
-
+*/} 
     const [second, setSecound] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
-    const [uid, setUid] = useState(1);
     const [count, setCount] = useState(null);
     const [submit, setSubmit] = useState("");
-    let [minus, setMinus] = useState(5);
     const [visible, setVisible] = useState();
-    const [exerid, setExerid] = useState(0);
     const [countdesc, setCountdesc] = useState([]);
-    const [minute, setMinute] = useState(1);
+    const [minute, setMinute] = useState(0);
     const [perseconds, setPersecound] = useState(59);
     const [timestop, setTimestop] = useState(true);
 
@@ -109,9 +130,10 @@ export default function Training({ navigation, route }) {
                     "http://35.187.253.40/insertstatis2.php",
                     JSON.stringify({
                         second: second,
-                        uid: uid,
+                        uid: user,
                         count: count,
-                        idtrain: idtrain
+                        idtrain: idtrain,
+                        udogid: udogid
                     })
                 )
                 .then((response) => {
@@ -137,7 +159,9 @@ export default function Training({ navigation, route }) {
             try {
                 const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
                     params: {
-                        idtrain: idtrain
+                        idtrain: idtrain,
+                        uid:user,
+                        udogid:udogid
                     }
                 });
                 setCountdesc(response.data);
@@ -157,6 +181,8 @@ export default function Training({ navigation, route }) {
                     "http://35.187.253.40/testphp/checktostep.php",
                     JSON.stringify({
                         idtrain: idtrain,
+                        uid:user,
+                        udogid:udogid
                     })
                 )
                 .then((response) => {
@@ -175,10 +201,6 @@ export default function Training({ navigation, route }) {
     }, [isRunning]);
 
 
-    function plus() {
-        setMinus(5)
-        navigation.navigate('StatisTrain');
-    }
     {/**------------------------------------------------------------------------------------- */ }
 
 
@@ -279,7 +301,7 @@ export default function Training({ navigation, route }) {
                             <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                            <FlatList
+                         {/**   <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
                                     <Image
@@ -292,15 +314,15 @@ export default function Training({ navigation, route }) {
                                 )}
                                 keyExtractor={(item) => item.idtrain}
                             />
-
+ */}
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            <FlatList
+                      {/**       <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
-
+*/}
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
                             <TouchableOpacity onPress={() => setSubmit(true)} >
@@ -332,7 +354,7 @@ export default function Training({ navigation, route }) {
                             <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-
+{/** 
                             <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
@@ -346,14 +368,15 @@ export default function Training({ navigation, route }) {
                                 )}
                                 keyExtractor={(item) => item.idtrain}
                             />
-
+*/}
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            <FlatList
+                             {/**       <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
                             />
+*/}
 
                         </View>
                         <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
@@ -368,7 +391,7 @@ export default function Training({ navigation, route }) {
                             <FlatList
                                 data={countdesc}
                                 renderItem={({ item }) => (
-                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
+                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count} </Text>
                                 )}
                             />
                         </View>

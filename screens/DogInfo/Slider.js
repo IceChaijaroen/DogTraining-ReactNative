@@ -1,59 +1,91 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from "react";
-import { TouchableOpacity, StyleSheet, Text, View, ScrollView, SafeAreaView, TextInput, Image, ImageBackground } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { FontAwesome5 } from '@expo/vector-icons';
-import TopTap from './TopTab';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Icons from 'react-native-vector-icons/MaterialIcons';
-import { SliderBox } from "react-native-image-slider-box";
-import { Component } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Dimensions, StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, Animated, Alert } from 'react-native';
 
-const Tab = createBottomTabNavigator();
 
-export default function Slider() {
 
-    const images = [
-        'http://34.87.28.196/images/home.png' ,
-        'http://34.87.28.196/images/golden_1.jpg' ,
-    ];
+const data = [
+    {
+        id: 1,
+        url: 'https://everythingcannes.com/wp-content/uploads/2021/02/IU-3.jpg',
+        banner: 'Banner 1'
+    },
+    {
+        id: 2,
+        url: 'https://www.brighttv.co.th/wp-content/uploads/2021/07/1625707575-20210707-jisoo.jpg',
+        banner: 'Banner 2'
+    },
+    {
+        id: 3,
+        url: 'https://s.isanook.com/jo/0/ud/480/2401993/iu.jpg',
+        banner: 'Banner 2'
+    },
+    {
+        id: 4,
+        url: 'https://www.allkpop.com/upload/2021/08/content/100409/1628582984-304895-349785-1442.jpg',
+        banner: 'Banner 2'
+    },
+
+]
+
+
+const { width } = Dimensions.get("window");
+const { height } = width * 100 / 60;
+
+export default function Pictureslide({ navigation }) {
+
+    const scrollX = new Animated.Value(0);
+    const position = Animated.divide(scrollX, width);
 
 
     return (
         <>
-            <View style={{ marginTop: -56, height: '100%', zIndex: -99, backgroundColor: 'grey' }}>
-                {images.map((item, index) => (
-                    <SliderBox key={index} sliderBoxHeight={'100%'} images={{uri:item}} />
-                ))}
-            </View>
-        </>
-    );
-}
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-class Sliders extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            images: [
-                // Network image
-                require('../../img/Georgie-web.jpg'),
-                require('../../img/Labrador_Retriever_(1210559).jpg'),          // Local image
-            ]
-        };
-    }
-    render() {
-        return (
-            <>
-                {/** -----------Header------------------ */}
-                <View style={{ marginTop: -56, height: '100%' }}>
-                    <SliderBox sliderBoxHeight={'100%'} images={this.state.images} />
+                <View style={{ width: '100%', height: '50%', justifyContent: 'center', alignItems: 'center' }}>
+                    <ScrollView
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        onScroll={Animated.event(
+                            [{ nativeEvent: { contentOffset: { x: scrollX } } }]
+                        )}
+                        horizontal={true}
+                        style={{
+                            width,
+                            height
+                        }}>
+                        {data.map((item, index) => (
+                            <TouchableOpacity onPress={() => navigation.navigate('testdata2', { id: item.id })} style={{ width, height }}>
+                                <Image
+                                    key={index}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%'
+                                    }}
+                                    source={{ uri: item.url }}
+                                />
+                            </TouchableOpacity>
+                        ))}
+                    </ScrollView>
+                    <View style={{ flexDirection: 'row', position: 'absolute', bottom: 0, alignSelf: 'center' }}>
+                        {data.map((i, k) => {
+                            let opacity = position.interpolate({
+                                inputRange: [k - 1, k, k + 1],
+                                outputRange: [0.3, 1, 0.3],
+                                extrapolate: 'clamp'
+                            })
+                            return (
+                                <Animated.View key={k} style={{ opacity, height: 10, width: 10,backgroundColor:'black',borderRadius:20,margin:5 }} />
+                            )
+                        })}
+                    </View>
+
                 </View>
 
 
-            </>
-        );
-    }
-
+            </View>
+        </>
+    )
 }
 
 const styles = StyleSheet.create({
@@ -61,8 +93,91 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 30,
-        marginBottom: 30,
+        marginTop: '2%',
+        height: '100%',
+        marginBottom: 5
     },
-
+    headercontainer: {
+        width: '100%',
+        height: '27%',
+    },
+    header: {
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        backgroundColor: '#30475E',
+        borderBottomLeftRadius: 35,
+        borderBottomRightRadius: 35,
+        elevation: 5,
+        justifyContent: 'center',
+    },
+    headertext: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#676767'
+    },
+    capsule: {
+        width: '90%',
+        height: 10,
+        borderRadius: 15,
+        backgroundColor: '#F5F5F5',
+        justifyContent: 'center'
+    },
+    incapsule: {
+        width: '30%',
+        height: 8,
+        borderRadius: 15,
+        backgroundColor: '#FFB97D',
+        marginLeft: 3
+    },
+    card: {
+        width: '90%',
+        height: '99%',
+        backgroundColor: 'white',
+        borderRadius: 40,
+        elevation: 5,
+        marginBottom: 5
+    },
+    minicardcontainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginTop: '5%',
+        height: 90
+    },
+    minicard: {
+        width: '90%',
+        height: '100%',
+        flexDirection: 'row',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 25,
+        elevation: 10,
+        alignItems: 'center'
+    },
+    subtextcontainer: {
+        width: '60%',
+        alignItems: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    subtext: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#676767'
+    },
+    nextbutton: {
+        width: '100%',
+        backgroundColor: '#555555',
+        height: '100%',
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        elevation: 5
+    },
+    textinbutton: {
+        fontFamily: 'FC_Iconic',
+        fontSize: 22,
+        color: 'white',
+        marginRight: 10
+    }
 });
