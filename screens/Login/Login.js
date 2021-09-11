@@ -13,7 +13,9 @@ import {
     useSessionStorage,
 } from "react-sessionstorage";
 
+import MyDrawer from '../../component/Drawer';
 import ModalPopup from '../../component/ModalPopup';
+
 
 async function FacebookLogin() {
     try {
@@ -87,23 +89,17 @@ export default function Login(props, disabled) {
 
 
     const [id, setId] = useState();
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
-        AsyncStorage.getItem('id')
-            .then((id) => {
-                setId(id);
-            })
+        const fetchData = async () => {
+            await AsyncStorage.getItem('id')
+                .then((value) => {
+                    setId(value);
+                    setIsLoading(true);
+                })
+        }
+        fetchData();
     })
-
-
-
-
-
-    const getData = async () => {
-        AsyncStorage.getItem('id')
-            .then((value) => {
-                setValue(value);
-            })
-    }
 
 
     const emailHandler = (text) => {
@@ -141,114 +137,129 @@ export default function Login(props, disabled) {
 
     return (
         <>
+            {isLoading ? (
+                <>
+                    {id == '0' ? (
+                        <>
+                            {/*---------------------- Popup -------------------------------*/}
+                            <ModalPopup visible={visible}>
+                                <View >
+                                    <View style={styles.popClose}>
+                                        <TouchableOpacity onPress={() => setVisible(false)}>
+                                            <Icon
+                                                name='close'
+                                                size={15}
+                                                color={'black'}
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={styles.PopupContent}>
+                                    <ScrollView>
+                                        <Text style={styles.subfont}>
+                                            ข้อมูลไม่ถูกต้อง !
+                                        </Text>
+                                    </ScrollView>
+                                </View>
+                            </ModalPopup>
+                            {/*---------------------- Popup -------------------------------*/}
 
-            {/*---------------------- Popup -------------------------------*/}
-            <ModalPopup visible={visible}>
-                <View >
-                    <View style={styles.popClose}>
-                        <TouchableOpacity onPress={() => setVisible(false)}>
-                            <Icon
-                                name='close'
-                                size={15}
-                                color={'black'}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={styles.PopupContent}>
-                    <ScrollView>
-                        <Text style={styles.subfont}>
-                            ข้อมูลไม่ถูกต้อง !
-                        </Text>
-                    </ScrollView>
-                </View>
-            </ModalPopup>
-            {/*---------------------- Popup -------------------------------*/}
 
+                            <View style={{ flex: 1, backgroundColor: 'white' }}>
+                                <View style={styles.ImageContent}>
+                                    <Image
+                                        style={{ width: '35%', height: 195 }}
+                                        source={require('../../img/LOGOcom.png')}
+                                    />
+                                </View>
+                                <View style={styles.InputContent}>
+                                    <View style={styles.InputStyle}>
+                                        <Input
+                                            placeholder=' Username'
+                                            leftIcon={
+                                                <Icon
+                                                    name='user'
+                                                    size={20}
+                                                    color='#9C9C9C'
+                                                />
+                                            }
+                                            onChangeText={emailHandler}
+                                        />
+                                    </View>
+                                    <View style={styles.InputStyle}>
+                                        <Input
+                                            placeholder=' Password'
+                                            leftIcon={
+                                                <Icon
+                                                    name='lock'
+                                                    size={20}
+                                                    color='#9C9C9C'
+                                                />
+                                            }
+                                            onChangeText={(text) => setPassword(text)}
+                                        />
+                                    </View>
+                                    <View style={{ width: '60%', height: 25, alignItems: 'flex-end' }}>
+                                        <TouchableOpacity>
+                                            <Text style={{ color: '#555555', fontWeight: 'bold' }}>ลืมรหัสผ่าน?</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                    <TouchableOpacity activeOpacity={disabled ? 0.85 : 1} onPress={() => setSubmit(true)} style={{ width: '35%', alignItems: 'center' }}>
+                                        <View style={styles.ButtonLog}>
+                                            <Text style={{ color: 'white', fontWeight: 'bold' }}>เข้าสู่ระบบ</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                                <TouchableOpacity >
+                                    <View style={{ width: '100%', height: 20, alignItems: 'center', justifyContent: 'flex-end' }}>
+                                        <Text style={{ color: '#9C9C9C', fontWeight: 'bold' }}>{id}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <View style={styles.FacGoo}>
+                                    <TouchableOpacity onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
+                                        <View style={styles.Facebook}>
+                                            <Text style={{ color: 'white', fontWeight: 'bold' }}>Facebook</Text>
+                                        </View>
+                                    </TouchableOpacity>
 
-            <View style={{ flex: 1, backgroundColor: 'white' }}>
-                <View style={styles.ImageContent}>
-                    <Image
-                        style={{ width: '35%', height: 195 }}
-                        source={require('../../img/LOGOcom.png')}
-                    />
-                </View>
-                <View style={styles.InputContent}>
-                    <View style={styles.InputStyle}>
-                        <Input
-                            placeholder=' Username'
-                            leftIcon={
-                                <Icon
-                                    name='user'
-                                    size={20}
-                                    color='#9C9C9C'
-                                />
-                            }
-                            onChangeText={emailHandler}
-                        />
-                    </View>
-                    <View style={styles.InputStyle}>
-                        <Input
-                            placeholder=' Password'
-                            leftIcon={
-                                <Icon
-                                    name='lock'
-                                    size={20}
-                                    color='#9C9C9C'
-                                />
-                            }
-                            onChangeText={(text) => setPassword(text)}
-                        />
-                    </View>
-                    <View style={{ width: '60%', height: 25, alignItems: 'flex-end' }}>
-                        <TouchableOpacity>
-                            <Text style={{ color: '#555555', fontWeight: 'bold' }}>ลืมรหัสผ่าน?</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity activeOpacity={disabled ? 0.85 : 1} onPress={() => setSubmit(true)} style={{ width: '35%', alignItems: 'center' }}>
-                        <View style={styles.ButtonLog}>
-                            <Text style={{ color: 'white', fontWeight: 'bold' }}>เข้าสู่ระบบ</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity >
-                    <View style={{ width: '100%', height: 20, alignItems: 'center', justifyContent: 'flex-end' }}>
-                        <Text style={{ color: '#9C9C9C', fontWeight: 'bold' }}>{id}</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.FacGoo}>
-                    <TouchableOpacity onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
-                        <View style={styles.Facebook}>
-                            <Text style={{ color: 'white', fontWeight: 'bold' }}>Facebook</Text>
-                        </View>
-                    </TouchableOpacity>
+                                    {!googleSubmitting && (
+                                        <TouchableOpacity google={true} onPress={handleGoogleSignin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
+                                            <View style={styles.Google}>
+                                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Google</Text>
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
 
-                    {!googleSubmitting && (
-                        <TouchableOpacity google={true} onPress={handleGoogleSignin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
-                            <View style={styles.Google}>
-                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Google</Text>
+                                    {googleSubmitting && (
+                                        <TouchableOpacity google={true} disabled={true} style={{ width: '28%', alignItems: 'center' }}>
+                                            <View style={styles.Google}>
+                                                <ActivityIndicator size='small' color='white' />
+                                            </View>
+                                        </TouchableOpacity>
+                                    )}
+
+                                </View>
+                                <View style={styles.AlreadyContent}>
+                                    <Text style={{ color: '#555555', fontWeight: 'bold' }}>มีบัญชีอยู่แล้ว?</Text>
+                                    <TouchableOpacity onPress={() => props.navigation.navigate('Register')} >
+                                        <Text style={{ color: '#559BF8', fontWeight: 'bold' }}>สมัครสมาชิกที่นี่</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
-                        </TouchableOpacity>
+                        </>
+                    ) : (
+                        <>
+                            <MyDrawer />
+                        </>
                     )}
-
-                    {googleSubmitting && (
-                        <TouchableOpacity google={true} disabled={true} style={{ width: '28%', alignItems: 'center' }}>
-                            <View style={styles.Google}>
-                                <ActivityIndicator size='small' color='white' />
-                            </View>
-                        </TouchableOpacity>
-                    )}
-
-                </View>
-                <View style={styles.AlreadyContent}>
-                    <Text style={{ color: '#555555', fontWeight: 'bold' }}>มีบัญชีอยู่แล้ว?</Text>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Register')} >
-                        <Text style={{ color: '#559BF8', fontWeight: 'bold' }}>สมัครสมาชิกที่นี่</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+                </>
+            ) : (
+                <>
+                    <Text style={{ fontSize: 100 }}> Loading...... </Text>
+                </>
+            )}
         </>
     );
 }

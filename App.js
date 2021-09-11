@@ -22,60 +22,23 @@ import testdata2 from './testdata2';
 const Stack = createStackNavigator();
 
 export default function App() {
-  const [id, setId] = useState(1);
-  useEffect(() => {
-    AsyncStorage.getItem('id')
-      .then((value) => {
-        setId(value);
-      })
-  })
+  return (
+    <>
+      <NavigationContainer>
+        <Stack.Navigator>
 
-
-
-
-  if (id != null) {
-    return (
-      <>
-        <NavigationContainer>
-          <Stack.Navigator>
-          <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
-            
-            
-
-            <Stack.Screen name="testdata2" component={testdata2} options={{ headerShown: false }} />
-
-            <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-            <Stack.Screen name="AddDog" component={AddDog} options={{ headerShown: false }} />
-
-          </Stack.Navigator>
-        </NavigationContainer>
-      </>
-    )
-  } else {
-    return (
-      <>
-        <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
           <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-            <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
-            
-            
-            <Stack.Screen name="testdata2" component={testdata2} options={{ headerShown: false }} />
+          <Stack.Screen name="testdata2" component={testdata2} options={{ headerShown: false }} />
+          <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
+          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+          <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name="AddDog" component={AddDog} options={{ headerShown: false }} />
 
-            <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-            <Stack.Screen name="AddDog" component={AddDog} options={{ headerShown: false }} /><Stack.Screen name="Test" component={Test} options={{ headerShown: false }} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </>
-    )
-  }
-
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
+  )
 }
 

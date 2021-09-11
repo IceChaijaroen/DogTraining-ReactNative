@@ -46,7 +46,7 @@ export function DrawerContent(props) {
                         console.log(err)
                     })
             })
-    })
+    }, [udata])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -65,14 +65,6 @@ export function DrawerContent(props) {
         }
         fetchData();
     }, [dogdata])
-
-
-    async function logout() {
-        await AsyncStorage.removeItem('id');
-        await AsyncStorage.removeItem('udogid');
-        props.navigation.navigate('Login');
-
-    }
 
 
 
@@ -125,7 +117,7 @@ export function DrawerContent(props) {
                                     data={dogdata}
                                     renderItem={
                                         ({ item }) => (
-                                            <TouchableOpacity onPress={() => props.navigation.navigate('Tabs',AsyncStorage.setItem('udogid',item.udogid))}>
+                                            <TouchableOpacity onPress={() => props.navigation.navigate('Tabs', AsyncStorage.setItem('udogid', item.udogid))}>
                                                 <View style={style.card}>
                                                     <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                                         <Avatar.Image
@@ -236,7 +228,7 @@ export function DrawerContent(props) {
                     )}
                     label="ออกจากระบบ"
                     labelStyle={{ fontWeight: 'bold' }}
-                    onPress={logout}
+                    onPress={() => { props.navigation.navigate('Login', AsyncStorage.setItem('id', '0'), AsyncStorage.setItem('udogid', '0')) }}
                 />
             </Drawer.Section>
         </View>

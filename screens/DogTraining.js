@@ -13,11 +13,14 @@ import AddDog from './AddDog';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-export default function Dogtraining({ navigation }, disabled) {
+export default function Dogtraining({ navigation, route }, disabled) {
   const [train, setTrain] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingDog, setLoadingDog] = useState(false);
   const [udogid, setUdogid] = useState();
   const [user, setUser] = useState();
+  const [dogdata, setDogdata] = useState([]);
+  const [doglevel, setDoglevel] = useState([]);
 
 
   useEffect(() => {
@@ -28,13 +31,14 @@ export default function Dogtraining({ navigation }, disabled) {
         })
     }
     fetchData();
-  })
+  }, [user])
 
   useEffect(() => {
     const fetchData = async () => {
       await AsyncStorage.getItem('udogid')
         .then((value) => {
           setUdogid(value);
+          setLoadingDog(true);
         })
     }
     fetchData();
@@ -62,6 +66,54 @@ export default function Dogtraining({ navigation }, disabled) {
     }
     fetchData();
   }, [train])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showuserdogfromuser.php',
+          {
+            params: {
+              id: user,
+              udogid: udogid
+            }
+          })
+        if (response.data == 'null') {
+          setIsLoading(true);
+        } else {
+          setDogdata(response.data);
+          setIsLoading(true);
+        }
+      } catch {
+        alert("showuserdogfromuser")
+      }
+    }
+    fetchData();
+  }, [train])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showdoglevel.php',
+          {
+            params: {
+              id: user,
+              udogid: udogid
+            }
+          })
+        if (response.data == 'null') {
+          setIsLoading(true);
+        } else {
+          setDoglevel(response.data);
+          setIsLoading(true);
+        }
+      } catch {
+        alert("showdoglevel")
+      }
+    }
+    fetchData();
+  }, [doglevel])
 
 
 
@@ -227,148 +279,155 @@ export default function Dogtraining({ navigation }, disabled) {
               <AddDog />
             ) : (
               <>
-                <View style={styles.headercontainer}>
-                  <View style={styles.header}>
-                    <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
-                      <View style={{ width: '50%' }}>
-                        <TouchableOpacity
-                          style={{ marginLeft: 15 }}
-                          onPress={() => navigation.openDrawer()}
-                        >
-                          <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                            <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
+                {loadingDog ? (
+                  <>
+                    {/** -----------Header------------------ */}
+                    <View style={styles.headercontainer}>
+                      <View style={styles.header}>
+                        <View style={{ width: '100%', flexDirection: 'row', marginTop: '10%' }}>
+                          <View style={{ width: '50%' }}>
+                            <TouchableOpacity
+                              style={{ marginLeft: 15 }}
+                              onPress={() => navigation.openDrawer()}
+                            >
+                              <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
+                              </View>
+                            </TouchableOpacity>
                           </View>
-                        </TouchableOpacity>
-                      </View>
-                      <View style={{ width: '50%', alignItems: 'flex-end' }}>
-                        <TouchableOpacity
-                          style={{ marginRight: 15 }}
-                          onPress={() => navigation.navigate('Noti')}
-                        >
-                          <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                            <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                          <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                            <TouchableOpacity
+                              style={{ marginRight: 15 }}
+                              onPress={() => navigation.navigate('Noti')}
+                            >
+                              <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                              </View>
+                            </TouchableOpacity>
                           </View>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                    <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
-                      <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-                        <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                          <Image
-                            source={require('../img/dog.png')}
-                            style={{
-                              width: '55%',
-                              height: '55%',
-
-                            }}
-                          />
                         </View>
 
-                      </View>
-                      <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-                        <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                          <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
-                          </View>
-                          <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
-                            <View style={styles.capsule}>
-                              <View style={styles.incapsule}></View>
+
+                        <FlatList
+                          data={dogdata}
+                          renderItem={({ item }) => (
+                            <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: 140 }}>
+                              <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                                <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                  <Image
+                                    source={{ uri: item.udogimg }}
+                                    style={{
+                                      width: '60%',
+                                      height: '60%',
+
+                                    }}
+                                  />
+                                </View>
+
+                              </View>
+                              <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
+                                <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
+                                  <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogname} </Text>
+                                </View>
+                                <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
+                                  <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
+                                </View>
+                                <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                                  {doglevel.map((item, key) => (
+                                    <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
+                                      <Progress key={key} step={item.sumstep} steps={5000} height={15} />
+                                    </View>
+                                  ))}
+                                </View>
+
+                              </View>
                             </View>
-                          </View>
-                        </View>
-                        <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                          <View style={{ width: '80%', height: '100%' }}>
-                            <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
-                          </View>
-                          <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
-                            <Feather
-                              name='triangle'
-                              size={15}
-                              color="#FFFFFF"
-                              style={{
-                                marginRight: 10,
-                                transform: [{ rotate: "180deg" }],
-                              }}
-                            />
-                          </View>
-                        </View>
+                          )}
+                        />
+
+
                       </View>
                     </View>
-                  </View>
-                </View>
-                {/** -----------Header------------------ */}
+                    {/** -----------Header------------------ */}
 
 
-                <ScrollView >
-                  <View style={styles.container}>
-                    <View style={styles.card}>
-                      <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-                        <Text style={styles.headertext}> Level 0 :  ปรับพฤติกรรม </Text>
+                    <ScrollView >
+                      <View style={styles.container}>
+                        <View style={styles.card}>
+                          <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                            <Text style={styles.headertext}> Level 0 :  ปรับพฤติกรรม </Text>
+                          </View>
+                          <FlatList
+                            data={train}
+                            renderItem={level0}
+                            keyExtractor={(item, index) => index.toString()}
+                          />
+
+
+                          {/**------------------------------------------------------------------------------------------- */}
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                            <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                          </View>
+                          {/**------------------------------------------------------------------------------------------- */}
+
+
+                          <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                            <Text style={styles.headertext}> Level 1 :  ท่าพื้นฐาน </Text>
+                          </View>
+                          <FlatList
+                            data={train}
+                            renderItem={level1}
+                            keyExtractor={(item, index) => index.toString()}
+                          />
+
+
+                          {/**------------------------------------------------------------------------------------------- */}
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                            <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                          </View>
+                          {/**------------------------------------------------------------------------------------------- */}
+
+
+                          <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                            <Text style={styles.headertext}> Level 2 :  ท่ายาก </Text>
+                          </View>
+                          <FlatList
+                            data={train}
+                            renderItem={level2}
+                            keyExtractor={(item, index) => index.toString()}
+                          />
+
+
+                          {/**------------------------------------------------------------------------------------------- */}
+                          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                            <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
+                          </View>
+                          {/**------------------------------------------------------------------------------------------- */}
+
+
+                          <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
+                            <Text style={styles.headertext}> Level 3 :  ท่าพิเศษ </Text>
+                          </View>
+                          <FlatList
+                            data={train}
+                            renderItem={level3}
+                            keyExtractor={(item, index) => index.toString()}
+                          />
+
+
+                        </View>
                       </View>
-                      <FlatList
-                        data={train}
-                        renderItem={level0}
-                        keyExtractor={(item, index) => index.toString()}
-                      />
+                    </ScrollView>
+                  </>
+                ) : (
+                  <>
+                    <Text style={{ fontSize: 100 }}> Loading dog ... </Text>
+                  </>
+                )}
 
-
-                      {/**------------------------------------------------------------------------------------------- */}
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-                        <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-                      </View>
-                      {/**------------------------------------------------------------------------------------------- */}
-
-
-                      <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-                        <Text style={styles.headertext}> Level 1 :  ท่าพื้นฐาน </Text>
-                      </View>
-                      <FlatList
-                        data={train}
-                        renderItem={level1}
-                        keyExtractor={(item, index) => index.toString()}
-                      />
-
-
-                      {/**------------------------------------------------------------------------------------------- */}
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-                        <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-                      </View>
-                      {/**------------------------------------------------------------------------------------------- */}
-
-
-                      <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-                        <Text style={styles.headertext}> Level 2 :  ท่ายาก </Text>
-                      </View>
-                      <FlatList
-                        data={train}
-                        renderItem={level2}
-                        keyExtractor={(item, index) => index.toString()}
-                      />
-
-
-                      {/**------------------------------------------------------------------------------------------- */}
-                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-                        <View style={{ flex: 1, height: 3, backgroundColor: '#CFCFCF', marginTop: 10, marginBottom: 20 }} />
-                      </View>
-                      {/**------------------------------------------------------------------------------------------- */}
-
-
-                      <View style={{ width: '80%', height: 30, marginBottom: '5%' }}>
-                        <Text style={styles.headertext}> Level 3 :  ท่าพิเศษ </Text>
-                      </View>
-                      <FlatList
-                        data={train}
-                        renderItem={level3}
-                        keyExtractor={(item, index) => index.toString()}
-                      />
-
-
-                    </View>
-                  </View>
-                </ScrollView>
               </>
             )}
           </>

@@ -72,10 +72,14 @@ export default function StatisTrain({ navigation, route }) {
     const [sum, SetSum] = useState([]);
     const [statis, setStatis] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoading2, setIsLoading2] = useState(false);
     const [sumsit, setSumsit] = useState([]);
     const { idtrain } = route.params;
     const [udogid, setUdogid] = useState();
     const [user, setUser] = useState();
+    const [dogdata, setDogdata] = useState([]);
+    const [doglevel, setDoglevel] = useState([]);
+
 
 
     useEffect(() => {
@@ -98,6 +102,51 @@ export default function StatisTrain({ navigation, route }) {
         fetchData();
     }, [udogid])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showuserdogfromuser.php',
+                    {
+                        params: {
+                            id: user,
+                            udogid: udogid
+                        }
+                    })
+                if (response.data == 'null') {
+                    alert("");
+                } else {
+                    setDogdata(response.data);
+                }
+            } catch {
+                alert("showuserdogfromuser")
+            }
+        }
+        fetchData();
+    }, [statis])
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showdoglevel.php',
+                    {
+                        params: {
+                            id: user,
+                            udogid: udogid
+                        }
+                    })
+                if (response.data == 'null') {
+                    alert("");
+                } else {
+                    setDoglevel(response.data);
+                }
+            } catch {
+                alert("showdoglevel")
+            }
+        }
+        fetchData();
+    }, [statis])
+
     {/**   useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
@@ -119,17 +168,23 @@ export default function StatisTrain({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://35.187.253.40/showstatisexer.php', {
-                    params: {
-                        idtrain: idtrain,
-                        uid: user,
-                        udogid: udogid
-                    }
-                })
-                setStatis(response.data);
-                setIsLoading(true);
+                const response = await axios.get('http://35.187.253.40/showstatisexer.php',
+                    {
+                        params: {
+                            idtrain: idtrain,
+                            uid: user,
+                            udogid: udogid
+                        }
+                    })
+                if (response.data == 'null') {
+                    setStatis(response.data);
+                    setIsLoading(false);
+                } else {
+                    setStatis(response.data);
+                    setIsLoading(true);
+                }
             } catch {
-                alert('.....Error.......')
+                alert("ERROR------getudogid.php")
             }
         }
         fetchData();
@@ -140,16 +195,22 @@ export default function StatisTrain({ navigation, route }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('http://35.187.253.40/testphp/sumstep.php', {
-                    params: {
-                        idtrain: idtrain,
-                        uid: user,
-                        udogid: udogid
-                    }
-                });
-                setSumsit(response.data);
+                const response = await axios.get('http://35.187.253.40/testphp/sumstep.php',
+                    {
+                        params: {
+                            idtrain: idtrain,
+                            uid: user,
+                            udogid: udogid
+                        }
+                    })
+                if (response.data == 'null') {
+                    setSumsit(response.data);
+                } else {
+                    setSumsit(response.data);
+                    setIsLoading2(true);
+                }
             } catch {
-                alert('ERROR');
+                alert("ERROR------getudogid.php")
             }
         }
         fetchData();
@@ -210,7 +271,7 @@ export default function StatisTrain({ navigation, route }) {
                 {/** -----------Header------------------ */}
                 <View style={styles.headercontainer}>
                     <View style={styles.header}>
-                        <View style={{ width: '100%', flexDirection: 'row', marginTop: '6%' }}>
+                        <View style={{ width: '100%', flexDirection: 'row', marginTop: '10%' }}>
                             <View style={{ width: '50%' }}>
                                 <TouchableOpacity
                                     style={{ marginLeft: 15 }}
@@ -232,49 +293,46 @@ export default function StatisTrain({ navigation, route }) {
                                 </TouchableOpacity>
                             </View>
                         </View>
-                        <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: '60%' }}>
-                            <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-                                <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Image
-                                        source={require('../../img/dog.png')}
-                                        style={{
-                                            width: '55%',
-                                            height: '55%',
 
-                                        }}
-                                    />
-                                </View>
 
-                            </View>
-                            <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-                                <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                                    <View style={{ width: '50%', height: '100%', justifyContent: 'center' }}>
-                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: 'white' }}> น้องโบ้ </Text>
-                                    </View>
-                                    <View style={{ width: '50%', height: '100%', alignItems: 'center' }}>
-                                        <View style={styles.capsule}>
-                                            <View style={styles.incapsule}></View>
+                        <FlatList
+                            data={dogdata}
+                            renderItem={({ item }) => (
+                                <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: 140 }}>
+                                    <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                                        <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                            <Image
+                                                source={{ uri: item.udogimg }}
+                                                style={{
+                                                    width: '60%',
+                                                    height: '60%',
+
+                                                }}
+                                            />
                                         </View>
+
+                                    </View>
+                                    <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
+                                        <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
+                                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogname} </Text>
+                                        </View>
+                                        <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
+                                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
+                                        </View>
+                                        <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                                            {doglevel.map((item, key) => (
+                                                <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
+                                                    <Progress key={key} step={item.sumstep} steps={5000} height={15} />
+                                                </View>
+                                            ))}
+                                        </View>
+
                                     </View>
                                 </View>
-                                <View style={{ width: '100%', height: '30%', flexDirection: 'row' }}>
-                                    <View style={{ width: '80%', height: '100%' }}>
-                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: 'white' }}> โกลเด้น รีทรีฟเวอร์ </Text>
-                                    </View>
-                                    <View style={{ width: '20%', height: '100%', alignItems: 'flex-end' }}>
-                                        <Feather
-                                            name='triangle'
-                                            size={15}
-                                            color="#FFFFFF"
-                                            style={{
-                                                marginRight: 10,
-                                                transform: [{ rotate: "180deg" }],
-                                            }}
-                                        />
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
+                            )}
+                        />
+
+
                     </View>
                 </View>
                 {/** -----------Header------------------ */}
@@ -291,7 +349,7 @@ export default function StatisTrain({ navigation, route }) {
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
-                        {/**     {isLoading ? (
+                            {isLoading ? (
                                 <ScrollView style={{ width: '90%' }} horizontal={true}>
                                     <View style={{ width: '100%', height: 290 }}>
 
@@ -324,25 +382,26 @@ export default function StatisTrain({ navigation, route }) {
                             ) : (
                                 <Text>Loading...</Text>
                             )}
-                            */}
-                            {sumsit.map(item => (
-                                <Text>{item.sumstep} {user}{udogid}{idtrain} </Text>
-                            ))}
-                        
                         </View>
                         <View style={{ width: '100%', height: 60 }}>
                             <View style={{ width: '80%', justifyContent: 'center', height: 30, marginLeft: 40, marginBottom: 5 }}>
                                 <Text style={{ color: '#737373', fontFamily: 'FC_Iconic', fontSize: 18 }}>ระดับความสำเร็จ</Text>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                               {/** <FlatList
-                                    width={'80%'}
-                                    data={sumsit}
-                                    renderItem={({ item }) => (
-                                        <Progress step={item.sumstep} steps={500} height={10} />
-                                    )}
-                                />
- */}
+                                {isLoading2 ? (
+                                    <FlatList
+                                        width={'80%'}
+                                        data={sumsit}
+                                        renderItem={({ item }) => (
+                                            <Progress step={item.sumstep} steps={500} height={10} />
+                                        )}
+                                    />
+                                ) : (
+                                    <>
+                                    </>
+                                )}
+
+
                             </View>
                         </View>
                         <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
