@@ -122,7 +122,7 @@ export default function StatisTrain({ navigation, route }) {
             }
         }
         fetchData();
-    }, [statis])
+    }, [udogid])
 
 
     useEffect(() => {

@@ -61,7 +61,7 @@ export default function Recommend({ navigation, route }) {
       }
     }
     fetchData();
-  }, [isLoading])
+  }, [udogid])
 
 
   useEffect(() => {

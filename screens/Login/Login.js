@@ -139,7 +139,7 @@ export default function Login(props, disabled) {
         <>
             {isLoading ? (
                 <>
-                    {id == '0' ? (
+                    {id == null ? (
                         <>
                             {/*---------------------- Popup -------------------------------*/}
                             <ModalPopup visible={visible}>

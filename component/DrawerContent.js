@@ -33,20 +33,26 @@ export function DrawerContent(props) {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
-                axios.get('http://35.187.253.40/showuser.php',
+            })
+    })
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showuser.php',
                     {
                         params: {
                             id: user
                         }
                     })
-                    .then(response => {
-                        setUdata(response.data);
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
-            })
+                setUdata(response.data);
+            } catch {
+                alert('ssss');
+            }
+        }
+        fetchData();
     }, [udata])
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -64,7 +70,7 @@ export function DrawerContent(props) {
             }
         }
         fetchData();
-    }, [dogdata])
+    }, dogdata)
 
 
 
@@ -228,7 +234,7 @@ export function DrawerContent(props) {
                     )}
                     label="ออกจากระบบ"
                     labelStyle={{ fontWeight: 'bold' }}
-                    onPress={() => { props.navigation.navigate('Login', AsyncStorage.setItem('id', '0'), AsyncStorage.setItem('udogid', '0')) }}
+                    onPress={() => { props.navigation.navigate('Login', AsyncStorage.removeItem('id'), AsyncStorage.removeItem('udogid')) }}
                 />
             </Drawer.Section>
         </View>

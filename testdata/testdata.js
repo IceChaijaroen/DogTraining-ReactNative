@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import { SliderBox } from "react-native-image-slider-box";
 import { Component } from 'react';
-import ModalCount from './ModalCount';
+
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -16,7 +16,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export default function Training({ navigation, route }) {
-    const { idtrain } = route.params;
     const [gif, setGif] = useState([]);
     const [train, setTrain] = useState([]);
     const [udogid, setUdogid] = useState();
@@ -49,7 +48,7 @@ export default function Training({ navigation, route }) {
                 const response = await axios.get('http://35.187.253.40/gif.php',
                     {
                         params: {
-                            idtrain: idtrain
+                            idtrain: 1
                         }
                     })
                 setGif(response.data)
@@ -58,7 +57,7 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchData();
-    }, [udogid])
+    }, gif)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,7 +65,7 @@ export default function Training({ navigation, route }) {
                 const response = await axios.get('http://35.187.253.40/educate.php',
                     {
                         params: {
-                            idtrain: idtrain
+                            idtrain: 1
                         }
                     })
                 setTrain(response.data)
@@ -75,7 +74,7 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchData();
-    }, [udogid])
+    }, train)
 
     const [second, setSecound] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
@@ -83,7 +82,7 @@ export default function Training({ navigation, route }) {
     const [submit, setSubmit] = useState("");
     const [visible, setVisible] = useState();
     const [countdesc, setCountdesc] = useState([]);
-    const [minute, setMinute] = useState(1);
+    const [minute, setMinute] = useState(10);
     const [perseconds, setPersecound] = useState(59);
     const [timestop, setTimestop] = useState(true);
 
@@ -132,7 +131,7 @@ export default function Training({ navigation, route }) {
                         second: second,
                         uid: user,
                         count: count,
-                        idtrain: idtrain,
+                        idtrain: 1,
                         udogid: udogid
                     })
                 )
@@ -158,7 +157,7 @@ export default function Training({ navigation, route }) {
             try {
                 const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
                     params: {
-                        idtrain: idtrain,
+                        idtrain: 1,
                         uid:user,
                         udogid:udogid
                     }
@@ -179,7 +178,7 @@ export default function Training({ navigation, route }) {
                 .post(
                     "http://35.187.253.40/testphp/checktostep.php",
                     JSON.stringify({
-                        idtrain: idtrain,
+                        idtrain: 1,
                         uid:user,
                         udogid:udogid
                     })
@@ -244,19 +243,12 @@ export default function Training({ navigation, route }) {
         )
     }
 
-    let [fontsLoaded] = useFonts({
-        'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
-        'bahnschrift': require('../../assets/fonts/bahnschrift.ttf'),
-        'FC_Iconic': require('../../assets/fonts/FC_Iconic_Bold.ttf'),
-    });
-    if (!fontsLoaded) {
-        return <AppLoading />;
-    } else {
+
         if (minute == 0) {
             { change }
             return (
                 <>
-                    <ModalCount visible={visible}>
+                    
                         <View style={styles.PopupHeader}>
                             <View style={{ width: '100%', height: 50, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
                                 <Text style={styles.popupFont}>พักก่อน !</Text>
@@ -264,13 +256,7 @@ export default function Training({ navigation, route }) {
                         </View>
                         <View style={styles.PopupContent}>
                             <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                <Image
-                                    source={require('../../img/dogtired2.jpg')}
-                                    style={{
-                                        width: '70%',
-                                        height: '80%'
-                                    }}
-                                />
+                               
                             </View>
                             <View style={{ height: '50%', justifyContent: 'center', alignItems: 'center' }}>
                                 <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>วันนี้ฝึกมากพอแล้ว </Text>
@@ -283,7 +269,7 @@ export default function Training({ navigation, route }) {
                             </View>
 
                         </View>
-                    </ModalCount>
+              
                 </>
             )
 
@@ -399,7 +385,7 @@ export default function Training({ navigation, route }) {
         }
 
     }
-}
+
 
 
 const styles = StyleSheet.create({

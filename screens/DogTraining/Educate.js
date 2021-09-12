@@ -92,7 +92,7 @@ export default function Educate({ navigation, route }) {
       }
     }
     fetchData();
-  }, [gif])
+  }, [udogid])
 
 
   useEffect(() => {
