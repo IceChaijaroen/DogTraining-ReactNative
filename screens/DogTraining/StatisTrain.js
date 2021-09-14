@@ -113,7 +113,7 @@ export default function StatisTrain({ navigation, route }) {
                         }
                     })
                 if (response.data == 'null') {
-                    alert("");
+                    console.log('null');
                 } else {
                     setDogdata(response.data);
                 }
@@ -136,7 +136,7 @@ export default function StatisTrain({ navigation, route }) {
                         }
                     })
                 if (response.data == 'null') {
-                    alert("");
+                    console.log('null');
                 } else {
                     setDoglevel(response.data);
                 }
@@ -145,7 +145,7 @@ export default function StatisTrain({ navigation, route }) {
             }
         }
         fetchData();
-    }, [statis])
+    }, [dogdata])
 
     {/**   useEffect(() => {
         AsyncStorage.getItem('id')
@@ -177,8 +177,7 @@ export default function StatisTrain({ navigation, route }) {
                         }
                     })
                 if (response.data == 'null') {
-                    setStatis(response.data);
-                    setIsLoading(false);
+                    console.log('null');
                 } else {
                     setStatis(response.data);
                     setIsLoading(true);
@@ -188,7 +187,7 @@ export default function StatisTrain({ navigation, route }) {
             }
         }
         fetchData();
-    }, [statis])
+    }, [dogdata])
 
 
 
@@ -204,7 +203,7 @@ export default function StatisTrain({ navigation, route }) {
                         }
                     })
                 if (response.data == 'null') {
-                    setSumsit(response.data);
+                    alert("null")
                 } else {
                     setSumsit(response.data);
                     setIsLoading2(true);
@@ -214,7 +213,7 @@ export default function StatisTrain({ navigation, route }) {
             }
         }
         fetchData();
-    }, [sumsit])
+    }, [dogdata])
 
 
 
@@ -405,7 +404,7 @@ export default function StatisTrain({ navigation, route }) {
                             </View>
                         </View>
                         <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '25%', height: '70%' }}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Tabs', setIsLoading(false))} style={{ width: '25%', height: '70%' }}>
                                 <View style={styles.nextbutton}>
                                     <Text style={styles.textinbutton} >ถัดไป</Text>
                                     <FontAwesome5

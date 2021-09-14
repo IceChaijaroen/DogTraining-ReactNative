@@ -8,6 +8,7 @@ import axios from 'axios';
 import { FlatList } from 'react-native-gesture-handler';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Progress from '../../component/Progress';
+import Headertraining from './Header';
 
 
 export default function Recommend({ navigation, route }) {
@@ -34,134 +35,23 @@ export default function Recommend({ navigation, route }) {
       await AsyncStorage.getItem('udogid')
         .then((value) => {
           setUdogid(value);
+          setIsLoading(true);
         })
     }
     fetchData();
   },[udogid])
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://35.187.253.40/showuserdogfromuser.php',
-          {
-            params: {
-              id: user,
-              udogid: udogid
-            }
-          })
-        if (response.data == 'null') {
-          setIsLoading(true);
-        } else {
-          setDogdata(response.data);
-          setIsLoading(true);
-        }
-      } catch {
-        alert("showuserdogfromuser")
-      }
-    }
-    fetchData();
-  }, [udogid])
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://35.187.253.40/showdoglevel.php',
-          {
-            params: {
-              id: user,
-              udogid: udogid
-            }
-          })
-        if (response.data == 'null') {
-          setIsLoading(true);
-        } else {
-          setDoglevel(response.data);
-          setIsLoading(true);
-        }
-      } catch {
-        alert("showdoglevel")
-      }
-    }
-    fetchData();
-  }, [isLoading])
-
   return (
     <>
       {!isLoading ? (
         <>
-          <Text style={{ fontSize: 100 }}> Loading ... REcommend </Text>
+          <Text style={{ fontSize: 100 }}> Loading ... Recommend </Text>
         </>
       ) : (
         <>
           {/** -----------Header------------------ */}
-          <View style={styles.headercontainer}>
-            <View style={styles.header}>
-              <View style={{ width: '100%', flexDirection: 'row', marginTop: '10%' }}>
-                <View style={{ width: '50%' }}>
-                  <TouchableOpacity
-                    style={{ marginLeft: 15 }}
-                    onPress={() => navigation.openDrawer()}
-                  >
-                    <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                      <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: '50%', alignItems: 'flex-end' }}>
-                  <TouchableOpacity
-                    style={{ marginRight: 15 }}
-                    onPress={() => navigation.navigate('Noti')}
-                  >
-                    <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                      <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-
-              <FlatList
-                data={dogdata}
-                renderItem={({ item }) => (
-                  <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: 140 }}>
-                    <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-                      <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                        <Image
-                          source={{ uri: item.udogimg }}
-                          style={{
-                            width: '60%',
-                            height: '60%',
-
-                          }}
-                        />
-                      </View>
-
-                    </View>
-                    <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-                      <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
-                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogname} </Text>
-                      </View>
-                      <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
-                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
-                      </View>
-                      <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                        {doglevel.map((item, key) => (
-                          <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                            <Progress key={key} step={item.sumstep} steps={5000} height={15} />
-                          </View>
-                        ))}
-                      </View>
-
-                    </View>
-                  </View>
-                )}
-              />
-
-
-            </View>
-          </View>
+          <Headertraining />
           {/** -----------Header------------------ */}
 
 

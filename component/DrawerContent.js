@@ -28,11 +28,13 @@ export function DrawerContent(props) {
     const [udata, setUdata] = useState([]);
     const [dogdata, setDogdata] = useState([]);
     const [udogid, setUdogid] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         AsyncStorage.getItem('id')
             .then((value) => {
                 setValue(value);
+                setIsLoading(true);
             })
     })
 
@@ -46,12 +48,13 @@ export function DrawerContent(props) {
                         }
                     })
                 setUdata(response.data);
+                
             } catch {
                 alert('ssss');
             }
         }
         fetchData();
-    }, [udata])
+    }, [isLoading])
 
 
     useEffect(() => {
@@ -70,7 +73,7 @@ export function DrawerContent(props) {
             }
         }
         fetchData();
-    }, dogdata)
+    }, [isLoading])
 
 
 

@@ -13,6 +13,7 @@ import axios from 'axios';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Headertraining from './Header';
 
 
 export default function Training({ navigation, route }) {
@@ -43,7 +44,7 @@ export default function Training({ navigation, route }) {
         fetchData();
     }, [udogid])
 
-  useEffect(() => {
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('http://35.187.253.40/gif.php',
@@ -58,7 +59,7 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchData();
-    }, [udogid])
+    }, [gif])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,7 +76,7 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchData();
-    }, [udogid])
+    }, [gif])
 
     const [second, setSecound] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
@@ -159,8 +160,8 @@ export default function Training({ navigation, route }) {
                 const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
                     params: {
                         idtrain: idtrain,
-                        uid:user,
-                        udogid:udogid
+                        uid: user,
+                        udogid: udogid
                     }
                 });
                 setCountdesc(response.data);
@@ -180,8 +181,8 @@ export default function Training({ navigation, route }) {
                     "http://35.187.253.40/testphp/checktostep.php",
                     JSON.stringify({
                         idtrain: idtrain,
-                        uid:user,
-                        udogid:udogid
+                        uid: user,
+                        udogid: udogid
                     })
                 )
                 .then((response) => {
@@ -209,6 +210,12 @@ export default function Training({ navigation, route }) {
             setTimestop(false);
         }
     })
+
+    const next = () => {
+        navigation.navigate('StatisTrain',{idtrain:idtrain});
+        setMinute(1);
+        setTimestop(true);
+    }
 
 
     const renderItem = ({ item }) => {
@@ -277,7 +284,7 @@ export default function Training({ navigation, route }) {
                                 <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}> เดี๋ยวสุนัขของคุณจะเบื่อเอานะ</Text>
                             </View>
                             <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={() => navigation.navigate('StatisTrain', { idtrain: idtrain })} style={{ width: '40%', height: '95%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                <TouchableOpacity onPress={next} style={{ width: '40%', height: '95%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
                                     <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
                                 </TouchableOpacity>
                             </View>
@@ -300,7 +307,7 @@ export default function Training({ navigation, route }) {
                             <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
                         </View>
                         <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                         <FlatList
+                            <FlatList
                                 data={train}
                                 renderItem={({ item }) => (
                                     <Image
@@ -316,7 +323,7 @@ export default function Training({ navigation, route }) {
 
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                      <FlatList
+                            <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
@@ -369,7 +376,7 @@ export default function Training({ navigation, route }) {
 
                         </View>
                         <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                       <FlatList
+                            <FlatList
                                 data={gif}
                                 renderItem={renderItem}
                                 keyExtractor={(item) => item.idgif}
