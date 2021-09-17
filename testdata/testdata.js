@@ -38,7 +38,15 @@ export default function showGraph({ navigation }) {
     const [oct, setOct] = useState([]);
     const [nov, setNov] = useState([]);
     const [dec, setDec] = useState([]);
+    const [thisweek, setThisweek] = useState([]);
+    const [lastweek, setLastweek] = useState([]);
+    const [twoweek, setTwoweek] = useState([]);
+    const [threeweek, setThreeweek] = useState([]);
 
+    const Moment = require('moment')
+    const array = [{date:"2018-05-11"},{date:"2018-05-12"},{date:"2018-05-10"}]
+    const sortedArray  = array.sort((a,b) => new Moment(a.date).format('YYYYMMDD') - new Moment(b.date).format('YYYYMMDD'))
+    console.log(sortedArray);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -66,6 +74,70 @@ export default function showGraph({ navigation }) {
 
     useEffect(() => {
         const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/statis/threeweek.php',
+                    {
+                        params: {
+                            id: 1,
+                            udogid: 1
+                        }
+                    })
+                if (response.data == 'null') {
+                    setThreeweek(response.data);
+                } else {
+                    setThreeweek(response.data);
+                }
+            } catch {
+                alert("showdoglevel")
+            }
+            try {
+                const response = await axios.get('http://35.187.253.40/statis/twoweek.php',
+                    {
+                        params: {
+                            id: 1,
+                            udogid: 1
+                        }
+                    })
+                if (response.data == 'null') {
+                    setTwoweek(response.data);
+                } else {
+                    setTwoweek(response.data);
+                }
+            } catch {
+                alert("showdoglevel")
+            }
+            try {
+                const response = await axios.get('http://35.187.253.40/statis/thisweek.php',
+                    {
+                        params: {
+                            id: 1,
+                            udogid: 1
+                        }
+                    })
+                if (response.data == 'null') {
+                    setThisweek(response.data);
+                } else {
+                    setThisweek(response.data);
+                }
+            } catch {
+                alert("showdoglevel")
+            }
+            try {
+                const response = await axios.get('http://35.187.253.40/statis/lastweek.php',
+                    {
+                        params: {
+                            id: 1,
+                            udogid: 1
+                        }
+                    })
+                if (response.data == 'null') {
+                    setLastweek(response.data);
+                } else {
+                    setLastweek(response.data);
+                }
+            } catch {
+                alert("showdoglevel")
+            }
             try {
                 const response = await axios.get('http://35.187.253.40/statis/statisjan.php',
                     {
@@ -285,18 +357,98 @@ export default function showGraph({ navigation }) {
     const week = [
         {
             id: 1,
-            name: '1weekago',
+            name: 'สัปดาห์นี้',
             content: <Week1 />,
         },
         {
             id: 2,
-            name: '2weekago',
+            name: 'สัปดาห์ที่แล้ว',
             content: <Week2 />,
+        },
+        {
+            id: 3,
+            name: '2 สัปดาห์ที่แล้ว',
+            content: <Week3 />,
+        },
+        {
+            id: 4,
+            name: '3 สัปดาห์ที่แล้ว',
+            content: <Week4 />,
         },
 
     ];
 
     {/**-------------------------------------------- Week----------------------------------------------- */ }
+    function Week4() {
+        return (
+            <>
+                {isLoading ? (
+                    <ScrollView style={{ width: '100%' }} horizontal={true}>
+                        <View style={{ width: '100%', height: 290 }}>
+
+                            <LineChart
+                                style={{ flex: 1, width: '90%', height: '100%' }}
+                                data={{
+                                    labels: threeweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
+                                    datasets: [
+                                        {
+                                            data: threeweek.map(item => (item.sumexer)),
+                                            color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                            strokeWidth: 2 // optional
+                                        }
+                                    ],
+                                    legend: ["Dog stastic"] // optional
+                                }}
+                                width={'1000'}
+                                height={255}
+                                verticalLabelRotation={10}
+                                chartConfig={chartConfig}
+                                bezier
+                            />
+                        </View>
+                    </ScrollView>
+                    // If there is a delay in data, let's let the user know it's loading
+                ) : (
+                    <Text>Loading...</Text>
+                )}
+            </>
+        )
+    }
+    function Week3() {
+        return (
+            <>
+                {isLoading ? (
+                    <ScrollView style={{ width: '100%' }} horizontal={true}>
+                        <View style={{ width: '100%', height: 290 }}>
+
+                            <LineChart
+                                style={{ flex: 1, width: '90%', height: '100%' }}
+                                data={{
+                                    labels: twoweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
+                                    datasets: [
+                                        {
+                                            data: twoweek.map(item => (item.sumexer)),
+                                            color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                            strokeWidth: 2 // optional
+                                        }
+                                    ],
+                                    legend: ["Dog stastic"] // optional
+                                }}
+                                width={'1000'}
+                                height={255}
+                                verticalLabelRotation={10}
+                                chartConfig={chartConfig}
+                                bezier
+                            />
+                        </View>
+                    </ScrollView>
+                    // If there is a delay in data, let's let the user know it's loading
+                ) : (
+                    <Text>Loading...</Text>
+                )}
+            </>
+        )
+    }
     function Week2() {
         return (
             <>
@@ -307,10 +459,10 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: ['week2', 2, 3, 4, 5],
+                                    labels: lastweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
                                     datasets: [
                                         {
-                                            data: [10, 50, 62, 11, 35],
+                                            data: lastweek.map(item => (item.sumexer)),
                                             color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                             strokeWidth: 2 // optional
                                         }
@@ -342,10 +494,10 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: [1, 2, 3, 4, 5],
+                                    labels: thisweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
                                     datasets: [
                                         {
-                                            data: [10, 50, 62, 11, 35],
+                                            data: thisweek.map(item => (item.sumexer)),
                                             color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                             strokeWidth: 2 // optional
                                         }
@@ -372,11 +524,12 @@ export default function showGraph({ navigation }) {
         return (
             <>
                 <View style={{ width: '100%', flexDirection: 'row' }}>
+                    <ScrollView horizontal>
                     {week.map(item => (
                         <TouchableOpacity
                             style={{
-                                height: 25,
-                                width: 80,
+                                height: 28,
+                                width: 100,
                                 backgroundColor: active == item.content ? '#555555' : 'white',
                                 borderRadius: 8,
                                 margin: 10,
@@ -392,6 +545,7 @@ export default function showGraph({ navigation }) {
                             <Text style={{ color: active == item.content ? 'white' : '#555555' }}>{item.name}</Text>
                         </TouchableOpacity>
                     ))}
+                    </ScrollView>
                 </View>
                 <View style={{ width: '100%', justifyContent: 'center' }}>
                     {active}
@@ -513,17 +667,17 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: jan.map(item => (item.day)),
+                                    labels: jan.map(item => ('วันที่ '+item.day)),
                                     datasets: [
                                         {
-                                            data: jan.map(item => (item.step)),
+                                            data: jan.map(item => (item.sumexer)),
                                             color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                             strokeWidth: 2 // optional
                                         }
                                     ],
                                     legend: ["Dog stastic"] // optional
                                 }}
-                                width={'250'}
+                                width={'400'}
                                 height={255}
                                 verticalLabelRotation={10}
                                 chartConfig={chartConfig}
@@ -548,17 +702,17 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: feb.map(item => (item.day)),
+                                    labels: feb.map(item => ('วันที่ '+item.day)),
                                     datasets: [
                                         {
-                                            data: feb.map(item => (item.step)),
+                                            data: feb.map(item => (item.sumexer)),
                                             color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                             strokeWidth: 2 // optional
                                         }
                                     ],
                                     legend: ["Dog stastic"] // optional
                                 }}
-                                width={'250'}
+                                width={'400'}
                                 height={255}
                                 verticalLabelRotation={10}
                                 chartConfig={chartConfig}
@@ -583,17 +737,17 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: mar.map(item => (item.day)),
+                                    labels: mar.map(item => ('วันที่ '+item.day)),
                                     datasets: [
                                         {
-                                            data: mar.map(item => (item.step)),
+                                            data: mar.map(item => (item.sumexer)),
                                             color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                             strokeWidth: 2 // optional
                                         }
                                     ],
                                     legend: ["Dog stastic"] // optional
                                 }}
-                                width={'250'}
+                                width={'400'}
                                 height={255}
                                 verticalLabelRotation={10}
                                 chartConfig={chartConfig}
@@ -622,17 +776,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: apr.map(item => (item.day)),
+                                            labels: apr.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: apr.map(item => (item.step)),
+                                                    data: apr.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -666,17 +820,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: may.map(item => (item.day)),
+                                            labels: may.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: may.map(item => (item.step)),
+                                                    data: may.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -710,17 +864,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: jun.map(item => (item.day)),
+                                            labels: jun.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: jun.map(item => (item.step)),
+                                                    data: jun.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -755,17 +909,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: jul.map(item => (item.day)),
+                                            labels: jul.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: jul.map(item => (item.step)),
+                                                    data: jul.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -800,17 +954,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: aug.map(item => (item.day)),
+                                            labels: aug.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: aug.map(item => (item.step)),
+                                                    data: aug.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -844,17 +998,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: sep.map(item => (item.day)),
+                                            labels: sep.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: sep.map(item => (item.step)),
+                                                    data: sep.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -888,17 +1042,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: oct.map(item => (item.day)),
+                                            labels: oct.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: oct.map(item => (item.step)),
+                                                    data: oct.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -932,17 +1086,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: nov.map(item => (item.day)),
+                                            labels: nov.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: nov.map(item => (item.step)),
+                                                    data: nov.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -976,17 +1130,17 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: dec.map(item => (item.day)),
+                                            labels: dec.map(item => ('วันที่ '+item.day)),
                                             datasets: [
                                                 {
-                                                    data: dec.map(item => (item.step)),
+                                                    data: dec.map(item => (item.sumexer)),
                                                     color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                     strokeWidth: 2 // optional
                                                 }
                                             ],
                                             legend: ["Dog stastic"] // optional
                                         }}
-                                        width={'250'}
+                                        width={'400'}
                                         height={255}
                                         verticalLabelRotation={10}
                                         chartConfig={chartConfig}
@@ -1024,7 +1178,7 @@ export default function showGraph({ navigation }) {
                                         labels: all.map(item => (item.day)),
                                         datasets: [
                                             {
-                                                data: all.map(item => (item.step)),
+                                                data: all.map(item => (item.sumexer)),
                                                 color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                 strokeWidth: 2 // optional
                                             }
