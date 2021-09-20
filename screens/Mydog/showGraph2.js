@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity, FlatList } from 'react-native';
 import {
   LineChart,
   BarChart,
@@ -12,32 +12,93 @@ import {
 import { Dimensions } from "react-native";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const screenWidth = Dimensions.get("window").width;
+import ProgressCircle from 'react-native-progress-circle'
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
+const numColumns = 3
 
 export default function showGraph2({ navigation }) {
-  const [text, onChangeText] = React.useState("น้องโบ้");
-  const alldata = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        data: [20, 45, 28, 80, 99, 43],
-        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-        strokeWidth: 2 // optional
-      }
-    ],
-    legend: ["Dog stastic"] // optional
-  };
+  const [exerdog, setExerdog] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [trainloading, setTrainloading] = useState(false);
+  const [idtrain, setIdtrain] = useState(null);
+  const [train, setTrain] = useState([]);
+  const [udogid, setUdogid] = useState();
+  const [user, setUser] = useState();
 
-  const eachdata = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-      {
-        data: [20, 10, 50, 77, 5, 66],
-        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-        strokeWidth: 2 // optional
+  useEffect(() => {
+    const fetchData = async () => {
+        await AsyncStorage.getItem('id')
+            .then((value) => {
+                setUser(value);
+            })
+    }
+    fetchData();
+})
+useEffect(() => {
+    const fetchData = async () => {
+        await AsyncStorage.getItem('udogid')
+            .then((value) => {
+                setUdogid(value);
+            })
+    }
+    fetchData();
+})
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showstatisexer.php',
+          {
+            params: {
+              idtrain: idtrain,
+              uid: user,
+              udogid: udogid
+            }
+          })
+        if (response.data == 'null') {
+          setExerdog(response.data);
+          setLoading(true);
+        } else {
+          setExerdog(response.data);
+          setLoading(true);
+        }
+
+      } catch {
+        alert("showdoglevel");
       }
-    ],
-    legend: ["Dog stance stastic"] // optional
-  };
+    }
+    fetchData();
+  }, [idtrain])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showdogtrain.php', {
+          params: {
+            uid: user,
+            udogid: udogid
+          }
+        })
+        if (response.data == 'null') {
+          alert("train null");
+        } else {
+          setTrain(response.data);
+          setTrainloading(true);
+        }
+      } catch (err) {
+        alert(err)
+      }
+    }
+    fetchData();
+  },[train])
+
+
 
   const chartConfig = {
     backgroundGradientFrom: "#000000",
@@ -50,11 +111,78 @@ export default function showGraph2({ navigation }) {
     useShadowColorFromDataset: false // optional
   };
 
+
+
+
+  let formatData = (train, numColumns) => {
+    const totalRows = Math.floor(train.length / numColumns)
+    let totalLastRow = train.length - (totalRows * numColumns)
+
+    while (totalLastRow !== 0 && totalLastRow !== numColumns) {
+      train.push({ idtrain: 'blank', empty: true })
+      totalLastRow++
+    }
+    return train
+  }
+
+
+
+
+  const renderItem = ({ item, index }) => {
+    if (item.empty) {
+      return <View style={{ backgroundColor: 'transparent' }}></View>
+    } else {
+      return (
+        <View style={{ width: 80, height: 110, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+          <TouchableOpacity
+            style={{
+              width: '80%',
+              height: '54%',
+              backgroundColor: idtrain == item.idtrain ? '#555555' : 'white',
+              borderRadius: 50,
+              justifyContent: 'center',
+              alignItems: 'center',
+              margin: 10,
+              borderColor: '#555555',
+              elevation: 5,
+            }}
+            key={item.idtrain}
+            active={idtrain === item.idtrain}
+            onPress={() => setIdtrain(item.idtrain)}
+          >
+            <ProgressCircle
+              percent={item.sumstep * 100 / 500}
+              radius={40}
+              borderWidth={4}
+              color="#FFBE4F"
+              shadowColor="#B8B8B8"
+              bgColor={idtrain == item.idtrain ? '#838383' : '#FFFFFF'}
+            >
+              <Image
+                style={{
+                  width: '50%',
+                  height: '50%'
+                }}
+                source={{ uri: item.trainimg }}
+              />
+
+
+            </ProgressCircle>
+            <View style={{ width: '100%', height: 20, alignItems: 'center' }}>
+              <Text style={{ color: '#555555', fontSize: 16, textAlign: 'center', fontFamily: 'FC_Iconic',paddingTop:5 }}>{item.trainname}</Text>
+            </View>
+
+          </TouchableOpacity>
+        </View>
+      )
+    }
+  }
+
   return (
     <>
       {/* -------------------------------Header----------------------------------------- */}
       <View style={styles.header}>
-        <View style={{ width: '45%', flexDirection: 'row',alignItems:'center' }}>
+        <View style={{ width: '45%', flexDirection: 'row', alignItems: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}>
             <Icon
@@ -64,7 +192,7 @@ export default function showGraph2({ navigation }) {
 
             />
           </TouchableOpacity>
-          <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily:'FC_Iconic' }}>สถิติแต่ละท่า</Text>
+          <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติแต่ละท่า{udogid}</Text>
         </View>
         <View style={{ width: '45%', alignItems: 'flex-end', }}>
 
@@ -80,115 +208,60 @@ export default function showGraph2({ navigation }) {
           <View style={styles.card}>
             <View style={{ padding: 30, width: '90%' }}>
               <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ fontSize: 32, fontFamily:'FC_Iconic', color: '#575757' }}>สถิติแต่ละท่า</Text>
-                <View style={{ flexDirection: 'row', marginTop: 25 }}>
-                  <Image
-                    style={{ width: 50, height: 50 }}
-                    source={require('../../img/pet_robot_technology_dog_future_modern_science_machine-512.png')}
-                  />
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/corgi-512.png')}
-                  />
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/pet-care-health-dog-cat-512.png')}
-                  />
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/corgi-512.png')}
-                  />
-                </View>
-                <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                  <Image
-                    style={{ width: 50, height: 50, opacity: 0.2 }}
-                    source={require('../../img/corgi-512.png')}
-                  />
-
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/pet-care-health-dog-cat-512.png')}
-                  />
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/corgi-512.png')}
-                  />
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/pet_robot_technology_dog_future_modern_science_machine-512.png')}
-                  />
-
-                </View>
-                <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/corgi-512.png')}
-                  />
-                  <Image
-                    style={{ width: 50, height: 50, marginLeft: 30, opacity: 0.2 }}
-                    source={require('../../img/pet_robot_technology_dog_future_modern_science_machine-512.png')}
-                  />
-
-                </View>
-              </View>
-
-              <View style={{ flexDirection: 'row', marginTop: 30 }}>
-                <View style={{ width: '25%' }}>
-                  <TouchableOpacity>
-                    <View style={styles.button}>
-                      <Text style={styles.buttontext}>1 สัปดาห์</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: '25%', marginLeft: 30 }}>
-                  <TouchableOpacity>
-                    <View style={styles.button2}>
-                      <Text style={styles.buttontext2}>1 เดือน</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-                <View style={{ width: '25%', marginLeft: 30 }}>
-                  <TouchableOpacity>
-                    <View style={styles.button2}>
-                      <Text style={styles.buttontext2}>1 ปี</Text>
-                    </View>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-
-              <View style={{ width: '100%', height: 70, alignItems: 'center', flexDirection: 'row',marginTop:10 }}>
-                <View style={{ marginRight: 15 }}>
-                  <TouchableOpacity style={{ width: '100%' }}>
-                    <Text style={{ fontSize: 18, fontFamily: 'FC_Iconic', color: '#555555' }}> สัปดาห์นี้ </Text>
-                  </TouchableOpacity>
-
-                </View>
-
-                <View style={{ marginRight: 15 }}>
-                  <TouchableOpacity style={{ width: '100%' }}>
-                    <Text style={{ fontSize: 18, fontFamily: 'FC_Iconic', color: '#C7C7C7' }}> สัปดาห์ที่แล้ว </Text>
-                  </TouchableOpacity>
-                </View>
-
-                <View style={{ marginRight: 15 }}>
-                  <TouchableOpacity style={{ width: '100%' }}>
-                    <Text style={{ fontSize: 18, fontFamily: 'FC_Iconic', color: '#C7C7C7' }}> 2 สัปดาห์ที่แล้ว </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-
-
-              <View style={{ width: '100%', justifyContent: 'center' }}>
-                <LineChart
-                  data={eachdata}
-                  width={'300'}
-                  height={256}
-                  verticalLabelRotation={30}
-                  chartConfig={chartConfig}
-                  bezier
+                <Text style={{ fontSize: 32, fontFamily: 'FC_Iconic', color: '#575757' }}>สถิติแต่ละท่า</Text>
+                <FlatList
+                  data={formatData(train, numColumns)}
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                  numColumns={numColumns}
                 />
               </View>
+
+
+              {loading ? (
+                <>
+                  {exerdog == 'null' ? (
+                    <>
+                      {idtrain == null ? (
+                        <Text style={{ fontSize: 50 }}>กรุณาเลือกท่าฝึกเพื่อดูสถิติ</Text>
+                      ) : (
+                        <Text style={{ fontSize: 50 }}>ยังไม่มีข้อมูล</Text>
+                      )}
+
+                    </>
+                  ) : (
+                    <>
+                      <ScrollView style={{ width: '100%' }} horizontal={true}>
+                        <View style={{ width: '100%', height: 350, alignItems: 'center', }}>
+                          <LineChart
+                            data={{
+                              labels: exerdog.map(item => ('ครั้งที่ ' + item.count)),
+                              datasets: [
+                                {
+                                  data: exerdog.map(item => (item.seconds)),
+                                  color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                  strokeWidth: 2 // optional
+                                }
+                              ],
+                              legend: ["Dog stastic"] // optional
+                            }}
+                            width={'1200'}
+                            height={290}
+                            verticalLabelRotation={50}
+                            chartConfig={chartConfig}
+                            bezier
+                            yAxisSuffix=""
+                          />
+                        </View>
+                      </ScrollView>
+                    </>
+                  )}
+                </>
+              ) : (
+                <Text style={{ fontSize: 50 }}>Loading ..... </Text>
+              )}
+
+
 
             </View>
           </View>
@@ -234,7 +307,7 @@ const styles = StyleSheet.create({
     height: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation:5
+    elevation: 5
   },
   button2: {
     borderRadius: 30,
@@ -242,17 +315,17 @@ const styles = StyleSheet.create({
     height: 35,
     alignItems: 'center',
     justifyContent: 'center',
-    elevation:5
+    elevation: 5
   },
   buttontext: {
     color: 'white',
     fontSize: 15,
-    fontFamily:'FC_Iconic'
+    fontFamily: 'FC_Iconic'
   },
   buttontext2: {
     color: '#555555',
     fontSize: 15,
-    fontFamily:'FC_Iconic'
+    fontFamily: 'FC_Iconic'
   },
   header: {
     width: '100%',

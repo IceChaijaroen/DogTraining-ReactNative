@@ -77,21 +77,26 @@ export default function Dogtraining({ navigation, route }, disabled) {
         <View style={styles.minicardcontainer}>
           <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                   <Image
                     source={{ uri: item.trainimg }}
                     style={{
-                      width: '65%',
-                      height: '65%',
+                      width: '51%',
+                      height: '51%',
                     }}
                   />
                 </View>
                 <View style={styles.subtextcontainer}>
                   <Text style={styles.subtext}> {item.trainname}</Text>
                 </View>
+
               </View>
+
               <View style={{ width: '90%', height: 5 }}>
+                <View style={{ alignItems: 'flex-end' }}>
+                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                </View>
                 <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
@@ -112,21 +117,26 @@ export default function Dogtraining({ navigation, route }, disabled) {
         <View style={styles.minicardcontainer}>
           <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                   <Image
                     source={{ uri: item.trainimg }}
                     style={{
-                      width: '65%',
-                      height: '65%',
+                      width: '51%',
+                      height: '51%',
                     }}
                   />
                 </View>
                 <View style={styles.subtextcontainer}>
                   <Text style={styles.subtext}> {item.trainname}</Text>
                 </View>
+
               </View>
+
               <View style={{ width: '90%', height: 5 }}>
+                <View style={{ alignItems: 'flex-end' }}>
+                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                </View>
                 <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
@@ -146,21 +156,26 @@ export default function Dogtraining({ navigation, route }, disabled) {
         <View style={styles.minicardcontainer}>
           <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
+              <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                   <Image
                     source={{ uri: item.trainimg }}
                     style={{
-                      width: '65%',
-                      height: '65%',
+                      width: '51%',
+                      height: '51%',
                     }}
                   />
                 </View>
                 <View style={styles.subtextcontainer}>
                   <Text style={styles.subtext}> {item.trainname}</Text>
                 </View>
+
               </View>
+
               <View style={{ width: '90%', height: 5 }}>
+                <View style={{ alignItems: 'flex-end' }}>
+                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                </View>
                 <Progress step={item.sumstep} steps={500} height={5} />
               </View>
             </View>
@@ -178,7 +193,8 @@ export default function Dogtraining({ navigation, route }, disabled) {
   const level3 = ({ item, index }) => {
     if (item.trainlevel == '3') {
       return (
-        <View style={styles.minicardcontainer}>
+        <>
+          {/**   <View style={styles.minicardcontainer}>
           <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
             <View key={index} style={styles.minicard}>
               <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
@@ -201,6 +217,36 @@ export default function Dogtraining({ navigation, route }, disabled) {
             </View>
           </TouchableOpacity>
         </View>
+ */}
+          <View style={styles.minicardcontainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+              <View key={index} style={styles.minicard}>
+                <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                  <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                    <Image
+                      source={{ uri: item.trainimg }}
+                      style={{
+                        width: '51%',
+                        height: '51%',
+                      }}
+                    />
+                  </View>
+                  <View style={styles.subtextcontainer}>
+                    <Text style={styles.subtext}> {item.trainname}</Text>
+                  </View>
+
+                </View>
+
+                <View style={{ width: '90%', height: 5 }}>
+                  <View style={{ alignItems: 'flex-end' }}>
+                    <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                  </View>
+                  <Progress step={item.sumstep} steps={500} height={5} />
+                </View>
+              </View>
+            </TouchableOpacity>
+          </View>
+        </>
       )
     } else {
       return (
@@ -236,7 +282,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
                 {loadingDog ? (
                   <>
                     {/** -----------Header------------------ */}
-                   < Headertraining />
+                    < Headertraining />
                     {/** -----------Header------------------ */}
 
 
@@ -393,8 +439,8 @@ const styles = StyleSheet.create({
   subtextcontainer: {
     width: '60%',
     alignItems: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    paddingTop: 15
   },
   subtext: {
     fontFamily: 'FC_Iconic',

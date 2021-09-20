@@ -43,10 +43,7 @@ export default function showGraph({ navigation }) {
     const [twoweek, setTwoweek] = useState([]);
     const [threeweek, setThreeweek] = useState([]);
 
-    const Moment = require('moment')
-    const array = [{date:"2018-05-11"},{date:"2018-05-12"},{date:"2018-05-10"}]
-    const sortedArray  = array.sort((a,b) => new Moment(a.date).format('YYYYMMDD') - new Moment(b.date).format('YYYYMMDD'))
-    console.log(sortedArray);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -54,8 +51,9 @@ export default function showGraph({ navigation }) {
                 const response = await axios.get('http://35.187.253.40/allstatis.php',
                     {
                         params: {
+                            year: year,
                             id: 1,
-                            udogid: 1
+                            udogid: 1,
                         }
                     })
                 if (response.data == 'null') {
@@ -70,7 +68,7 @@ export default function showGraph({ navigation }) {
             }
         }
         fetchData();
-    }, [isLoading])
+    },[year])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -143,7 +141,8 @@ export default function showGraph({ navigation }) {
                     {
                         params: {
                             id: 1,
-                            udogid: 1
+                            udogid: 1,
+                            year: year
                         }
                     })
                 if (response.data == 'null') {
@@ -349,7 +348,7 @@ export default function showGraph({ navigation }) {
         },
         {
             id: 3,
-            name: 'ทั้งหมด',
+            name: 'ปี',
             content: <Button3 />,
         },
 
@@ -389,7 +388,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: threeweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
+                                    labels: threeweek.map(item => ('วันที่ ' + item.day + ' เดือน ' + item.month)),
                                     datasets: [
                                         {
                                             data: threeweek.map(item => (item.sumexer)),
@@ -424,7 +423,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: twoweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
+                                    labels: twoweek.map(item => ('วันที่ ' + item.day + ' เดือน ' + item.month)),
                                     datasets: [
                                         {
                                             data: twoweek.map(item => (item.sumexer)),
@@ -459,7 +458,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: lastweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
+                                    labels: lastweek.map(item => ('วันที่ ' + item.day + ' เดือน ' + item.month)),
                                     datasets: [
                                         {
                                             data: lastweek.map(item => (item.sumexer)),
@@ -494,7 +493,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: thisweek.map(item => ('วันที่ '+item.day+' เดือน '+item.month)),
+                                    labels: thisweek.map(item => ('วันที่ ' + item.day + ' เดือน ' + item.month)),
                                     datasets: [
                                         {
                                             data: thisweek.map(item => (item.sumexer)),
@@ -525,26 +524,26 @@ export default function showGraph({ navigation }) {
             <>
                 <View style={{ width: '100%', flexDirection: 'row' }}>
                     <ScrollView horizontal>
-                    {week.map(item => (
-                        <TouchableOpacity
-                            style={{
-                                height: 28,
-                                width: 100,
-                                backgroundColor: active == item.content ? '#555555' : 'white',
-                                borderRadius: 8,
-                                margin: 10,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                borderColor: '#555555',
-                                elevation: 5
-                            }}
-                            key={item.content}
-                            active={active === item.content}
-                            onPress={() => setActive(item.content)}
-                        >
-                            <Text style={{ color: active == item.content ? 'white' : '#555555' }}>{item.name}</Text>
-                        </TouchableOpacity>
-                    ))}
+                        {week.map(item => (
+                            <TouchableOpacity
+                                style={{
+                                    height: 28,
+                                    width: 100,
+                                    backgroundColor: active == item.content ? '#555555' : 'white',
+                                    borderRadius: 8,
+                                    margin: 10,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    borderColor: '#555555',
+                                    elevation: 5
+                                }}
+                                key={item.content}
+                                active={active === item.content}
+                                onPress={() => setActive(item.content)}
+                            >
+                                <Text style={{ color: active == item.content ? 'white' : '#555555' }}>{item.name}</Text>
+                            </TouchableOpacity>
+                        ))}
                     </ScrollView>
                 </View>
                 <View style={{ width: '100%', justifyContent: 'center' }}>
@@ -667,7 +666,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: jan.map(item => ('วันที่ '+item.day)),
+                                    labels: jan.map(item => ('วันที่ ' + item.day)),
                                     datasets: [
                                         {
                                             data: jan.map(item => (item.sumexer)),
@@ -702,7 +701,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: feb.map(item => ('วันที่ '+item.day)),
+                                    labels: feb.map(item => ('วันที่ ' + item.day)),
                                     datasets: [
                                         {
                                             data: feb.map(item => (item.sumexer)),
@@ -737,7 +736,7 @@ export default function showGraph({ navigation }) {
                             <LineChart
                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                 data={{
-                                    labels: mar.map(item => ('วันที่ '+item.day)),
+                                    labels: mar.map(item => ('วันที่ ' + item.day)),
                                     datasets: [
                                         {
                                             data: mar.map(item => (item.sumexer)),
@@ -776,7 +775,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: apr.map(item => ('วันที่ '+item.day)),
+                                            labels: apr.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: apr.map(item => (item.sumexer)),
@@ -820,7 +819,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: may.map(item => ('วันที่ '+item.day)),
+                                            labels: may.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: may.map(item => (item.sumexer)),
@@ -864,7 +863,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: jun.map(item => ('วันที่ '+item.day)),
+                                            labels: jun.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: jun.map(item => (item.sumexer)),
@@ -899,8 +898,8 @@ export default function showGraph({ navigation }) {
             <>
                 {isLoading ? (
                     <>
-                       
-                       {jul == 'null' ? (
+
+                        {jul == 'null' ? (
                             <Text> ยังไม่มีสถิติ </Text>
                         ) : (
                             <ScrollView style={{ width: '100%' }} horizontal={true}>
@@ -909,7 +908,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: jul.map(item => ('วันที่ '+item.day)),
+                                            labels: jul.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: jul.map(item => (item.sumexer)),
@@ -930,7 +929,7 @@ export default function showGraph({ navigation }) {
                         )}
 
 
-                 
+
                     </>
                     // If there is a delay in data, let's let the user know it's loading
                 ) : (
@@ -943,7 +942,7 @@ export default function showGraph({ navigation }) {
     function Month8() {
         return (
             <>
-               {isLoading ? (
+                {isLoading ? (
                     <>
                         {aug == 'null' ? (
                             <Text> ยังไม่มีสถิติ </Text>
@@ -954,7 +953,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: aug.map(item => ('วันที่ '+item.day)),
+                                            labels: aug.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: aug.map(item => (item.sumexer)),
@@ -987,7 +986,7 @@ export default function showGraph({ navigation }) {
     function Month9() {
         return (
             <>
-               {isLoading ? (
+                {isLoading ? (
                     <>
                         {sep == 'null' ? (
                             <Text> ยังไม่มีสถิติ </Text>
@@ -998,7 +997,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: sep.map(item => ('วันที่ '+item.day)),
+                                            labels: sep.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: sep.map(item => (item.sumexer)),
@@ -1042,7 +1041,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: oct.map(item => ('วันที่ '+item.day)),
+                                            labels: oct.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: oct.map(item => (item.sumexer)),
@@ -1086,7 +1085,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: nov.map(item => ('วันที่ '+item.day)),
+                                            labels: nov.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: nov.map(item => (item.sumexer)),
@@ -1130,7 +1129,7 @@ export default function showGraph({ navigation }) {
                                     <LineChart
                                         style={{ flex: 1, width: '90%', height: '100%' }}
                                         data={{
-                                            labels: dec.map(item => ('วันที่ '+item.day)),
+                                            labels: dec.map(item => ('วันที่ ' + item.day)),
                                             datasets: [
                                                 {
                                                     data: dec.map(item => (item.sumexer)),
@@ -1163,11 +1162,41 @@ export default function showGraph({ navigation }) {
 
 
 
-    function Button3() {
+    const setyear = [
+        {
+            id: 2020,
+        },
+        {
+            id: 2021,
+        },
+    ]
 
-        function All() {
-            return (
-                <>
+    const [year, setYear] = useState(2020);
+
+    function Button3() {
+        return (
+            <>
+                <View style={{ width: '100%', flexDirection: 'row' }}>
+                    {setyear.map((item) => (
+                        <>
+                            <TouchableOpacity
+                                onPress={() => setYear(item.id)}
+                                style={{
+                                    width: 80,
+                                    height: 50,
+                                    margin: 10,
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                    backgroundColor: setyear == item.id ? '#555555' : 'white',
+                                }}
+
+                            >
+                                <Text style={{ color: 'black' }}>{item.id}</Text>
+                            </TouchableOpacity>
+                        </>
+                    ))}
+                </View>
+                <View style={{ width: '100%', justifyContent: 'center' }}>
                     {isLoading ? (
                         <ScrollView style={{ width: '100%' }} horizontal={true}>
                             <View style={{ width: '100%', height: 290 }}>
@@ -1197,34 +1226,12 @@ export default function showGraph({ navigation }) {
                     ) : (
                         <Text>Loading...</Text>
                     )}
-                </>
-            )
-        }
-        const [active, setActive] = useState(<All />);
-        return (
-            <>
-                <View style={{ width: '100%', flexDirection: 'row' }}>
-
-                    <TouchableOpacity
-                        style={{ width: 80, margin: 10, justifyContent: 'center', alignItems: 'center' }}
-
-                    >
-                        <Text style={{ color: 'white' }}></Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={{ width: '100%', justifyContent: 'center' }}>
-                    {active}
                 </View>
 
             </>
         )
     }
 
-
-
-    function getIndex(content) {
-        return list.findIndex(obj => obj.content === content);
-    }
 
     function TabGroup() {
         const [active, setActive] = useState(<Button3 />);
@@ -1343,7 +1350,7 @@ export default function showGraph({ navigation }) {
 
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติโดยรวม</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>{year}</Text>
                 </View>
                 <View style={{ width: '45%', alignItems: 'flex-end', }}>
 
@@ -1366,21 +1373,17 @@ export default function showGraph({ navigation }) {
                             </View>
 
                             <View style={{ width: '100%', justifyContent: 'center' }}>
-                                {/**       {isLoading ? (
-                                    <ScrollView style={{ width: '90%' }} horizontal={true}>
+                                {isLoading ? (
+                                    <ScrollView style={{ width: '100%' }} horizontal={true}>
                                         <View style={{ width: '100%', height: 290 }}>
 
                                             <LineChart
                                                 style={{ flex: 1, width: '90%', height: '100%' }}
                                                 data={{
-                                                    labels: all.map(item => (
-                                                        item.day
-                                                    )),
+                                                    labels: all.map(item => (item.day)),
                                                     datasets: [
                                                         {
-                                                            data: all.map(item => (
-                                                                item.step
-                                                            )),
+                                                            data: all.map(item => (item.sumexer)),
                                                             color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                             strokeWidth: 2 // optional
                                                         }
@@ -1398,7 +1401,7 @@ export default function showGraph({ navigation }) {
                                     // If there is a delay in data, let's let the user know it's loading
                                 ) : (
                                     <Text>Loading...</Text>
-                                )}*/}
+                                )}
                             </View>
 
 

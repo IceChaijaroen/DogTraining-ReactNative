@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Animated } from 'react-native';
+import { View, Animated,Text } from 'react-native';
 
-export default function Progress({ step, steps, height }){
+export default function Progress({ step, steps, height }) {
     const [width, setWidth] = useState(0);
     const animatedValue = useRef(new Animated.Value(-1000)).current;
     const reactive = useRef(new Animated.Value(-1000)).current;
@@ -20,6 +20,7 @@ export default function Progress({ step, steps, height }){
 
     return (
         <>
+            
             <View
                 onLayout={(e) => {
                     const newWidth = e.nativeEvent.layout.width;

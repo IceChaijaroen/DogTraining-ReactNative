@@ -114,9 +114,9 @@ export default function MydogInfo({ navigation }) {
           ) : (
             <>
               <View style={styles.card}>
-                <TouchableOpacity onPress={() => navigation.navigate('showGraph')} style={{ width: '100%' }}>
+                <TouchableOpacity onPress={() => navigation.navigate('showGraph',setIsLoading(false))} style={{ width: '100%' }}>
                   <View style={{ width: '100%', height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>สถิติโดยรวม</Text>
+                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>พัฒนาการโดยรวม</Text>
                     <Image
                       source={require('../../img/allgraph.png')}
                       style={{

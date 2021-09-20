@@ -17,10 +17,11 @@ import Training from './screens/DogTraining/Training';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import StatisTrain from './screens/DogTraining/StatisTrain';
 import Educate from './screens/DogTraining/Educate';
-import testdata2 from './testdata2';
+
 import tabnavigator from './testdata/tabnavigator';
 import testslide from './testdata/testslide';
-import testdata3 from './testdata/testdata2';
+import testdata2 from './testdata/testdata2';
+import testdata3 from './testdata/testdata3';
 
 const Stack = createStackNavigator();
 
@@ -29,12 +30,13 @@ export default function App() {
     <>
       <NavigationContainer>
         <Stack.Navigator>
-
-          <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
+        
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
           <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
+          <Stack.Screen name="testdata2" component={testdata2} options={{ headerShown: false }} />
+<Stack.Screen name="testdata3" component={testdata3} options={{ headerShown: false }} />
+          <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
 
-          <Stack.Screen name="testdata3" component={testdata3} options={{ headerShown: false }} />
           <Stack.Screen name="Carousel" component={Carousel} options={{ headerShown: false }} />
           <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />

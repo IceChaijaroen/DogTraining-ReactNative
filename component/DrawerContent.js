@@ -126,7 +126,7 @@ export function DrawerContent(props) {
                                     data={dogdata}
                                     renderItem={
                                         ({ item }) => (
-                                            <TouchableOpacity onPress={() => props.navigation.navigate('Tabs', AsyncStorage.setItem('udogid', item.udogid))}>
+                                            <TouchableOpacity onPress={() => props.navigation.goBack( AsyncStorage.setItem('udogid', item.udogid))}>
                                                 <View style={style.card}>
                                                     <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                                         <Avatar.Image
