@@ -115,7 +115,7 @@ export default function StatisTrain({ navigation, route }) {
                 if (response.data == 'null') {
                     console.log('null');
                 } else {
-                    setDogdata(response.data);
+                    setDogdata(response.data.all);
                 }
             } catch {
                 alert("showuserdogfromuser")

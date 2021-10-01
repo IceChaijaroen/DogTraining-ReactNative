@@ -22,6 +22,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { FlatList } from 'react-native-gesture-handler';
 import { PickerIOSItem } from 'react-native';
+import Progress from './Progress';
+
 
 export function DrawerContent(props) {
     const [user, setValue] = useState();
@@ -29,6 +31,7 @@ export function DrawerContent(props) {
     const [dogdata, setDogdata] = useState([]);
     const [udogid, setUdogid] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [doglevel, setDoglevel] = useState([]);
 
     useEffect(() => {
         AsyncStorage.getItem('id')
@@ -48,7 +51,7 @@ export function DrawerContent(props) {
                         }
                     })
                 setUdata(response.data);
-                
+
             } catch {
                 alert('ssss');
             }
@@ -73,7 +76,29 @@ export function DrawerContent(props) {
             }
         }
         fetchData();
-    }, [isLoading])
+    }, [dogdata])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/showdoglevel.php',
+                    {
+                        params: {
+                            id: user,
+                            udogid: udogid
+                        }
+                    })
+                if (response.data == 'null') {
+                    console.log('null');
+                } else {
+                    setDoglevel(response.data);
+                }
+            } catch {
+                alert("showdoglevel")
+            }
+        }
+        fetchData();
+    }, [udogid])
 
 
 
@@ -126,7 +151,7 @@ export function DrawerContent(props) {
                                     data={dogdata}
                                     renderItem={
                                         ({ item }) => (
-                                            <TouchableOpacity onPress={() => props.navigation.goBack( AsyncStorage.setItem('udogid', item.udogid))}>
+                                            <TouchableOpacity onPress={() => props.navigation.goBack(AsyncStorage.setItem('udogid', item.udogid))}>
                                                 <View style={style.card}>
                                                     <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                                         <Avatar.Image
@@ -138,9 +163,15 @@ export function DrawerContent(props) {
                                                     <View style={{ width: '70%', paddingTop: 10 }}>
                                                         <Text style={{ fontSize: 10, fontWeight: 'bold' }}>ชื่อ : {item.udogname}</Text>
                                                         <Text style={{ fontSize: 10, fontWeight: 'bold' }}>สถานะ : {item.udogstatus}</Text>
-                                                        <View style={style.capsule}>
-                                                            <View style={style.incapsule}></View>
-                                                        </View>
+                                                        {doglevel.map((item, key) => (
+                                                            <>
+                                                            <Text>{item.sumstep}555 </Text>
+                                                            <View style={style.capsule}>
+                                                                
+                                                                <Progress key={key} step={item.sumstep} steps={5000} height={10} />
+                                                            </View>
+                                                            </>
+                                                        ))}
                                                     </View>
                                                 </View>
                                             </TouchableOpacity>

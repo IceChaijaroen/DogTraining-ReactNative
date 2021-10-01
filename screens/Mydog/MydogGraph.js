@@ -14,6 +14,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { NavigationActions } from 'react-navigation';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Icon from 'react-native-vector-icons/AntDesign';
+
 const screenWidth = Dimensions.get("window").width;
 
 export default function MydogInfo({ navigation }) {
@@ -108,9 +110,21 @@ export default function MydogInfo({ navigation }) {
       <ScrollView>
         <View style={styles.container}>
           {udata == 'null' ? (
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-              <Text style={{ fontSize: 50 }}>คุณยังไม่มีสุนัข กรุณาเพิ่มสุนัขของคุณ</Text>
-            </View>
+            
+            <TouchableOpacity onPress={() => navigation.navigate('AddDog')} style={styles.cardinsert}>
+
+                <View style={{ width: '80%', height: '50%', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 10 }}>
+                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>เพิ่มสุนัขของคุณ</Text>
+                </View>
+                <View style={{ width: '80%', height: '50%', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <Icon
+                        name={'pluscircle'}
+                        size={50}
+                        color={'#555555'}
+                    />
+                </View>
+            </TouchableOpacity>
+
           ) : (
             <>
               <View style={styles.card}>
@@ -186,6 +200,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 6
+  },
+  cardinsert: {
+    marginTop: -10,
+      alignItems: 'center',
+      width: '90%',
+      height: 180,
+      backgroundColor: 'white',
+      borderRadius: 50,
+      margin: 5,
+      shadowColor: '#000',
+      shadowOffset: {
+          width: 0,
+          height: 2,
+      },
+      shadowOpacity: 0.23,
+      shadowRadius: 2.62,
+      elevation: 6
   },
   rowcontent: {
     flexDirection: 'row',

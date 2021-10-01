@@ -82,12 +82,16 @@ export default function Training({ navigation, route }) {
     const [isRunning, setIsRunning] = useState(false);
     const [count, setCount] = useState(null);
     const [submit, setSubmit] = useState("");
-    const [visible, setVisible] = useState();
+    const [visible, setVisible] = useState(false);
     const [countdesc, setCountdesc] = useState([]);
-    const [minute, setMinute] = useState(1);
-    const [perseconds, setPersecound] = useState(59);
+    const [minute, setMinute] = useState(0);
+    const [perseconds, setPersecound] = useState(10);
     const [timestop, setTimestop] = useState(true);
+    const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        setTimestop(true);
+    }, [loading])
 
     useEffect(() => {
         if (perseconds < 0) {
@@ -138,10 +142,12 @@ export default function Training({ navigation, route }) {
                     })
                 )
                 .then((response) => {
-                    JSON.stringify(response.data)
+                    JSON.stringify(response.data);
+                    setLoading(true);
                     setSecound(0);
                     setIsRunning(false);
                     setSubmit(false);
+                    
 
                 })
                 .catch((err) => {
@@ -190,7 +196,6 @@ export default function Training({ navigation, route }) {
                         alert('Fuck');
                     } else {
                         alert(JSON.stringify(response.data));
-                        seIsLoading(true);
                     }
                 })
                 .catch((err) => {
@@ -204,17 +209,19 @@ export default function Training({ navigation, route }) {
     {/**------------------------------------------------------------------------------------- */ }
 
 
-    const change = useEffect(() => {
-        setVisible(true);
-        if (minute == 0) {
+    useEffect(() => {
+        if (minute <= -1) {
+            setVisible(true);
             setTimestop(false);
+            setLoading(false);
         }
     })
 
     const next = () => {
-        navigation.navigate('StatisTrain',{idtrain:idtrain});
-        setMinute(1);
-        setTimestop(true);
+        navigation.navigate('StatisTrain', { idtrain: idtrain });
+        setMinute(0);
+        setTimestop(false);
+        setVisible(false);
     }
 
 
@@ -251,6 +258,8 @@ export default function Training({ navigation, route }) {
         )
     }
 
+    console.log(timestop,visible);
+
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
         'bahnschrift': require('../../assets/fonts/bahnschrift.ttf'),
@@ -259,151 +268,152 @@ export default function Training({ navigation, route }) {
     if (!fontsLoaded) {
         return <AppLoading />;
     } else {
-        if (minute == 0) {
-            { change }
+        if (minute <= -1) {
             return (
-                <>
-                    <ModalCount visible={visible}>
-                        <View style={styles.PopupHeader}>
-                            <View style={{ width: '100%', height: 50, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                                <Text style={styles.popupFont}>พักก่อน !</Text>
-                            </View>
+                <ModalCount visible={visible}>
+                    <View style={styles.PopupHeader}>
+                        <View style={{ width: '100%', height: 50, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                            <Text style={styles.popupFont}>พักก่อน !</Text>
                         </View>
-                        <View style={styles.PopupContent}>
-                            <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                <Image
-                                    source={require('../../img/dogtired2.jpg')}
-                                    style={{
-                                        width: '70%',
-                                        height: '80%'
-                                    }}
-                                />
-                            </View>
-                            <View style={{ height: '50%', justifyContent: 'center', alignItems: 'center' }}>
-                                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>วันนี้ฝึกมากพอแล้ว </Text>
-                                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}> เดี๋ยวสุนัขของคุณจะเบื่อเอานะ</Text>
-                            </View>
-                            <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={next} style={{ width: '40%', height: '95%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
-                                </TouchableOpacity>
-                            </View>
+                    </View>
+                    <View style={styles.PopupContent}>
+                        <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Image
+                                source={require('../../img/dogtired2.jpg')}
+                                style={{
+                                    width: '70%',
+                                    height: '80%'
+                                }}
+                            />
+                        </View>
+                        <View style={{ height: '50%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>วันนี้ฝึกมากพอแล้ว </Text>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}> เดี๋ยวสุนัขของคุณจะเบื่อเอานะ</Text>
+                        </View>
+                        <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={next} style={{ width: '40%', height: '95%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
+                            </TouchableOpacity>
+                        </View>
 
-                        </View>
-                    </ModalCount>
-                </>
-            )
+                    </View>
+                </ModalCount>
+            );
 
         } else {
             if (isRunning == true) {
                 return (
-                    <View style={styles.container}>
-                        <View style={{ width: '100%', marginTop: '5%', alignItems: 'center' }}>
-                            {perseconds != -1 ?
-                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:{perseconds} </Text>)
-                                :
-                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:5 </Text>)}
+                    <>
+                        <View style={styles.container}>
+                            <View style={{ width: '100%', marginTop: '5%', alignItems: 'center' }}>
+                                {perseconds != -1 ?
+                                    (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:{perseconds} </Text>)
+                                    :
+                                    (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:5 </Text>)}
 
-                            <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
-                        </View>
-                        <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                            <FlatList
-                                data={train}
-                                renderItem={({ item }) => (
-                                    <Image
-                                        source={{ uri: item.gifall }}
-                                        style={{
-                                            width: 260,
-                                            height: 260
-                                        }}
-                                    />
-                                )}
-                                keyExtractor={(item) => item.idtrain}
-                            />
+                                <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
+                            </View>
+                            <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
+                                <FlatList
+                                    data={train}
+                                    renderItem={({ item }) => (
+                                        <Image
+                                            source={{ uri: item.gifall }}
+                                            style={{
+                                                width: 260,
+                                                height: 260
+                                            }}
+                                        />
+                                    )}
+                                    keyExtractor={(item) => item.idtrain}
+                                />
 
-                        </View>
-                        <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            <FlatList
-                                data={gif}
-                                renderItem={renderItem}
-                                keyExtractor={(item) => item.idgif}
-                            />
+                            </View>
+                            <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
+                                <FlatList
+                                    data={gif}
+                                    renderItem={renderItem}
+                                    keyExtractor={(item) => item.idgif}
+                                />
 
+                            </View>
+                            <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={() => setSubmit(true)} >
+                                    <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                        <Text style={{ color: 'white', fontSize: 40, fontFamily: 'FC_Iconic' }}>{second}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                <FlatList
+                                    data={countdesc}
+                                    renderItem={({ item }) => (
+                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
+                                    )}
+                                />
+                            </View>
                         </View>
-                        <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => setSubmit(true)} >
-                                <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                                    <Text style={{ color: 'white', fontSize: 40, fontFamily: 'FC_Iconic' }}>{second}</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                            <FlatList
-                                data={countdesc}
-                                renderItem={({ item }) => (
-                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
-                                )}
-                            />
-                        </View>
-                    </View>
-
+                    </>
                 );
             } else {
                 return (
-                    <View style={styles.container}>
-                        <View style={{ width: '100%', marginTop: '5%', alignItems: 'center' }}>
-                            {perseconds != -1 ?
-                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:{perseconds} </Text>)
-                                :
-                                (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:5 </Text>)
-                            }
-                            <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
-                        </View>
-                        <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
-                            <FlatList
-                                data={train}
-                                renderItem={({ item }) => (
-                                    <Image
-                                        source={{ uri: item.gifall }}
-                                        style={{
-                                            width: 260,
-                                            height: 260
-                                        }}
-                                    />
-                                )}
-                                keyExtractor={(item) => item.idtrain}
-                            />
+                    <>
+                        <View style={styles.container}>
+                            <View style={{ width: '100%', marginTop: '5%', alignItems: 'center' }}>
+                                {perseconds != -1 ?
+                                    (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}:{perseconds} </Text>)
+                                    :
+                                    (<Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic' }}>{minute}: </Text>)
+                                }
+                                <Text style={{ fontSize: 35, color: 'white', fontFamily: 'FC_Iconic' }}>จับเวลาการฝึกฝน </Text>
+                            </View>
+                            <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
+                                <FlatList
+                                    data={train}
+                                    renderItem={({ item }) => (
+                                        <Image
+                                            source={{ uri: item.gifall }}
+                                            style={{
+                                                width: 260,
+                                                height: 260
+                                            }}
+                                        />
+                                    )}
+                                    keyExtractor={(item) => item.idtrain}
+                                />
 
-                        </View>
-                        <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
-                            <FlatList
-                                data={gif}
-                                renderItem={renderItem}
-                                keyExtractor={(item) => item.idgif}
-                            />
+                            </View>
+                            <View style={{ width: '90%', height: '30%', alignItems: 'center' }}>
+                                <FlatList
+                                    data={gif}
+                                    renderItem={renderItem}
+                                    keyExtractor={(item) => item.idgif}
+                                />
 
 
+                            </View>
+                            <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
+                                <TouchableOpacity onPress={() => setIsRunning(true)} >
+                                    <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                        <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
+                                        <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                                <FlatList
+                                    data={countdesc}
+                                    renderItem={({ item }) => (
+                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count} </Text>
+                                    )}
+                                />
+                            </View>
                         </View>
-                        <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity onPress={() => setIsRunning(true)} >
-                                <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                                    <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
-                                    <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
-                                </View>
-                            </TouchableOpacity>
-                        </View>
-                        <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                            <FlatList
-                                data={countdesc}
-                                renderItem={({ item }) => (
-                                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count} </Text>
-                                )}
-                            />
-                        </View>
-                    </View>
+                    </>
                 )
             }
         }
+
 
     }
 }

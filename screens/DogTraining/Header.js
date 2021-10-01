@@ -55,7 +55,7 @@ export default function headertraining({ navigation, route }, disabled) {
                     console.log('null');
                     setIsLoading(true);
                 } else {
-                    setDogdata(response.data);
+                    setDogdata(response.data.all);
                     setIsLoading(true);
                 }
             } catch {
@@ -146,9 +146,9 @@ export default function headertraining({ navigation, route }, disabled) {
                                                     <Image
                                                         source={{ uri: item.udogimg }}
                                                         style={{
-                                                            width: '60%',
-                                                            height: '60%',
-
+                                                            width: '100%',
+                                                            height: '100%',
+                                                            borderRadius: 80
                                                         }}
                                                     />
                                                 </View>

@@ -13,6 +13,9 @@ import { Dimensions } from "react-native";
 import { FontAwesome5, Fontisto } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
+import Testslide from './testslide';
+import ScreenA from './screenA';
+import ButtonToggleGroup from 'react-native-button-toggle-group';
 
 
 const screenWidth = Dimensions.get("window").width;
@@ -298,7 +301,7 @@ export default function testdata4({ navigation }) {
                                                         width: 80,
                                                         height: 30,
                                                         backgroundColor: active == item.id ? '#555555' : 'white',
-                                                        borderRadius: 12,
+                                                        borderRadius: 8,
                                                         justifyContent: 'center',
                                                         alignItems: 'center',
                                                         margin: 10,
@@ -309,7 +312,7 @@ export default function testdata4({ navigation }) {
                                                     active={active === item.id}
                                                     onPress={() => setActive(item.id)}
                                                 >
-                                                    <Text style={{ color: active == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:16 }}>{item.name}</Text>
+                                                    <Text style={{ color: active == item.id ? 'white' : '#555555' }}>{item.name}</Text>
                                                 </TouchableOpacity>
                                             </>
                                         ))}
@@ -332,7 +335,7 @@ export default function testdata4({ navigation }) {
                                                                                     height: 27,
                                                                                     width: 80,
                                                                                     backgroundColor: begin == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 12,
+                                                                                    borderRadius: 8,
                                                                                     margin: 5,
                                                                                     justifyContent: 'center',
                                                                                     alignItems: 'center',
@@ -343,7 +346,7 @@ export default function testdata4({ navigation }) {
                                                                                 active={begin === item.id}
                                                                                 onPress={() => { setBegin(item.value); setEnd(item.value2) }}
                                                                             >
-                                                                                <Text style={{ color: begin == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.name}</Text>
+                                                                                <Text style={{ color: begin == item.id ? 'white' : '#555555', fontSize: 12 }}>{item.name}</Text>
                                                                             </TouchableOpacity>
                                                                         ))}
                                                                     </ScrollView>
@@ -401,7 +404,7 @@ export default function testdata4({ navigation }) {
                                                                                     height: 25,
                                                                                     width: 50,
                                                                                     backgroundColor: yearmonth == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 12,
+                                                                                    borderRadius: 8,
                                                                                     margin: 5,
                                                                                     justifyContent: 'center',
                                                                                     alignItems: 'center',
@@ -412,7 +415,7 @@ export default function testdata4({ navigation }) {
                                                                                 active={yearmonth === item.id}
                                                                                 onPress={() => setYearMonth(item.id)}
                                                                             >
-                                                                                <Text style={{ color: yearmonth == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.id}</Text>
+                                                                                <Text style={{ color: yearmonth == item.id ? 'white' : '#555555' }}>{item.id}</Text>
                                                                             </TouchableOpacity>
                                                                         ))}
                                                                     </ScrollView>
@@ -425,7 +428,7 @@ export default function testdata4({ navigation }) {
                                                                                     height: 25,
                                                                                     width: 50,
                                                                                     backgroundColor: setmonth == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 12,
+                                                                                    borderRadius: 8,
                                                                                     margin: 5,
                                                                                     justifyContent: 'center',
                                                                                     alignItems: 'center',
@@ -436,7 +439,7 @@ export default function testdata4({ navigation }) {
                                                                                 active={setmonth === item.id}
                                                                                 onPress={() => setSetmonth(item.id)}
                                                                             >
-                                                                                <Text style={{ color: setmonth == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.name}</Text>
+                                                                                <Text style={{ color: setmonth == item.id ? 'white' : '#555555' }}>{item.name}</Text>
                                                                             </TouchableOpacity>
                                                                         ))}
                                                                     </ScrollView>
@@ -505,7 +508,7 @@ export default function testdata4({ navigation }) {
                                                                                 active={allyear === item.id}
                                                                                 onPress={() => setAllyear(item.id)}
                                                                             >
-                                                                                <Text style={{ color: allyear == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.id}</Text>
+                                                                                <Text style={{ color: allyear == item.id ? 'white' : '#555555' }}>{item.id}</Text>
                                                                             </TouchableOpacity>
                                                                         ))}
                                                                     </ScrollView>

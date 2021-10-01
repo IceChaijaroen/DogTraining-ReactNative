@@ -36,6 +36,7 @@ export default function testdata3({ navigation }) {
                             year: year,
                             id: 1,
                             udogid: 1,
+                            month: month
                         }
                     })
                 if (response.data == 'null') {
@@ -51,7 +52,7 @@ export default function testdata3({ navigation }) {
             }
         }
         fetchData();
-    }, [year])
+    }, [month, year])
 
 
     const eachdata = {
@@ -133,77 +134,72 @@ export default function testdata3({ navigation }) {
         );
     }
     function Year() {
+        const [active, setActive] = useState(<Sortyear />);
         return (
             <>
-                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
-                    <ScrollView horizontal={true}>
+                <View style={{ width: '100%', flexDirection: 'row' }}>
+                    <ScrollView horizontal>
                         {setyear.map(item => (
                             <TouchableOpacity
                                 style={{
-                                    height: 25,
-                                    width: 50,
-                                    backgroundColor: year == item.id ? '#555555' : 'white',
+                                    height: 28,
+                                    width: 100,
+                                    backgroundColor: active == item.content ? '#555555' : 'white',
                                     borderRadius: 8,
-                                    margin: 5,
+                                    margin: 10,
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                     borderColor: '#555555',
                                     elevation: 5
                                 }}
-                                key={item.id}
-                                active={year === item.id}
-                                onPress={() => setYear(item.id)}
+                                key={item.content}
+                                active={active === item.content}
+                                onPress={() => setActive(item.content)}
                             >
-                                <Text style={{ color: year == item.id ? 'white' : '#555555' }}>{item.id}</Text>
+                                <Text style={{ color: active == item.content ? 'white' : '#555555' }}>{item.name}</Text>
                             </TouchableOpacity>
                         ))}
                     </ScrollView>
-                    <View style={{ width: '100%', justifyContent: 'center' }}>
-                        {active}
-                    </View>
-
+                </View>
+                <View style={{ width: '100%', justifyContent: 'center' }}>
+                    {active}
                 </View>
 
-
-
             </>
-        );
+        )
     }
 
-    function Y2021() {
-        const [active, setActive] = useState();
+    function Sortyear() {
         return (
             <>
-                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
-                    <ScrollView horizontal={true}>
-                        {setyear.map(item => (
-                            <TouchableOpacity
-                                style={{
-                                    height: 25,
-                                    width: 50,
-                                    backgroundColor: year == item.id ? '#555555' : 'white',
-                                    borderRadius: 8,
-                                    margin: 5,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                    borderColor: '#555555',
-                                    elevation: 5
-                                }}
-                                key={item.id}
-                                active={year === item.id}
-                                onPress={() => setYear(item.id)}
-                            >
-                                <Text style={{ color: year == item.id ? 'white' : '#555555' }}>{item.id}</Text>
-                            </TouchableOpacity>
-                        ))}
-                    </ScrollView>
 
-                </View>
+                <ScrollView style={{ width: '100%' }} horizontal={true}>
+                    <View style={{ width: '100%', height: 290 }}>
 
-
+                        <LineChart
+                            style={{ flex: 1, width: '90%', height: '100%' }}
+                            data={{
+                                labels: [0, 1, 2, 3],
+                                datasets: [
+                                    {
+                                        data: [0, 1, 2, 3],
+                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                        strokeWidth: 2 // optional
+                                    }
+                                ],
+                                legend: ["Dog stastic"] // optional
+                            }}
+                            width={'1000'}
+                            height={255}
+                            verticalLabelRotation={10}
+                            chartConfig={chartConfig}
+                            bezier
+                        />
+                    </View>
+                </ScrollView>
 
             </>
-        );
+        )
     }
 
 
@@ -211,81 +207,83 @@ export default function testdata3({ navigation }) {
     const setyear = [
         {
             id: 2020,
-            content: <Year />
+            content: <Sortyear />,
+            name: '2020'
         },
         {
             id: 2021,
-            content: <Y2021 />
+            content: <Sortyear />,
+            name: '2021'
         },
     ]
 
     const setmonth = [
         {
             id: 1,
-            name: 'jun',
+            name: 'Jan',
             setmonth: 1
         },
         {
             id: 2,
-            name: 'feb',
+            name: 'Feb',
             setmonth: 2
         },
         {
             id: 3,
-            name: 'mar',
+            name: 'Mar',
             setmonth: 3
         },
         {
             id: 4,
-            name: 'apr',
+            name: 'Apr',
             setmonth: 4
         },
         {
             id: 5,
-            name: 'may',
+            name: 'May',
             setmonth: 5
         },
         {
             id: 6,
-            name: 'jun',
+            name: 'Jun',
             setmonth: 6
         },
         {
             id: 7,
-            name: 'jul',
+            name: 'Jul',
             setmonth: 7
         },
         {
             id: 8,
-            name: 'aug',
+            name: 'Aug',
             setmonth: 8
         },
+        {
+            id: 9,
+            name: 'Sep',
+            setmonth: 9
+        },
+        {
+            id: 10,
+            name: 'Oct',
+            setmonth: 10
+        },
+        {
+            id: 11,
+            name: 'Nov',
+            setmonth: 11
+        },
+        {
+            id: 12,
+            name: 'Dec',
+            setmonth: 12
+        }
     ]
 
 
 
-    const renderItem = ({ item, index }) => {
-        return (
-            <View style={{ width: 80, height: 110, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', margin: 10, backgroundColor: 'orange' }}>
-                <TouchableOpacity
-                    onPress={() => setYear(item.id)}
-                    style={{
-                        width: 80,
-                        height: 50,
-                        margin: 10,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    }}
 
-                >
-                    <Text style={{ color: 'black' }}>{item.id}</Text>
-                </TouchableOpacity>
-            </View>
-        )
-    }
-
-
-    const [active, setActive] = useState();
+    const [active, setActive] = useState(<Year />);
 
 
 
@@ -342,7 +340,6 @@ export default function testdata3({ navigation }) {
                                                 <Text style={{ color: active == item.content ? 'white' : '#555555' }}>{item.name}</Text>
                                             </TouchableOpacity>
 
-
                                         </>
                                     ))}
 
@@ -350,7 +347,15 @@ export default function testdata3({ navigation }) {
 
                             </View>
 
-                            {loading ? (
+
+
+                            <View style={{ width: '100%', justifyContent: 'center' }}>
+                                <Text> {month}</Text>
+                            </View>
+
+
+
+                            {/**     {loading ? (
                                 <>
                                     {all == 'null' ? (
                                         <Text style={{ fontSize: 50 }}>ยังไม่มีข้อมูล</Text>
@@ -384,7 +389,7 @@ export default function testdata3({ navigation }) {
                             ) : (
                                 <Text style={{ fontSize: 50 }}>Loading ..... </Text>
                             )}
-
+*/}
 
 
                         </View>

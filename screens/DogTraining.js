@@ -45,6 +45,53 @@ export default function Dogtraining({ navigation, route }, disabled) {
     fetchData();
   })
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showuserdogfromuser.php',
+          {
+            params: {
+              id: user,
+              udogid: udogid
+            }
+          })
+        if (response.data == 'null') {
+          console.log('null');
+          setIsLoading(true);
+        } else {
+          setDogdata(response.data.all);
+          setIsLoading(true);
+        }
+      } catch {
+        alert("showuserdogfromuser")
+      }
+    }
+    fetchData();
+  }, [udogid])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get('http://35.187.253.40/showdoglevel.php',
+                {
+                    params: {
+                        id: user,
+                        udogid: udogid
+                    }
+                })
+            if (response.data == 'null') {
+                console.log('null');
+            } else {
+                setDoglevel(response.data);
+            }
+        } catch {
+            alert("showdoglevel")
+        }
+    }
+    fetchData();
+}, [udogid])
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -270,19 +317,84 @@ export default function Dogtraining({ navigation, route }, disabled) {
         {/** -----------Header------------------ */}
         {!isLoading ? (
           <>
-            <Text style={{ fontSize: 100 }}> Loading ... </Text>
+            <Text style={{ fontSize: 100 }}> Loading...</Text>
           </>
         ) : (
           <>
 
-            {train == 'null' ? (
+            {udogid == null ? (
               <AddDog />
             ) : (
               <>
                 {loadingDog ? (
                   <>
                     {/** -----------Header------------------ */}
-                    < Headertraining />
+                    <View style={styles.headercontainer}>
+                      <View style={styles.header}>
+                        <View style={{ width: '100%', flexDirection: 'row', marginTop: '10%' }}>
+                          <View style={{ width: '50%' }}>
+                            <TouchableOpacity
+                              style={{ marginLeft: 15 }}
+                              onPress={() => navigation.openDrawer()}
+                            >
+                              <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                          <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                            <TouchableOpacity
+                              style={{ marginRight: 15 }}
+                              onPress={() => navigation.navigate('Noti')}
+                            >
+                              <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
+                                <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                              </View>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+
+
+                        <FlatList
+                          data={dogdata}
+                          renderItem={({ item }) => (
+                            <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: 140 }}>
+                              <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
+                                <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
+                                  <Image
+                                    source={{ uri: item.udogimg }}
+                                    style={{
+                                      width: '100%',
+                                      height: '100%',
+                                      borderRadius: 80
+                                    }}
+                                  />
+                                </View>
+
+                              </View>
+                              <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
+                                <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
+                                  <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogname} </Text>
+                                </View>
+                                <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
+                                  <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
+                                </View>
+                                <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                                  {doglevel.map((item, key) => (
+                                    <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
+                                      <Progress key={key} step={item.sumstep} steps={5000} height={15} />
+                                    </View>
+                                  ))}
+                                </View>
+
+                              </View>
+                            </View>
+                          )}
+                        />
+
+
+                      </View>
+                    </View>
                     {/** -----------Header------------------ */}
 
 
@@ -359,7 +471,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
                   </>
                 ) : (
                   <>
-                    <Text style={{ fontSize: 100 }}> Loading dog ... </Text>
+                    <Text style={{ fontSize: 100 }}> Loading dog...</Text>
                   </>
                 )}
 
