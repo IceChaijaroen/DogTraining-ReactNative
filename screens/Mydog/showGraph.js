@@ -12,6 +12,7 @@ import {
 import { Dimensions } from "react-native";
 import { FontAwesome5, Fontisto } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 import axios from 'axios';
 
 

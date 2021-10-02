@@ -163,15 +163,11 @@ export function DrawerContent(props) {
                                                     <View style={{ width: '70%', paddingTop: 10 }}>
                                                         <Text style={{ fontSize: 10, fontWeight: 'bold' }}>ชื่อ : {item.udogname}</Text>
                                                         <Text style={{ fontSize: 10, fontWeight: 'bold' }}>สถานะ : {item.udogstatus}</Text>
-                                                        {doglevel.map((item, key) => (
-                                                            <>
-                                                            <Text>{item.sumstep}555 </Text>
+                                                    
                                                             <View style={style.capsule}>
-                                                                
-                                                                <Progress key={key} step={item.sumstep} steps={5000} height={10} />
+                                                                <Progress step={item.udogprocess} steps={5000} height={10} />
                                                             </View>
-                                                            </>
-                                                        ))}
+                                                           
                                                     </View>
                                                 </View>
                                             </TouchableOpacity>

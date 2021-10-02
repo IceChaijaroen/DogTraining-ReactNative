@@ -36,13 +36,14 @@ export default function testtest({ navigation, route }) {
     const [doglevel, setDoglevel] = useState([]);
     const [train, setTrain] = useState([]);
     const [sex, setSex] = useState('');
-    const [birthday, setBirthday] = useState('');
+    const [birthday, setBirthday] = useState();
     const [age, setAge] = useState();
     const [name, setName] = useState();
     const [breed, setBreed] = useState();
     const [sexpic, setSexpic] = useState(['ผู้', 'เมีย']);
+    const [dogbreed, setDogbreed] = useState(['Golden Retriver', 'Labrador Retriver', 'Begle', 'Corgi','dutchun']);
     const [confirm, setConfirm] = useState(false);
-    const [image, setImage] = useState("");
+    const [image, setImage] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -447,7 +448,7 @@ export default function testtest({ navigation, route }) {
                                                         </View>
                                                         <View style={styles.rowcontent}>
                                                             <View style={{ width: '60%', paddingLeft: 20, justifyContent: 'center' }}>
-                                                                {image == "" ? (
+                                                                {image == null ? (
                                                                     <>
                                                                         <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 50, backgroundColor: '#EBEBEB', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
 
@@ -498,7 +499,16 @@ export default function testtest({ navigation, route }) {
                                                         <View style={styles.rowcontent}>
                                                             <View style={{ width: '60%' }}>
                                                                 <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', marginBottom: 10 }}>สายพันธุ์</Text>
-                                                                <Text style={{ fontSize: 20, fontFamily: 'FC_Iconic', color: '#555555' }}> {breed}</Text>
+                                                                
+                                                                <Picker style={{ width: '80%', fontFamily: 'FC_Iconic', color: '#555555' }}
+                                                                    selectedValue={breed}
+                                                                    onValueChange={(itemValue) => setBreed(itemValue)}
+                                                                >
+                                                                    {dogbreed.map((item, key) => (
+                                                                        <Picker.Item label={item} value={item} key={key}></Picker.Item>
+                                                                    ))}
+
+                                                                </Picker>
 
                                                             </View>
                                                             <View style={{ width: '40%', justifyContent: 'center', }}>
@@ -544,13 +554,31 @@ export default function testtest({ navigation, route }) {
                                                             </View>
                                                             <View style={{ width: '40%', justifyContent: 'center', }}>
                                                                 <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic' }}>อายุ</Text>
-                                                                {item.udogbd == null ? (
+                                                                {birthday == null ? (
                                                                     <>
                                                                         <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>กรุณากรอกวันเกิดให้น้อน</Text>
                                                                     </>
                                                                 ) : (
                                                                     <>
-                                                                        <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>{age}</Text>
+                                                                        {age == '51 ปี  9 เดือน' ? (
+                                                                            <>
+                                                                                <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>กรุณากรอกวันเกิดให้น้อน</Text>
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+                                                                                {age == '' ? (
+                                                                                    <>
+                                                                                        <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>น้อยกว่า 1 เดือน</Text>
+                                                                                    </>
+                                                                                ) : (
+                                                                                    <>
+                                                                                        <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>{age}</Text>
+                                                                                    </>
+                                                                                )}
+
+                                                                            </>
+                                                                        )}
+
                                                                     </>
                                                                 )}
 
