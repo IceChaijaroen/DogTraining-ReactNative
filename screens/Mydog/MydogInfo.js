@@ -41,9 +41,10 @@ export default function testtest({ navigation, route }) {
     const [name, setName] = useState();
     const [breed, setBreed] = useState();
     const [sexpic, setSexpic] = useState(['ผู้', 'เมีย']);
-    const [dogbreed, setDogbreed] = useState(['Golden Retriver', 'Labrador Retriver', 'Begle', 'Corgi','dutchun']);
+    const [dogbreed, setDogbreed] = useState(['Golden Retriver', 'Labrador Retriver', 'Begle', 'Corgi', 'dutchun']);
     const [confirm, setConfirm] = useState(false);
     const [image, setImage] = useState();
+    const [dognull, setDognull] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,18 +101,15 @@ export default function testtest({ navigation, route }) {
                         udogid: udogid
                     }
                 })
-            if (response.data == null) {
                 setIsLoading(true);
-                setDogdata(response.data);
-            } else {
-                setDogdata(response.data.all);
-                setSex(response.data.sex);
-                setBirthday(response.data.bd);
-                setName(response.data.name);
-                setBreed(response.data.breed);
-                setImage(response.data.img);
-                setIsLoading(true);
-            }
+            setDognull(response.data);
+            setDogdata(response.data.all);
+            setSex(response.data.sex);
+            setBirthday(response.data.bd);
+            setName(response.data.name);
+            setBreed(response.data.breed);
+            setImage(response.data.img);
+            
         }
         fetchData();
     }, [udogid])
@@ -315,7 +313,6 @@ export default function testtest({ navigation, route }) {
     }
 
 
-
     const close = () => {
         setIsshow(false);
     }
@@ -390,7 +387,7 @@ export default function testtest({ navigation, route }) {
             ) : (
 
                 <>
-                    {dogdata == null ? (
+                    {dognull == null ? (
                         <View style={styles.container}>
                             <TouchableOpacity onPress={() => navigation.navigate('AddDog')} style={styles.cardinsert}>
 
@@ -499,7 +496,7 @@ export default function testtest({ navigation, route }) {
                                                         <View style={styles.rowcontent}>
                                                             <View style={{ width: '60%' }}>
                                                                 <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', marginBottom: 10 }}>สายพันธุ์</Text>
-                                                                
+
                                                                 <Picker style={{ width: '80%', fontFamily: 'FC_Iconic', color: '#555555' }}
                                                                     selectedValue={breed}
                                                                     onValueChange={(itemValue) => setBreed(itemValue)}

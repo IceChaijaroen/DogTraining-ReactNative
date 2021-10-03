@@ -86,17 +86,14 @@ export default function Training({ navigation, route }) {
     const [countdesc, setCountdesc] = useState([]);
     const [minute, setMinute] = useState(0);
     const [perseconds, setPersecound] = useState(10);
-    const [timestop, setTimestop] = useState(true);
+    const [timestop, setTimestop] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        setTimestop(true);
-    }, [loading])
 
     useEffect(() => {
         if (perseconds < 0) {
             setMinute(minute => minute - 1)
-            setPersecound(59);
+            setPersecound(10);
         }
     }, [perseconds])
 
@@ -147,7 +144,7 @@ export default function Training({ navigation, route }) {
                     setSecound(0);
                     setIsRunning(false);
                     setSubmit(false);
-                    
+
 
                 })
                 .catch((err) => {
@@ -209,11 +206,10 @@ export default function Training({ navigation, route }) {
     {/**------------------------------------------------------------------------------------- */ }
 
 
-    useEffect(() => {
-        if (minute <= -1) {
-            setVisible(true);
+    const popup = useEffect(() => {
+        setVisible(true);
+        if(minute < 0){
             setTimestop(false);
-            setLoading(false);
         }
     })
 
@@ -258,7 +254,6 @@ export default function Training({ navigation, route }) {
         )
     }
 
-    console.log(timestop,visible);
 
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
@@ -269,6 +264,7 @@ export default function Training({ navigation, route }) {
         return <AppLoading />;
     } else {
         if (minute <= -1) {
+            { popup }
             return (
                 <ModalCount visible={visible}>
                     <View style={styles.PopupHeader}>
@@ -393,7 +389,7 @@ export default function Training({ navigation, route }) {
 
                             </View>
                             <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
-                                <TouchableOpacity onPress={() => setIsRunning(true)} >
+                                <TouchableOpacity onPress={() => { setIsRunning(true); setTimestop(true); }} >
                                     <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
                                         <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
                                         <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>

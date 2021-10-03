@@ -380,11 +380,9 @@ export default function Dogtraining({ navigation, route }, disabled) {
                                   <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
                                 </View>
                                 <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                                  {doglevel.map((item, key) => (
                                     <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                                      <Progress key={key} step={item.sumstep} steps={5000} height={15} />
+                                      <Progress step={item.udogprocess} steps={5000} height={15} />
                                     </View>
-                                  ))}
                                 </View>
 
                               </View>

@@ -122,7 +122,7 @@ export default function StatisTrain({ navigation, route }) {
             }
         }
         fetchData();
-    }, [udogid])
+    }, [idtrain, udogid])
 
 
     useEffect(() => {
@@ -145,7 +145,7 @@ export default function StatisTrain({ navigation, route }) {
             }
         }
         fetchData();
-    }, [dogdata])
+    }, [idtrain, dogdata])
 
     {/**   useEffect(() => {
         AsyncStorage.getItem('id')
@@ -176,20 +176,21 @@ export default function StatisTrain({ navigation, route }) {
                             udogid: udogid
                         }
                     })
-                if (response.data == 'null') {
-                    console.log('null');
-                } else {
-                    setStatis(response.data);
-                    setIsLoading(true);
-                }
+                setStatis(response.data);
             } catch {
                 alert("ERROR------getudogid.php")
             }
         }
         fetchData();
-    }, [dogdata])
+    }, [idtrain, dogdata])
 
-
+    useEffect(() => {
+        if (statis == 'null' || statis == '') {
+            setIsLoading(false);
+        } else {
+            setIsLoading(true);
+        }
+    })
 
     useEffect(() => {
         const fetchData = async () => {
@@ -255,6 +256,15 @@ export default function StatisTrain({ navigation, route }) {
         useShadowColorFromDataset: false // optional
     };
 
+
+
+
+    const next = () => {
+        navigation.navigate('Tabs');
+        setIsLoading(false);
+    }
+    console.log('isloading = ' + isLoading + 'statis = ' + statis)
+
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
         'bahnschrift': require('../../assets/fonts/bahnschrift.ttf'),
@@ -319,11 +329,11 @@ export default function StatisTrain({ navigation, route }) {
                                             <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
                                         </View>
                                         <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                                            {doglevel.map((item, key) => (
-                                                <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                                                    <Progress key={key} step={item.sumstep} steps={5000} height={15} />
-                                                </View>
-                                            ))}
+
+                                            <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
+                                                <Progress step={item.udogprocess} steps={5000} height={15} />
+                                            </View>
+
                                         </View>
 
                                     </View>
@@ -349,38 +359,54 @@ export default function StatisTrain({ navigation, route }) {
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
                             {isLoading ? (
-                                <ScrollView style={{ width: '90%' }} horizontal={true}>
-                                    <View style={{ width: '100%', height: 290 }}>
+                                <>
+                                    {statis == 'null' ? (
+                                        <>
+                                            <Text> ยังไม่มีสถิติ</Text>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ScrollView style={{ width: '90%' }} horizontal={true}>
+                                                <View style={{ width: '100%', height: 290 }}>
 
-                                        <LineChart
-                                            style={{ flex: 1, width: '90%', height: '100%' }}
-                                            data={{
-                                                labels: statis.map(item => (
-                                                    item.count
-                                                )),
-                                                datasets: [
-                                                    {
-                                                        data: statis.map(item => (
-                                                            item.seconds
-                                                        )),
-                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                                                        strokeWidth: 2 // optional
-                                                    }
-                                                ],
-                                                legend: ["Dog stastic"] // optional
-                                            }}
-                                            width={'1000'}
-                                            height={255}
-                                            verticalLabelRotation={10}
-                                            chartConfig={chartConfig}
-                                            bezier
-                                        />
-                                    </View>
-                                </ScrollView>
-                                // If there is a delay in data, let's let the user know it's loading
+                                                    <LineChart
+                                                        style={{ flex: 1, width: '90%', height: '100%' }}
+                                                        data={{
+                                                            labels: statis.map(item => (
+                                                                item.count
+                                                            )),
+                                                            datasets: [
+                                                                {
+                                                                    data: statis.map(item => (
+                                                                        item.seconds
+                                                                    )),
+                                                                    color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                                                    strokeWidth: 2 // optional
+                                                                }
+                                                            ],
+                                                            legend: ["Dog stastic"] // optional
+                                                        }}
+                                                        width={'1000'}
+                                                        height={255}
+                                                        verticalLabelRotation={10}
+                                                        chartConfig={chartConfig}
+                                                        bezier
+                                                    />
+                                                </View>
+                                            </ScrollView>
+
+                                        </>
+                                    )}
+
+                                </>
                             ) : (
-                                <Text>Loading...</Text>
+                                <>
+                                    <Text>Loading ....</Text>
+
+                                </>
                             )}
+
+
                         </View>
                         <View style={{ width: '100%', height: 60 }}>
                             <View style={{ width: '80%', justifyContent: 'center', height: 30, marginLeft: 40, marginBottom: 5 }}>
@@ -404,7 +430,7 @@ export default function StatisTrain({ navigation, route }) {
                             </View>
                         </View>
                         <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
-                            <TouchableOpacity onPress={() => navigation.navigate('Tabs', setIsLoading(false))} style={{ width: '25%', height: '70%' }}>
+                            <TouchableOpacity onPress={next} style={{ width: '25%', height: '70%' }}>
                                 <View style={styles.nextbutton}>
                                     <Text style={styles.textinbutton} >ถัดไป</Text>
                                     <FontAwesome5
