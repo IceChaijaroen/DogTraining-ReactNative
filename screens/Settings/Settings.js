@@ -21,7 +21,7 @@ export default function Settings({ navigation }) {
 
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginLeft: 15, fontSize: 20, color: 'white', fontWeight: 'bold' }}>ตั้งค่า</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 28, color: 'white', fontFamily:'FC_Iconic' }}>ตั้งค่า</Text>
                 </View>
             </View>
             {/* -------------------------------Header----------------------------------------- */}
@@ -29,16 +29,16 @@ export default function Settings({ navigation }) {
 
             <View style={{ width: '100%', height: '20%', alignItems: 'center', justifyContent: 'center', marginTop: '5%' }}>
                 <View style={{ width: '80%', height: '30%', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#555555' }}>บัญชี</Text>
+                    <Text style={{ fontSize: 28, fontFamily:'FC_Iconic', color: '#676767' }}>บัญชี</Text>
                 </View>
                 <View style={{ width: '80%', height: '35%', justifyContent: 'center' }}>
-                    <TouchableOpacity style={{ width: '50%' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B1B1B1' }}>+ เพิ่มสุนัขของคุณ</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('AddDog')} style={{ width: '50%' }}>
+                        <Text style={{ fontSize: 26, fontFamily:'FC_Iconic', color: '#B1B1B1' }}>+ เพิ่มสุนัขของคุณ</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={{ width: '80%', height: '35%', justifyContent: 'center' }}>
-                    <TouchableOpacity style={{ width: '30%' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B1B1B1' }}>ข้อมูลผู้ใช้</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={{ width: '30%' }}>
+                        <Text style={{ fontSize: 26, fontFamily:'FC_Iconic', color: '#B1B1B1' }}>ข้อมูลผู้ใช้</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -54,8 +54,8 @@ export default function Settings({ navigation }) {
 
             <View style={{ width: '100%', height: '5%', alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{ width: '80%', height: '30%', justifyContent: 'center' }}>
-                    <TouchableOpacity style={{width: '30%' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B1B1B1' }}>ช่วยเหลือ</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Help')} style={{width: '30%' }}>
+                        <Text style={{ fontSize: 26, fontFamily:'FC_Iconic', color: '#B1B1B1' }}>ช่วยเหลือ</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -71,11 +71,11 @@ export default function Settings({ navigation }) {
 
             <View style={{ width: '100%', height: '10%', alignItems: 'center', justifyContent: 'center' }}>
                 <View style={{ width: '80%', height: '50%', justifyContent: 'center' }}>
-                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#555555' }}>ติดต่อเรา</Text>
+                    <Text style={{ fontSize: 28, fontFamily:'FC_Iconic', color: '#676767' }}>ติดต่อเรา</Text>
                 </View>
                 <View style={{ width: '80%', height: '50%', justifyContent: 'center' }}>
                     <TouchableOpacity style={{width: '100%' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#B1B1B1' }}>621513002@crru.ac.th</Text>
+                        <Text style={{ fontSize: 26, fontFamily:'FC_Iconic', color: '#B1B1B1' }}>621513002@crru.ac.th</Text>
                     </TouchableOpacity>
                 </View>
             </View>

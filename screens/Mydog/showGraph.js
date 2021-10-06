@@ -14,6 +14,7 @@ import { FontAwesome5, Fontisto } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const screenWidth = Dimensions.get("window").width;
@@ -49,6 +50,24 @@ export default function testdata4({ navigation }) {
     const [isLoadingweek, setIsLoadingweek] = useState(false);
     const [weekvalue, setWeekvalue] = useState([]);
     const [loadingpage, setLoadingpage] = useState(false);
+    const [dog, setdog] = useState();
+    const [user, setUser] = useState();
+
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await AsyncStorage.getItem('id')
+                .then((value) => {
+                    setUser(value);
+                })
+            await AsyncStorage.getItem('udogid')
+                .then((value) => {
+                    setdog(value);
+                })
+        }
+        fetchData();
+    })
+
 
 
     useEffect(() => {
@@ -58,24 +77,21 @@ export default function testdata4({ navigation }) {
                     {
                         params: {
                             year: allyear,
-                            id: 1,
-                            udogid: 1,
+                            id: user,
+                            udogid: dog,
                         }
                     })
-                if (response.data == 'null') {
-                    setIsLoadingyear(true);
-                    setAll(response.data);
-                } else {
-                    setIsLoadingyear(true);
-                    setLoadingpage(true);
-                    setAll(response.data);
-                }
+
+                setIsLoadingyear(true);
+                setLoadingpage(true);
+                setAll(response.data);
+                console.log(all)
             } catch {
                 alert("allstatis")
             }
         }
         fetchData();
-    }, [allyear])
+    }, [all, allyear, dog])
 
 
     useEffect(() => {
@@ -84,25 +100,22 @@ export default function testdata4({ navigation }) {
                 const response = await axios.get('http://35.187.253.40/statis/threeweek.php',
                     {
                         params: {
-                            id: 1,
-                            udogid: 1,
+                            id: user,
+                            udogid: dog,
                             begin: begin,
                             end: end
                         }
                     })
-                if (response.data == 'null') {
-                    setIsLoadingweek(true);
-                    setWeekvalue(response.data);
-                } else {
-                    setIsLoadingweek(true);
-                    setWeekvalue(response.data);
-                }
+
+                setIsLoadingweek(true);
+                setWeekvalue(response.data);
+
             } catch {
                 alert("threeweek")
             }
         }
         fetchData();
-    }, [begin])
+    }, [weekvalue])
 
 
     useEffect(() => {
@@ -111,25 +124,21 @@ export default function testdata4({ navigation }) {
                 const response = await axios.get('http://35.187.253.40/statis/statisjan.php',
                     {
                         params: {
-                            id: 1,
-                            udogid: 1,
+                            id: user,
+                            udogid: dog,
                             year: yearmonth,
                             month: setmonth
                         }
                     })
-                if (response.data == 'null') {
-                    setIsLoadingmonth(true);
-                    setJan(response.data);
-                } else {
-                    setIsLoadingmonth(true);
-                    setJan(response.data);
-                }
+
+                setIsLoadingmonth(true);
+                setJan(response.data);
             } catch {
                 alert("statisjan")
             }
         }
         fetchData();
-    }, [setmonth, yearmonth])
+    }, [jan])
 
 
 
@@ -273,7 +282,7 @@ export default function testdata4({ navigation }) {
 
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติโดยรวม</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติโดยรวม{dog}</Text>
                 </View>
                 <View style={{ width: '45%', alignItems: 'flex-end', }}>
 
@@ -310,7 +319,7 @@ export default function testdata4({ navigation }) {
                                                     active={active === item.id}
                                                     onPress={() => setActive(item.id)}
                                                 >
-                                                    <Text style={{ color: active == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:16 }}>{item.name}</Text>
+                                                    <Text style={{ color: active == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 16 }}>{item.name}</Text>
                                                 </TouchableOpacity>
                                             </>
                                         ))}
@@ -320,244 +329,244 @@ export default function testdata4({ navigation }) {
 
                             <View style={{ width: '100%', justifyContent: 'center' }}>
 
-                               
-                                                {(() => {
-                                                    if (active == 1) {
-                                                        return (
+
+                                {(() => {
+                                    if (active == 1) {
+                                        return (
+                                            <>
+                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
+                                                    <ScrollView horizontal>
+                                                        {week.map((item) => (
+                                                            <TouchableOpacity
+                                                                style={{
+                                                                    height: 27,
+                                                                    width: 80,
+                                                                    backgroundColor: begin == item.id ? '#555555' : 'white',
+                                                                    borderRadius: 12,
+                                                                    margin: 5,
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    borderColor: '#555555',
+                                                                    elevation: 5
+                                                                }}
+                                                                key={item.id}
+                                                                active={begin === item.id}
+                                                                onPress={() => { setBegin(item.value); setEnd(item.value2) }}
+                                                            >
+                                                                <Text style={{ color: begin == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.name}</Text>
+                                                            </TouchableOpacity>
+                                                        ))}
+                                                    </ScrollView>
+                                                </View>
+                                                {isLoadingweek ? (
+                                                    <>
+                                                        {weekvalue == 'null' ? (
                                                             <>
-                                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
-                                                                    <ScrollView horizontal>
-                                                                        {week.map((item) => (
-                                                                            <TouchableOpacity
-                                                                                style={{
-                                                                                    height: 27,
-                                                                                    width: 80,
-                                                                                    backgroundColor: begin == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 12,
-                                                                                    margin: 5,
-                                                                                    justifyContent: 'center',
-                                                                                    alignItems: 'center',
-                                                                                    borderColor: '#555555',
-                                                                                    elevation: 5
-                                                                                }}
-                                                                                key={item.id}
-                                                                                active={begin === item.id}
-                                                                                onPress={() => { setBegin(item.value); setEnd(item.value2) }}
-                                                                            >
-                                                                                <Text style={{ color: begin == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.name}</Text>
-                                                                            </TouchableOpacity>
-                                                                        ))}
-                                                                    </ScrollView>
-                                                                </View>
-                                                                {isLoadingweek ? (
-                                                                    <>
-                                                                        {weekvalue == 'null' ? (
-                                                                            <>
-                                                                                <Text>Null</Text>
-                                                                            </>
-                                                                        ) : (
-                                                                            <>
-
-                                                                                <ScrollView style={{ width: '100%' }} horizontal={true}>
-                                                                                    <View style={{ width: '100%', height: 290 }}>
-
-                                                                                        <LineChart
-                                                                                            style={{ flex: 1, width: '90%', height: '100%' }}
-                                                                                            data={{
-                                                                                                labels: weekvalue.map(item => (item.day)),
-                                                                                                datasets: [
-                                                                                                    {
-                                                                                                        data: weekvalue.map(item => (item.sumexer)),
-                                                                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                                                                                                        strokeWidth: 2 // optional
-                                                                                                    }
-                                                                                                ],
-                                                                                                legend: ["Dog stastic"] // optional
-                                                                                            }}
-                                                                                            width={'1000'}
-                                                                                            height={255}
-                                                                                            verticalLabelRotation={10}
-                                                                                            chartConfig={chartConfig}
-                                                                                            bezier
-                                                                                        />
-                                                                                    </View>
-                                                                                </ScrollView>
-                                                                            </>
-                                                                        )}
-
-                                                                    </>
-                                                                ) : (
-                                                                    <Text>Loading...</Text>
-                                                                )}
+                                                                <Text>Null</Text>
                                                             </>
-                                                        )
-                                                    } else if (active == 2) {
-                                                        return (
+                                                        ) : (
                                                             <>
-                                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
-                                                                    <ScrollView horizontal>
-                                                                        {setyear.map((item) => (
-                                                                            <TouchableOpacity
-                                                                                style={{
-                                                                                    height: 25,
-                                                                                    width: 50,
-                                                                                    backgroundColor: yearmonth == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 12,
-                                                                                    margin: 5,
-                                                                                    justifyContent: 'center',
-                                                                                    alignItems: 'center',
-                                                                                    borderColor: '#555555',
-                                                                                    elevation: 5
-                                                                                }}
-                                                                                key={item.id}
-                                                                                active={yearmonth === item.id}
-                                                                                onPress={() => setYearMonth(item.id)}
-                                                                            >
-                                                                                <Text style={{ color: yearmonth == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.id}</Text>
-                                                                            </TouchableOpacity>
-                                                                        ))}
-                                                                    </ScrollView>
-                                                                </View>
-                                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
-                                                                    <ScrollView horizontal>
-                                                                        {month.map((item) => (
-                                                                            <TouchableOpacity
-                                                                                style={{
-                                                                                    height: 25,
-                                                                                    width: 50,
-                                                                                    backgroundColor: setmonth == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 12,
-                                                                                    margin: 5,
-                                                                                    justifyContent: 'center',
-                                                                                    alignItems: 'center',
-                                                                                    borderColor: '#555555',
-                                                                                    elevation: 5
-                                                                                }}
-                                                                                key={item.id}
-                                                                                active={setmonth === item.id}
-                                                                                onPress={() => setSetmonth(item.id)}
-                                                                            >
-                                                                                <Text style={{ color: setmonth == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.name}</Text>
-                                                                            </TouchableOpacity>
-                                                                        ))}
-                                                                    </ScrollView>
-                                                                </View>
-                                                                {isLoadingmonth ? (
-                                                                    <>
-                                                                        {jan == 'null' ? (
-                                                                            <>
-                                                                                <Text>Null</Text>
-                                                                            </>
-                                                                        ) : (
-                                                                            <>
 
-                                                                                <ScrollView style={{ width: '100%' }} horizontal={true}>
-                                                                                    <View style={{ width: '100%', height: 290 }}>
+                                                                <ScrollView style={{ width: '100%' }} horizontal={true}>
+                                                                    <View style={{ width: '100%', height: 290 }}>
 
-                                                                                        <LineChart
-                                                                                            style={{ flex: 1, width: '90%', height: '100%' }}
-                                                                                            data={{
-                                                                                                labels: jan.map(item => (item.day)),
-                                                                                                datasets: [
-                                                                                                    {
-                                                                                                        data: jan.map(item => (item.sumexer)),
-                                                                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                                                                                                        strokeWidth: 2 // optional
-                                                                                                    }
-                                                                                                ],
-                                                                                                legend: ["Dog stastic"] // optional
-                                                                                            }}
-                                                                                            width={'1000'}
-                                                                                            height={255}
-                                                                                            verticalLabelRotation={10}
-                                                                                            chartConfig={chartConfig}
-                                                                                            bezier
-                                                                                        />
-                                                                                    </View>
-                                                                                </ScrollView>
-                                                                            </>
-                                                                        )}
-
-                                                                    </>
-                                                                ) : (
-                                                                    <Text>Loading...</Text>
-                                                                )}
+                                                                        <LineChart
+                                                                            style={{ flex: 1, width: '90%', height: '100%' }}
+                                                                            data={{
+                                                                                labels: weekvalue.map(item => (item.day)),
+                                                                                datasets: [
+                                                                                    {
+                                                                                        data: weekvalue.map(item => (item.sumexer)),
+                                                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                                                                        strokeWidth: 2 // optional
+                                                                                    }
+                                                                                ],
+                                                                                legend: ["Dog stastic"] // optional
+                                                                            }}
+                                                                            width={'1000'}
+                                                                            height={255}
+                                                                            verticalLabelRotation={10}
+                                                                            chartConfig={chartConfig}
+                                                                            bezier
+                                                                        />
+                                                                    </View>
+                                                                </ScrollView>
                                                             </>
-                                                        )
-                                                    } else if (active == 3) {
-                                                        return (
+                                                        )}
+
+                                                    </>
+                                                ) : (
+                                                    <Text>Loading...</Text>
+                                                )}
+                                            </>
+                                        )
+                                    } else if (active == 2) {
+                                        return (
+                                            <>
+                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
+                                                    <ScrollView horizontal>
+                                                        {setyear.map((item) => (
+                                                            <TouchableOpacity
+                                                                style={{
+                                                                    height: 25,
+                                                                    width: 50,
+                                                                    backgroundColor: yearmonth == item.id ? '#555555' : 'white',
+                                                                    borderRadius: 12,
+                                                                    margin: 5,
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    borderColor: '#555555',
+                                                                    elevation: 5
+                                                                }}
+                                                                key={item.id}
+                                                                active={yearmonth === item.id}
+                                                                onPress={() => setYearMonth(item.id)}
+                                                            >
+                                                                <Text style={{ color: yearmonth == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.id}</Text>
+                                                            </TouchableOpacity>
+                                                        ))}
+                                                    </ScrollView>
+                                                </View>
+                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
+                                                    <ScrollView horizontal>
+                                                        {month.map((item) => (
+                                                            <TouchableOpacity
+                                                                style={{
+                                                                    height: 25,
+                                                                    width: 50,
+                                                                    backgroundColor: setmonth == item.id ? '#555555' : 'white',
+                                                                    borderRadius: 12,
+                                                                    margin: 5,
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    borderColor: '#555555',
+                                                                    elevation: 5
+                                                                }}
+                                                                key={item.id}
+                                                                active={setmonth === item.id}
+                                                                onPress={() => setSetmonth(item.id)}
+                                                            >
+                                                                <Text style={{ color: setmonth == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.name}</Text>
+                                                            </TouchableOpacity>
+                                                        ))}
+                                                    </ScrollView>
+                                                </View>
+                                                {isLoadingmonth ? (
+                                                    <>
+                                                        {jan == 'null' ? (
                                                             <>
-                                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
-                                                                    <ScrollView horizontal>
-                                                                        {setyear.map((item) => (
-                                                                            <TouchableOpacity
-                                                                                style={{
-                                                                                    height: 25,
-                                                                                    width: 50,
-                                                                                    backgroundColor: allyear == item.id ? '#555555' : 'white',
-                                                                                    borderRadius: 8,
-                                                                                    margin: 5,
-                                                                                    justifyContent: 'center',
-                                                                                    alignItems: 'center',
-                                                                                    borderColor: '#555555',
-                                                                                    elevation: 5
-                                                                                }}
-                                                                                key={item.id}
-                                                                                active={allyear === item.id}
-                                                                                onPress={() => setAllyear(item.id)}
-                                                                            >
-                                                                                <Text style={{ color: allyear == item.id ? 'white' : '#555555',fontFamily:'FC_Iconic',fontSize:14 }}>{item.id}</Text>
-                                                                            </TouchableOpacity>
-                                                                        ))}
-                                                                    </ScrollView>
-                                                                </View>
-                                                                {isLoadingyear ? (
-                                                                    <>
-                                                                        {all == 'null' ? (
-                                                                            <>
-                                                                                <Text>Null</Text>
-                                                                            </>
-                                                                        ) : (
-                                                                            <>
-                                                                                <ScrollView style={{ width: '100%' }} horizontal={true}>
-                                                                                    <View style={{ width: '100%', height: 290 }}>
-
-                                                                                        <LineChart
-                                                                                            style={{ flex: 1, width: '90%', height: '100%' }}
-                                                                                            data={{
-                                                                                                labels: all.map(item => (item.day)),
-                                                                                                datasets: [
-                                                                                                    {
-                                                                                                        data: all.map(item => (item.sumexer)),
-                                                                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
-                                                                                                        strokeWidth: 2 // optional
-                                                                                                    }
-                                                                                                ],
-                                                                                                legend: ["Dog stastic"] // optional
-                                                                                            }}
-                                                                                            width={'1000'}
-                                                                                            height={255}
-                                                                                            verticalLabelRotation={10}
-                                                                                            chartConfig={chartConfig}
-                                                                                            bezier
-                                                                                        />
-                                                                                    </View>
-                                                                                </ScrollView>
-                                                                            </>
-                                                                        )}
-
-                                                                    </>
-                                                                ) : (
-                                                                    <Text>Loading...</Text>
-                                                                )}
+                                                                <Text>Null</Text>
                                                             </>
-                                                        )
-                                                    } else {
-                                                        return (
-                                                            <Text> กรุณาเลือกดูสถิติ</Text>
-                                                        )
-                                                    }
-                                                })()}
+                                                        ) : (
+                                                            <>
+
+                                                                <ScrollView style={{ width: '100%' }} horizontal={true}>
+                                                                    <View style={{ width: '100%', height: 290 }}>
+
+                                                                        <LineChart
+                                                                            style={{ flex: 1, width: '90%', height: '100%' }}
+                                                                            data={{
+                                                                                labels: jan.map(item => (item.day)),
+                                                                                datasets: [
+                                                                                    {
+                                                                                        data: jan.map(item => (item.sumexer)),
+                                                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                                                                        strokeWidth: 2 // optional
+                                                                                    }
+                                                                                ],
+                                                                                legend: ["Dog stastic"] // optional
+                                                                            }}
+                                                                            width={'1000'}
+                                                                            height={255}
+                                                                            verticalLabelRotation={10}
+                                                                            chartConfig={chartConfig}
+                                                                            bezier
+                                                                        />
+                                                                    </View>
+                                                                </ScrollView>
+                                                            </>
+                                                        )}
+
+                                                    </>
+                                                ) : (
+                                                    <Text>Loading...</Text>
+                                                )}
+                                            </>
+                                        )
+                                    } else if (active == 3) {
+                                        return (
+                                            <>
+                                                <View style={{ width: '100%', flexDirection: 'row', padding: 5 }}>
+                                                    <ScrollView horizontal>
+                                                        {setyear.map((item) => (
+                                                            <TouchableOpacity
+                                                                style={{
+                                                                    height: 25,
+                                                                    width: 50,
+                                                                    backgroundColor: allyear == item.id ? '#555555' : 'white',
+                                                                    borderRadius: 8,
+                                                                    margin: 5,
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',
+                                                                    borderColor: '#555555',
+                                                                    elevation: 5
+                                                                }}
+                                                                key={item.id}
+                                                                active={allyear === item.id}
+                                                                onPress={() => setAllyear(item.id)}
+                                                            >
+                                                                <Text style={{ color: allyear == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.id}</Text>
+                                                            </TouchableOpacity>
+                                                        ))}
+                                                    </ScrollView>
+                                                </View>
+                                                {isLoadingyear ? (
+                                                    <>
+                                                        {all == 'null' ? (
+                                                            <>
+                                                                <Text>Null</Text>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <ScrollView style={{ width: '100%' }} horizontal={true}>
+                                                                    <View style={{ width: '100%', height: 290 }}>
+
+                                                                        <LineChart
+                                                                            style={{ flex: 1, width: '90%', height: '100%' }}
+                                                                            data={{
+                                                                                labels: all.map(item => (item.day)),
+                                                                                datasets: [
+                                                                                    {
+                                                                                        data: all.map(item => (item.step)),
+                                                                                        color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
+                                                                                        strokeWidth: 2 // optional
+                                                                                    }
+                                                                                ],
+                                                                                legend: ["Dog stastic"] // optional
+                                                                            }}
+                                                                            width={'1000'}
+                                                                            height={255}
+                                                                            verticalLabelRotation={10}
+                                                                            chartConfig={chartConfig}
+                                                                            bezier
+                                                                        />
+                                                                    </View>
+                                                                </ScrollView>
+                                                            </>
+                                                        )}
+
+                                                    </>
+                                                ) : (
+                                                    <Text>Loading...</Text>
+                                                )}
+                                            </>
+                                        )
+                                    } else {
+                                        return (
+                                            <Text> กรุณาเลือกดูสถิติ</Text>
+                                        )
+                                    }
+                                })()}
 
 
 

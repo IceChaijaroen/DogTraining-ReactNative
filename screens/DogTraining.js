@@ -72,25 +72,25 @@ export default function Dogtraining({ navigation, route }, disabled) {
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const response = await axios.get('http://35.187.253.40/showdoglevel.php',
-                {
-                    params: {
-                        id: user,
-                        udogid: udogid
-                    }
-                })
-            if (response.data == 'null') {
-                console.log('null');
-            } else {
-                setDoglevel(response.data);
+      try {
+        const response = await axios.get('http://35.187.253.40/showdoglevel.php',
+          {
+            params: {
+              id: user,
+              udogid: udogid
             }
-        } catch {
-            alert("showdoglevel")
+          })
+        if (response.data == 'null') {
+          console.log('null');
+        } else {
+          setDoglevel(response.data);
         }
+      } catch {
+        alert("showdoglevel")
+      }
     }
     fetchData();
-}, [udogid])
+  }, [udogid])
 
 
   useEffect(() => {
@@ -142,9 +142,9 @@ export default function Dogtraining({ navigation, route }, disabled) {
 
               <View style={{ width: '90%', height: 5 }}>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
                 </View>
-                <Progress step={item.sumstep} steps={500} height={5} />
+                <Progress step={item.sumstep} steps={20} height={5} />
               </View>
             </View>
           </TouchableOpacity>
@@ -182,9 +182,9 @@ export default function Dogtraining({ navigation, route }, disabled) {
 
               <View style={{ width: '90%', height: 5 }}>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
                 </View>
-                <Progress step={item.sumstep} steps={500} height={5} />
+                <Progress step={item.sumstep} steps={20} height={5} />
               </View>
             </View>
           </TouchableOpacity>
@@ -221,9 +221,9 @@ export default function Dogtraining({ navigation, route }, disabled) {
 
               <View style={{ width: '90%', height: 5 }}>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
                 </View>
-                <Progress step={item.sumstep} steps={500} height={5} />
+                <Progress step={item.sumstep} steps={20} height={5} />
               </View>
             </View>
           </TouchableOpacity>
@@ -288,7 +288,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
                   <View style={{ alignItems: 'flex-end' }}>
                     <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
                   </View>
-                  <Progress step={item.sumstep} steps={500} height={5} />
+                  <Progress step={item.sumstep} steps={20} height={5} />
                 </View>
               </View>
             </TouchableOpacity>
@@ -345,10 +345,10 @@ export default function Dogtraining({ navigation, route }, disabled) {
                           <View style={{ width: '50%', alignItems: 'flex-end' }}>
                             <TouchableOpacity
                               style={{ marginRight: 15 }}
-                              onPress={() => navigation.navigate('Noti')}
+                              onPress={() => navigation.navigate('Settings')}
                             >
                               <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                                <Fontisto name='player-settings' size={18} color="#555555" />
                               </View>
                             </TouchableOpacity>
                           </View>
@@ -380,9 +380,9 @@ export default function Dogtraining({ navigation, route }, disabled) {
                                   <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
                                 </View>
                                 <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                                    <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                                      <Progress step={item.udogprocess} steps={5000} height={15} />
-                                    </View>
+                                  <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
+                                    <Progress step={item.udogprocess} steps={200} height={15} />
+                                  </View>
                                 </View>
 
                               </View>

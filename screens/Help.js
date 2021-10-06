@@ -11,7 +11,7 @@ export default function Help(props,disabled) {
     <View style={styles.header}>
             <View style={{width:'100%',marginLeft:20}}>
                 <TouchableOpacity 
-                    onPress={() => {props.navigation.navigate('Tabs')}}>
+                    onPress={() => {props.navigation.goBack()}}>
                     <Icon
                         name="arrow-left"
                         size={25}

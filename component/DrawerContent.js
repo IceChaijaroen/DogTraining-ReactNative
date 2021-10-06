@@ -50,14 +50,14 @@ export function DrawerContent(props) {
                             id: user
                         }
                     })
-                setUdata(response.data);
+                setUdata(response.data.all);
 
             } catch {
                 alert('ssss');
             }
         }
         fetchData();
-    }, [isLoading])
+    }, [udata])
 
 
     useEffect(() => {
@@ -165,7 +165,7 @@ export function DrawerContent(props) {
                                                         <Text style={{ fontSize: 10, fontWeight: 'bold' }}>สถานะ : {item.udogstatus}</Text>
                                                     
                                                             <View style={style.capsule}>
-                                                                <Progress step={item.udogprocess} steps={5000} height={10} />
+                                                                <Progress step={item.udogprocess} steps={200} height={10} />
                                                             </View>
                                                            
                                                     </View>
@@ -252,7 +252,7 @@ export function DrawerContent(props) {
                     )}
                     label="ตั้งค่า"
                     labelStyle={{ fontWeight: 'bold' }}
-                    onPress={() => { }}
+                    onPress={() => {props.navigation.navigate('Settings') }}
                 />
                 <DrawerItem
                     icon={({ color, size }) => (

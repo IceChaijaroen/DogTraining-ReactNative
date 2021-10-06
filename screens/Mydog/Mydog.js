@@ -47,10 +47,10 @@ export default function Mydog({ navigation }) {
               <View style={{ width: '50%', alignItems: 'flex-end' }}>
                 <TouchableOpacity
                   style={{ marginRight: 15 }}
-                  onPress={() => navigation.navigate('Noti')}
+                  onPress={() => navigation.navigate('Settings')}
                 >
                   <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                    <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                    <Fontisto name='player-settings' size={18} color="#555555" />
                   </View>
                 </TouchableOpacity>
               </View>
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 35,
   },
   headertext: {
-    fontFamily:'FC_Iconic',
+    fontFamily: 'FC_Iconic',
     fontSize: 30,
     color: 'white',
     letterSpacing: 1,
