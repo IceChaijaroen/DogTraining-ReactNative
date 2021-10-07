@@ -121,34 +121,74 @@ export default function Dogtraining({ navigation, route }, disabled) {
   const level0 = ({ item, index }) => {
     if (item.trainlevel == '0') {
       return (
-        <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-            <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
-                  <Image
-                    source={{ uri: item.trainimg }}
-                    style={{
-                      width: '51%',
-                      height: '51%',
-                    }}
-                  />
-                </View>
-                <View style={styles.subtextcontainer}>
-                  <Text style={styles.subtext}> {item.trainname}</Text>
-                </View>
+        <>
+          {item.sumstep >= 20 ? (
+            <>
+              <View style={styles.minicardcontainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                  <View key={index} style={{width: '90%',height: '99%',backgroundColor: '#9A9A9A',borderRadius: 25,elevation: 10,alignItems: 'center'}}>
+                    <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                      <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                        <Image
+                          source={{ uri: item.trainimg }}
+                          style={{
+                            width: '51%',
+                            height: '51%',
+                          }}
+                        />
+                      </View>
+                      <View style={styles.subtextcontainer}>
+                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                      </View>
 
-              </View>
+                    </View>
 
-              <View style={{ width: '90%', height: 5 }}>
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
-                </View>
-                <Progress step={item.sumstep} steps={20} height={5} />
+                    <View style={{ width: '90%', height: 5 }}>
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                          <Text style={{ color: '#79E386' }}> 100% </Text>
+                        </Text>
+                      </View>
+                      <View style={{ width: '100%', backgroundColor: '#79E386', height: 5, borderRadius: 10 }}></View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+            </>
+          ) : (
+            <>
+              <View style={styles.minicardcontainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                  <View key={index} style={styles.minicard}>
+                    <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                      <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                        <Image
+                          source={{ uri: item.trainimg }}
+                          style={{
+                            width: '51%',
+                            height: '51%',
+                          }}
+                        />
+                      </View>
+                      <View style={styles.subtextcontainer}>
+                        <Text style={styles.subtext}> {item.trainname}</Text>
+                      </View>
+
+                    </View>
+
+                    <View style={{ width: '90%', height: 5 }}>
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
+                      </View>
+                      <Progress step={item.sumstep} steps={20} height={5} />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+
+        </>
       )
     } else {
       return (
@@ -161,34 +201,74 @@ export default function Dogtraining({ navigation, route }, disabled) {
   const level1 = ({ item, index }) => {
     if (item.trainlevel == '1') {
       return (
-        <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-            <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
-                  <Image
-                    source={{ uri: item.trainimg }}
-                    style={{
-                      width: '51%',
-                      height: '51%',
-                    }}
-                  />
-                </View>
-                <View style={styles.subtextcontainer}>
-                  <Text style={styles.subtext}> {item.trainname}</Text>
-                </View>
+        <>
+          {item.sumstep >= 20 ? (
+            <>
+              <View style={styles.minicardcontainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                  <View key={index} style={{width: '90%',height: '99%',backgroundColor: '#9A9A9A',borderRadius: 25,elevation: 10,alignItems: 'center'}}>
+                    <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                      <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                        <Image
+                          source={{ uri: item.trainimg }}
+                          style={{
+                            width: '51%',
+                            height: '51%',
+                          }}
+                        />
+                      </View>
+                      <View style={styles.subtextcontainer}>
+                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                      </View>
 
-              </View>
+                    </View>
 
-              <View style={{ width: '90%', height: 5 }}>
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
-                </View>
-                <Progress step={item.sumstep} steps={20} height={5} />
+                    <View style={{ width: '90%', height: 5 }}>
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                          <Text style={{ color: '#79E386' }}> 100% </Text>
+                        </Text>
+                      </View>
+                      <View style={{ width: '100%', backgroundColor: '#79E386', height: 5, borderRadius: 10 }}></View>
+                    </View>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </View>
-          </TouchableOpacity>
-        </View>
+            </>
+          ) : (
+            <>
+              <View style={styles.minicardcontainer}>
+                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                  <View key={index} style={styles.minicard}>
+                    <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                      <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                        <Image
+                          source={{ uri: item.trainimg }}
+                          style={{
+                            width: '51%',
+                            height: '51%',
+                          }}
+                        />
+                      </View>
+                      <View style={styles.subtextcontainer}>
+                        <Text style={styles.subtext}> {item.trainname}</Text>
+                      </View>
+
+                    </View>
+
+                    <View style={{ width: '90%', height: 5 }}>
+                      <View style={{ alignItems: 'flex-end' }}>
+                        <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
+                      </View>
+                      <Progress step={item.sumstep} steps={20} height={5} />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </>
+          )}
+
+        </>
       )
     } else {
       return (
@@ -200,34 +280,74 @@ export default function Dogtraining({ navigation, route }, disabled) {
   const level2 = ({ item, index }) => {
     if (item.trainlevel == '2') {
       return (
-        <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-            <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
-                  <Image
-                    source={{ uri: item.trainimg }}
-                    style={{
-                      width: '51%',
-                      height: '51%',
-                    }}
-                  />
-                </View>
-                <View style={styles.subtextcontainer}>
-                  <Text style={styles.subtext}> {item.trainname}</Text>
-                </View>
+        <>
+        {item.sumstep >= 20 ? (
+          <>
+            <View style={styles.minicardcontainer}>
+              <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <View key={index} style={{width: '90%',height: '99%',backgroundColor: '#9A9A9A',borderRadius: 25,elevation: 10,alignItems: 'center'}}>
+                  <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                    <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                      <Image
+                        source={{ uri: item.trainimg }}
+                        style={{
+                          width: '51%',
+                          height: '51%',
+                        }}
+                      />
+                    </View>
+                    <View style={styles.subtextcontainer}>
+                      <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                    </View>
 
-              </View>
+                  </View>
 
-              <View style={{ width: '90%', height: 5 }}>
-                <View style={{ alignItems: 'flex-end' }}>
-                  <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
+                  <View style={{ width: '90%', height: 5 }}>
+                    <View style={{ alignItems: 'flex-end' }}>
+                      <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                        <Text style={{ color: '#79E386' }}> 100% </Text>
+                      </Text>
+                    </View>
+                    <View style={{ width: '100%', backgroundColor: '#79E386', height: 5, borderRadius: 10 }}></View>
+                  </View>
                 </View>
-                <Progress step={item.sumstep} steps={20} height={5} />
-              </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
+          </>
+        ) : (
+          <>
+            <View style={styles.minicardcontainer}>
+              <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <View key={index} style={styles.minicard}>
+                  <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                    <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                      <Image
+                        source={{ uri: item.trainimg }}
+                        style={{
+                          width: '51%',
+                          height: '51%',
+                        }}
+                      />
+                    </View>
+                    <View style={styles.subtextcontainer}>
+                      <Text style={styles.subtext}> {item.trainname}</Text>
+                    </View>
+
+                  </View>
+
+                  <View style={{ width: '90%', height: 5 }}>
+                    <View style={{ alignItems: 'flex-end' }}>
+                      <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
+                    </View>
+                    <Progress step={item.sumstep} steps={20} height={5} />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+
+      </>
       )
     } else {
       return (
@@ -241,59 +361,73 @@ export default function Dogtraining({ navigation, route }, disabled) {
     if (item.trainlevel == '3') {
       return (
         <>
-          {/**   <View style={styles.minicardcontainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-            <View key={index} style={styles.minicard}>
-              <View style={{ width: '100%', flexDirection: 'row', height: '95%' }}>
-                <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center' }}>
-                  <Image
-                    source={{ uri: item.trainimg }}
-                    style={{
-                      width: '65%',
-                      height: '65%',
-                    }}
-                  />
+        {item.sumstep >= 20 ? (
+          <>
+            <View style={styles.minicardcontainer}>
+              <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <View key={index} style={{width: '90%',height: '99%',backgroundColor: '#9A9A9A',borderRadius: 25,elevation: 10,alignItems: 'center'}}>
+                  <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                    <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                      <Image
+                        source={{ uri: item.trainimg }}
+                        style={{
+                          width: '51%',
+                          height: '51%',
+                        }}
+                      />
+                    </View>
+                    <View style={styles.subtextcontainer}>
+                      <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                    </View>
+
+                  </View>
+
+                  <View style={{ width: '90%', height: 5 }}>
+                    <View style={{ alignItems: 'flex-end' }}>
+                      <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                        <Text style={{ color: '#79E386' }}> 100% </Text>
+                      </Text>
+                    </View>
+                    <View style={{ width: '100%', backgroundColor: '#79E386', height: 5, borderRadius: 10 }}></View>
+                  </View>
                 </View>
-                <View style={styles.subtextcontainer}>
-                  <Text style={styles.subtext}> {item.trainname}</Text>
-                </View>
-              </View>
-              <View style={{ width: '90%', height: 5 }}>
-                <Progress step={item.sumstep} steps={500} height={5} />
-              </View>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </View>
- */}
-          <View style={styles.minicardcontainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-              <View key={index} style={styles.minicard}>
-                <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
-                  <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
-                    <Image
-                      source={{ uri: item.trainimg }}
-                      style={{
-                        width: '51%',
-                        height: '51%',
-                      }}
-                    />
-                  </View>
-                  <View style={styles.subtextcontainer}>
-                    <Text style={styles.subtext}> {item.trainname}</Text>
+          </>
+        ) : (
+          <>
+            <View style={styles.minicardcontainer}>
+              <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <View key={index} style={styles.minicard}>
+                  <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
+                    <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
+                      <Image
+                        source={{ uri: item.trainimg }}
+                        style={{
+                          width: '51%',
+                          height: '51%',
+                        }}
+                      />
+                    </View>
+                    <View style={styles.subtextcontainer}>
+                      <Text style={styles.subtext}> {item.trainname}</Text>
+                    </View>
+
                   </View>
 
-                </View>
-
-                <View style={{ width: '90%', height: 5 }}>
-                  <View style={{ alignItems: 'flex-end' }}>
-                    <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{500}</Text>
+                  <View style={{ width: '90%', height: 5 }}>
+                    <View style={{ alignItems: 'flex-end' }}>
+                      <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :<Text style={{ color: '#FFB97D' }}> {item.sumstep}</Text> /{20}</Text>
+                    </View>
+                    <Progress step={item.sumstep} steps={20} height={5} />
                   </View>
-                  <Progress step={item.sumstep} steps={20} height={5} />
                 </View>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
+
+      </>
       )
     } else {
       return (

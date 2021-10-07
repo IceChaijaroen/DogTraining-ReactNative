@@ -85,7 +85,7 @@ export default function Training({ navigation, route }) {
     const [visible, setVisible] = useState(false);
     const [countdesc, setCountdesc] = useState([]);
     const [minute, setMinute] = useState(0);
-    const [perseconds, setPersecound] = useState(10);
+    const [perseconds, setPersecound] = useState(59);
     const [timestop, setTimestop] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -93,7 +93,7 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         if (perseconds < 0) {
             setMinute(minute => minute - 1)
-            setPersecound(10);
+            setPersecound(59);
         }
     }, [perseconds])
 
@@ -140,6 +140,7 @@ export default function Training({ navigation, route }) {
                 )
                 .then((response) => {
                     JSON.stringify(response.data);
+                    console.log(response.data);
                     setLoading(true);
                     setSecound(0);
                     setIsRunning(false);
@@ -173,7 +174,7 @@ export default function Training({ navigation, route }) {
             }
         }
         fetchpost();
-    }, [countdesc])
+    },[countdesc])
 
 
 

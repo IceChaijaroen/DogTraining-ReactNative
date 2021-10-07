@@ -31,22 +31,22 @@ export default function showGraph2({ navigation }) {
 
   useEffect(() => {
     const fetchData = async () => {
-        await AsyncStorage.getItem('id')
-            .then((value) => {
-                setUser(value);
-            })
+      await AsyncStorage.getItem('id')
+        .then((value) => {
+          setUser(value);
+        })
     }
     fetchData();
-})
-useEffect(() => {
+  })
+  useEffect(() => {
     const fetchData = async () => {
-        await AsyncStorage.getItem('udogid')
-            .then((value) => {
-                setUdogid(value);
-            })
+      await AsyncStorage.getItem('udogid')
+        .then((value) => {
+          setUdogid(value);
+        })
     }
     fetchData();
-})
+  })
 
 
   useEffect(() => {
@@ -96,7 +96,7 @@ useEffect(() => {
       }
     }
     fetchData();
-  },[train])
+  }, [train])
 
 
 
@@ -151,10 +151,10 @@ useEffect(() => {
             onPress={() => setIdtrain(item.idtrain)}
           >
             <ProgressCircle
-              percent={item.sumstep * 100 / 500}
+              percent={item.sumstep * 100 / 20}
               radius={40}
               borderWidth={4}
-              color="#FFBE4F"
+              color={item.sumstep >= 20 ? '#79E386' : '#FFBE4F'}
               shadowColor="#B8B8B8"
               bgColor={idtrain == item.idtrain ? '#838383' : '#FFFFFF'}
             >
@@ -169,7 +169,7 @@ useEffect(() => {
 
             </ProgressCircle>
             <View style={{ width: '100%', height: 20, alignItems: 'center' }}>
-              <Text style={{ color: '#555555', fontSize: 16, textAlign: 'center', fontFamily: 'FC_Iconic',paddingTop:5 }}>{item.trainname}</Text>
+              <Text style={{ color: '#555555', fontSize: 16, textAlign: 'center', fontFamily: 'FC_Iconic', paddingTop: 5 }}>{item.trainname}</Text>
             </View>
 
           </TouchableOpacity>
