@@ -29,9 +29,8 @@ export function DrawerContent(props) {
     const [user, setValue] = useState();
     const [udata, setUdata] = useState([]);
     const [dogdata, setDogdata] = useState([]);
-    const [udogid, setUdogid] = useState([]);
+    const [udog, setUdog] = useState();
     const [isLoading, setIsLoading] = useState(false);
-    const [doglevel, setDoglevel] = useState([]);
 
     useEffect(() => {
         AsyncStorage.getItem('id')
@@ -40,6 +39,19 @@ export function DrawerContent(props) {
                 setIsLoading(true);
             })
     })
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await AsyncStorage.getItem('udogid')
+                .then((value) => {
+                    setUdog(value);
+                })
+        }
+        fetchData();
+    })
+
+    console.log('udog ' + udog)
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -70,35 +82,12 @@ export function DrawerContent(props) {
                         }
                     })
                 setDogdata(response.data.all);
-                setUdogid(response.data.udogid);
             } catch {
                 alert("ERROR------getudogid.php")
             }
         }
         fetchData();
     }, [dogdata])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://35.187.253.40/showdoglevel.php',
-                    {
-                        params: {
-                            id: user,
-                            udogid: udogid
-                        }
-                    })
-                if (response.data == 'null') {
-                    console.log('null');
-                } else {
-                    setDoglevel(response.data);
-                }
-            } catch {
-                alert("showdoglevel")
-            }
-        }
-        fetchData();
-    }, [udogid])
 
 
 
@@ -151,24 +140,39 @@ export function DrawerContent(props) {
                                     data={dogdata}
                                     renderItem={
                                         ({ item }) => (
-                                            <TouchableOpacity onPress={() => props.navigation.goBack(AsyncStorage.setItem('udogid', item.udogid))}>
-                                                <View style={style.card}>
-                                                    <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
-                                                        <Avatar.Image
-                                                            source={{ uri: item.udogimg }}
-                                                            size={35}
-                                                            backgroundColor={'white'}
-                                                        />
+                                            <TouchableOpacity style={{
+                                                flexDirection: 'row',
+                                                width: '90%',
+                                                height: 65,
+                                                backgroundColor: udog === item.udogid ? '#6A6A6A' : 'white',
+                                                borderRadius: 25,
+                                                marginTop: 8,
+                                                marginLeft: 3,
+                                                marginBottom: 8,
+                                                shadowColor: '#000',
+                                                shadowOffset: {
+                                                    width: 0,
+                                                    height: 2,
+                                                },
+                                                shadowOpacity: 0.23,
+                                                shadowRadius: 2.62,
+                                                elevation: 6
+                                            }} onPress={() => { props.navigation.goBack(AsyncStorage.setItem('udogid', item.udogid)) }}>
+                                                <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <Avatar.Image
+                                                        source={{ uri: item.udogimg }}
+                                                        size={35}
+                                                        backgroundColor={'white'}
+                                                    />
+                                                </View>
+                                                <View style={{ width: '70%', paddingTop: 10 }}>
+                                                    <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>ชื่อ : {item.udogname}</Text>
+                                                    <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>สถานะ : {item.udogstatus}</Text>
+
+                                                    <View style={style.capsule}>
+                                                        <Progress step={item.udogprocess} steps={200} height={10} />
                                                     </View>
-                                                    <View style={{ width: '70%', paddingTop: 10 }}>
-                                                        <Text style={{ fontSize: 10, fontWeight: 'bold' }}>ชื่อ : {item.udogname}</Text>
-                                                        <Text style={{ fontSize: 10, fontWeight: 'bold' }}>สถานะ : {item.udogstatus}</Text>
-                                                    
-                                                            <View style={style.capsule}>
-                                                                <Progress step={item.udogprocess} steps={200} height={10} />
-                                                            </View>
-                                                           
-                                                    </View>
+
                                                 </View>
                                             </TouchableOpacity>
                                         )}
@@ -252,7 +256,7 @@ export function DrawerContent(props) {
                     )}
                     label="ตั้งค่า"
                     labelStyle={{ fontWeight: 'bold' }}
-                    onPress={() => {props.navigation.navigate('Settings') }}
+                    onPress={() => { props.navigation.navigate('Settings') }}
                 />
                 <DrawerItem
                     icon={({ color, size }) => (
@@ -305,7 +309,7 @@ const style = StyleSheet.create({
     capsule: {
         marginTop: 5,
         width: '90%',
-        height: 12,
+        height: 10,
         borderRadius: 15,
         backgroundColor: '#F5F5F5'
     },

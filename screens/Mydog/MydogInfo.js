@@ -212,7 +212,6 @@ export default function testtest({ navigation, route }) {
             quality: 1,
         });
         const base64 = await FileSystem.readAsStringAsync(result.uri, { encoding: 'base64' });
-        console.log(base64);
         const base = 'data:image/jpeg;base64,'
         if (!result.cancelled) {
             setImage(base + base64);
@@ -398,7 +397,7 @@ export default function testtest({ navigation, route }) {
             ) : (
 
                 <>
-                    {dognull == null ? (
+                    {!dogdata ? (
                         <View style={styles.container}>
                             <TouchableOpacity onPress={() => navigation.navigate('AddDog')} style={styles.cardinsert}>
 

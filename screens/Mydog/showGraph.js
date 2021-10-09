@@ -22,24 +22,9 @@ const screenWidth = Dimensions.get("window").width;
 
 
 export default function testdata4({ navigation }) {
-    const [text, onChangeText] = useState("น้องโบ้");
     const [isLoadingyear, setIsLoadingyear] = useState(false);
     const [all, setAll] = useState([]);
     const [jan, setJan] = useState([]);
-    const [feb, setFeb] = useState([]);
-    const [mar, setMar] = useState([]);
-    const [apr, setApr] = useState([]);
-    const [may, setMay] = useState([]);
-    const [jun, setJun] = useState([]);
-    const [jul, setJul] = useState([]);
-    const [aug, setAug] = useState([]);
-    const [sep, setSep] = useState([]);
-    const [oct, setOct] = useState([]);
-    const [nov, setNov] = useState([]);
-    const [dec, setDec] = useState([]);
-    const [thisweek, setThisweek] = useState([]);
-    const [lastweek, setLastweek] = useState([]);
-    const [twoweek, setTwoweek] = useState([]);
     const [yearmonth, setYearMonth] = useState(2021);
     const [allyear, setAllyear] = useState(2021);
     const [setmonth, setSetmonth] = useState(1);
@@ -50,24 +35,26 @@ export default function testdata4({ navigation }) {
     const [isLoadingweek, setIsLoadingweek] = useState(false);
     const [weekvalue, setWeekvalue] = useState([]);
     const [loadingpage, setLoadingpage] = useState(false);
-    const [dog, setdog] = useState();
+    const [udog, setUdog] = useState();
     const [user, setUser] = useState();
 
 
     useEffect(() => {
+        AsyncStorage.getItem('id')
+            .then((value) => {
+                setUser(value);
+            })
+    })
+
+    useEffect(() => {
         const fetchData = async () => {
-            await AsyncStorage.getItem('id')
-                .then((value) => {
-                    setUser(value);
-                })
             await AsyncStorage.getItem('udogid')
                 .then((value) => {
-                    setdog(value);
+                    setUdog(value);
                 })
         }
         fetchData();
     })
-
 
 
     useEffect(() => {
@@ -78,7 +65,7 @@ export default function testdata4({ navigation }) {
                         params: {
                             year: allyear,
                             id: user,
-                            udogid: dog,
+                            udogid: udog,
                         }
                     })
 
@@ -91,7 +78,7 @@ export default function testdata4({ navigation }) {
             }
         }
         fetchData();
-    }, [all, allyear, dog])
+    }, [allyear, udog, all])
 
 
     useEffect(() => {
@@ -101,7 +88,7 @@ export default function testdata4({ navigation }) {
                     {
                         params: {
                             id: user,
-                            udogid: dog,
+                            udogid: udog,
                             begin: begin,
                             end: end
                         }
@@ -115,7 +102,7 @@ export default function testdata4({ navigation }) {
             }
         }
         fetchData();
-    }, [weekvalue])
+    }, [begin, udog, weekvalue])
 
 
     useEffect(() => {
@@ -125,7 +112,7 @@ export default function testdata4({ navigation }) {
                     {
                         params: {
                             id: user,
-                            udogid: dog,
+                            udogid: udog,
                             year: yearmonth,
                             month: setmonth
                         }
@@ -138,7 +125,7 @@ export default function testdata4({ navigation }) {
             }
         }
         fetchData();
-    }, [jan])
+    }, [yearmonth, setmonth, udog, jan])
 
 
 
@@ -240,19 +227,18 @@ export default function testdata4({ navigation }) {
 
     ];
 
-
     const setyear = [
         {
-            id: 2018,
+            id: new Date().getFullYear() - 3,
         },
         {
-            id: 2019,
+            id: new Date().getFullYear() - 2,
         },
         {
-            id: 2020,
+            id: new Date().getFullYear() - 1,
         },
         {
-            id: 2021,
+            id: new Date().getFullYear(),
         }
     ]
 
@@ -282,7 +268,7 @@ export default function testdata4({ navigation }) {
 
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติโดยรวม{dog}</Text>
+                    <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติโดยรวม</Text>
                 </View>
                 <View style={{ width: '45%', alignItems: 'flex-end', }}>
 
@@ -362,7 +348,10 @@ export default function testdata4({ navigation }) {
                                                     <>
                                                         {weekvalue == 'null' ? (
                                                             <>
-                                                                <Text>Null</Text>
+                                                                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                                                                </View>
+
                                                             </>
                                                         ) : (
                                                             <>
@@ -376,7 +365,7 @@ export default function testdata4({ navigation }) {
                                                                                 labels: weekvalue.map(item => (item.day)),
                                                                                 datasets: [
                                                                                     {
-                                                                                        data: weekvalue.map(item => (item.sumexer)),
+                                                                                        data: weekvalue.map(item => (item.step)),
                                                                                         color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                                                         strokeWidth: 2 // optional
                                                                                     }
@@ -455,7 +444,9 @@ export default function testdata4({ navigation }) {
                                                     <>
                                                         {jan == 'null' ? (
                                                             <>
-                                                                <Text>Null</Text>
+                                                                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                                                                </View>
                                                             </>
                                                         ) : (
                                                             <>
@@ -469,7 +460,7 @@ export default function testdata4({ navigation }) {
                                                                                 labels: jan.map(item => (item.day)),
                                                                                 datasets: [
                                                                                     {
-                                                                                        data: jan.map(item => (item.sumexer)),
+                                                                                        data: jan.map(item => (item.step)),
                                                                                         color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                                                         strokeWidth: 2 // optional
                                                                                     }
@@ -524,7 +515,9 @@ export default function testdata4({ navigation }) {
                                                     <>
                                                         {all == 'null' ? (
                                                             <>
-                                                                <Text>Null</Text>
+                                                                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                                                                </View>
                                                             </>
                                                         ) : (
                                                             <>

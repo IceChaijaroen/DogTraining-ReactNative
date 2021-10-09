@@ -223,9 +223,13 @@ export default function showGraph2({ navigation }) {
                   {exerdog == 'null' ? (
                     <>
                       {idtrain == null ? (
-                        <Text style={{ fontSize: 50 }}>กรุณาเลือกท่าฝึกเพื่อดูสถิติ</Text>
+                        <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                        </View>
                       ) : (
-                        <Text style={{ fontSize: 50 }}>ยังไม่มีข้อมูล</Text>
+                        <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                          <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                        </View>
                       )}
 
                     </>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Demensions, TouchableOpacity, FlatList, Text, View, StyleSheet, Image, ScrollView, SafeAreaView, Button } from 'react-native';
+import { Demensions, TouchableOpacity, FlatList, Text, View, StyleSheet, Image, ScrollView, SafeAreaView, Button, TextInput } from 'react-native';
 import Headerinfo from '../component/Headerinfo';
 import { FontAwesome5, Fontisto, AntDesign } from '@expo/vector-icons';
 import { SearchBar } from 'react-native-elements';
@@ -16,6 +16,9 @@ const numColumns = 2
 export default function Doginfo({ navigation, route }) {
   const path = ('cut.jpg');
   const [info, setInfo] = useState([]);
+  const [master, setMaster] = useState([]);
+  const [type, setType] = useState(3);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     // Post updated, do something with `route.params.post`
@@ -23,14 +26,31 @@ export default function Doginfo({ navigation, route }) {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://35.187.253.40/showdoginfo.php')
-        setInfo(response.data)
+        setInfo(response.data);
+        setMaster(response.data);
       } catch (err) {
         alert(err)
       }
     }
     fetchData();
-  }, [info])
+  }, [])
 
+
+  const seachFilter = (text) => {
+    if (text) {
+      const newData = master
+        .filter((item) => {
+          const itemData = item.dogname ? item.dogname.toUpperCase() : ''.toUpperCase();
+          const textData = text.toUpperCase();
+          return itemData.indexOf(textData) > -1;
+        })
+      setInfo(newData);
+      setSearch(text);
+    } else {
+      setInfo(master);
+      setSearch(text);
+    }
+  }
 
   let formatData = (info, numColumns) => {
     const totalRows = Math.floor(info.length / numColumns)
@@ -122,13 +142,15 @@ export default function Doginfo({ navigation, route }) {
             inputStyle={{ backgroundColor: '#575757' }}
             containerStyle={{ backgroundColor: '#575757', width: '90%', height: 50, borderRadius: 50 }}
             inputContainerStyle={{ backgroundColor: '#575757', width: '100%', height: "100%" }}
+            placeholder="Type Here..."
+            onChangeText={(text) => seachFilter(text)}
+            value={search}
           />
         </View>
         <SafeAreaView >
           <ScrollView >
             <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: 30 }}>
               <View style={styles.container}>
-
                 <FlatList
                   data={formatData(info, numColumns)}
                   renderItem={renderItem}
