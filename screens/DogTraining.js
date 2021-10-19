@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
 import Opendrawer from '../component/OpenDrawer';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
@@ -62,8 +62,8 @@ export default function Dogtraining({ navigation, route }, disabled) {
           setProcess(response.data.process);
           setIsLoading(true);
         }
-      } catch {
-        alert("showuserdogfromuser")
+      } catch (error){
+        console.log(error)
       }
     }
     fetchData();
@@ -85,8 +85,8 @@ export default function Dogtraining({ navigation, route }, disabled) {
         } else {
           setDoglevel(response.data);
         }
-      } catch {
-        alert("showdoglevel")
+      } catch(error) {
+        console.log(error)
       }
     }
     fetchData();
@@ -109,7 +109,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
           setIsLoading(true);
         }
       } catch (err) {
-        alert(err)
+        console.log(error)
       }
     }
     fetchData();
@@ -126,7 +126,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
             <>
               <View style={styles.minicardcontainer}>
                 <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-                  <View key={index} style={{ width: '90%', height: '99%', backgroundColor: '#9A9A9A', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
+                  <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                     <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                       <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                         <Image
@@ -138,14 +138,14 @@ export default function Dogtraining({ navigation, route }, disabled) {
                         />
                       </View>
                       <View style={styles.subtextcontainer}>
-                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: '#555555' }}> {item.trainname}</Text>
                       </View>
 
                     </View>
 
                     <View style={{ width: '90%', height: 5 }}>
                       <View style={{ alignItems: 'flex-end' }}>
-                        <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                        <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :
                           <Text style={{ color: '#79E386' }}> 100% </Text>
                         </Text>
                       </View>
@@ -241,7 +241,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
                 <>
                   <View style={styles.minicardcontainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-                      <View key={index} style={{ width: '90%', height: '99%', backgroundColor: '#9A9A9A', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
+                      <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                             <Image
@@ -253,14 +253,14 @@ export default function Dogtraining({ navigation, route }, disabled) {
                             />
                           </View>
                           <View style={styles.subtextcontainer}>
-                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: '#555555' }}> {item.trainname}</Text>
                           </View>
 
                         </View>
 
                         <View style={{ width: '90%', height: 5 }}>
                           <View style={{ alignItems: 'flex-end' }}>
-                            <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                            <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :
                               <Text style={{ color: '#79E386' }}> 100% </Text>
                             </Text>
                           </View>
@@ -354,7 +354,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
                 <>
                   <View style={styles.minicardcontainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-                      <View key={index} style={{ width: '90%', height: '99%', backgroundColor: '#9A9A9A', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
+                      <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                             <Image
@@ -366,14 +366,14 @@ export default function Dogtraining({ navigation, route }, disabled) {
                             />
                           </View>
                           <View style={styles.subtextcontainer}>
-                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: '#555555' }}> {item.trainname}</Text>
                           </View>
 
                         </View>
 
                         <View style={{ width: '90%', height: 5 }}>
                           <View style={{ alignItems: 'flex-end' }}>
-                            <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                            <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :
                               <Text style={{ color: '#79E386' }}> 100% </Text>
                             </Text>
                           </View>
@@ -471,7 +471,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
                 <>
                   <View style={styles.minicardcontainer}>
                     <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
-                      <View key={index} style={{ width: '90%', height: '99%', backgroundColor: '#9A9A9A', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
+                      <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
                             <Image
@@ -483,14 +483,14 @@ export default function Dogtraining({ navigation, route }, disabled) {
                             />
                           </View>
                           <View style={styles.subtextcontainer}>
-                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: 'white' }}> {item.trainname}</Text>
+                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 23, color: '#555555' }}> {item.trainname}</Text>
                           </View>
 
                         </View>
 
                         <View style={{ width: '90%', height: 5 }}>
                           <View style={{ alignItems: 'flex-end' }}>
-                            <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: 'white' }}>ระดับความก้าวหน้า :
+                            <Text style={{ fontSize: 12, fontFamily: 'FC_Iconic', color: '#555555' }}>ระดับความก้าวหน้า :
                               <Text style={{ color: '#79E386' }}> 100% </Text>
                             </Text>
                           </View>
@@ -558,7 +558,9 @@ export default function Dogtraining({ navigation, route }, disabled) {
         {/** -----------Header------------------ */}
         {!isLoading ? (
           <>
-            <Text style={{ fontSize: 100 }}> Loading...</Text>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" color="#FFB97D" />
+            </View>
           </>
         ) : (
           <>

@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import {
   LineChart,
   BarChart,
@@ -192,7 +192,7 @@ export default function showGraph2({ navigation }) {
 
             />
           </TouchableOpacity>
-          <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติแต่ละท่า{udogid}</Text>
+          <Text style={{ marginLeft: 15, fontSize: 27, color: 'white', fontFamily: 'FC_Iconic' }}>สถิติแต่ละท่า</Text>
         </View>
         <View style={{ width: '45%', alignItems: 'flex-end', }}>
 
@@ -258,11 +258,17 @@ export default function showGraph2({ navigation }) {
                           />
                         </View>
                       </ScrollView>
+                      <View style={{ width: '100%' }}>
+                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = จำนวนครั้ง</Text>
+                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = เวลา(วินาที)</Text>
+                      </View>
                     </>
                   )}
                 </>
               ) : (
-                <Text style={{ fontSize: 50 }}>Loading ..... </Text>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                  <ActivityIndicator size="large" color="#FFB97D" />
+                </View>
               )}
 
 

@@ -17,8 +17,104 @@ export default function Doginfo({ navigation, route }) {
   const path = ('cut.jpg');
   const [info, setInfo] = useState([]);
   const [master, setMaster] = useState([]);
+  const [datalist, setDatalist] = useState([]);
   const [type, setType] = useState(3);
   const [search, setSearch] = useState('');
+  const [Toggle, setToggle] = useState(false);
+  const [status, setStatus] = useState(null);
+  const [wool, setWool] = useState(null);
+  const [ear, setEar] = useState(null);
+
+
+  const listSize = [
+    {
+      status: 'Small',
+      size: 14,
+      title: 'พันธุ์เล็ก'
+    },
+    {
+      status: 'Medium',
+      size: 18,
+      title: 'พันกลาง'
+    },
+    {
+      status: 'Large',
+      size: 22,
+      title: 'พันใหญ่'
+    }
+  ]
+
+  const listWool = [
+    {
+      wool: 'Long',
+      title: 'ขนยาว'
+    },
+    {
+      wool: 'Short',
+      title: 'ขนสั้น'
+    }
+  ]
+
+  const listEars = [
+    {
+      status: 'Stand',
+      title: 'หูตั้ง'
+    },
+    {
+      status: 'Drop',
+      title: 'หูตก'
+    }
+  ]
+
+  const setfilter = () => {
+    if (status !== null) {
+      if (wool !== null && ear !== null) {
+        setDatalist([...info.filter(item => item.typeears === ear && item.typewool === wool && item.type === status)])
+      } else {
+        if (wool == null) {
+          if (ear == null) {
+            setDatalist([...info.filter(item => item.type === status)])
+          } else {
+            setDatalist([...info.filter(item => item.typeears === ear && item.type === status)])
+          }
+        } else {
+          setDatalist([...info.filter(item => item.type === status && item.typewool === wool)])
+        }
+      }
+    } else if (wool !== null) {
+      if (status == null) {
+        if (ear == null) {
+          setDatalist([...info.filter(item => item.typewool === wool)])
+        } else {
+          setDatalist([...info.filter(item => item.typewool === wool && item.typeears === ear)])
+        }
+      } else {
+        setDatalist([...info.filter(item => item.typewool === wool && item.type === status)])
+      }
+    } else if (ear !== null) {
+      if (wool == null) {
+        if (status == null) {
+          setDatalist([...info.filter(item => item.typeears === ear)])
+        } else {
+          setDatalist([...info.filter(item => item.typeears === ear && item.type === status)])
+        }
+      } else {
+        setDatalist([...info.filter(item => item.typeears === ear && item.typewool === wool)])
+      }
+    } else {
+      setDatalist([...info.filter(item => item.typeears === ear && item.typewool === wool && item.type === status)])
+    }
+
+  }
+
+  const setfilterwool = (wool) => {
+    if (wool !== null) {
+      setDatalist([...info.filter(item => item.typewool === wool && item.type === status)])
+    } else {
+      setDatalist(info)
+    }
+    setWool(wool)
+  }
 
   useEffect(() => {
     // Post updated, do something with `route.params.post`
@@ -28,6 +124,7 @@ export default function Doginfo({ navigation, route }) {
         const response = await axios.get('http://35.187.253.40/showdoginfo.php')
         setInfo(response.data);
         setMaster(response.data);
+        setDatalist(response.data);
       } catch (err) {
         alert(err)
       }
@@ -44,23 +141,23 @@ export default function Doginfo({ navigation, route }) {
           const textData = text.toUpperCase();
           return itemData.indexOf(textData) > -1;
         })
-      setInfo(newData);
+      setDatalist(newData);
       setSearch(text);
     } else {
-      setInfo(master);
+      setDatalist(master);
       setSearch(text);
     }
   }
 
-  let formatData = (info, numColumns) => {
-    const totalRows = Math.floor(info.length / numColumns)
-    let totalLastRow = info.length - (totalRows * numColumns)
+  let formatData = (datalist, numColumns) => {
+    const totalRows = Math.floor(datalist.length / numColumns)
+    let totalLastRow = datalist.length - (totalRows * numColumns)
 
     while (totalLastRow !== 0 && totalLastRow !== numColumns) {
-      info.push({ iddoginfo: 'blank', empty: true })
+      datalist.push({ iddoginfo: 'blank', empty: true })
       totalLastRow++
     }
-    return info
+    return datalist
   }
 
   const renderItem = ({ item, index }) => {
@@ -73,7 +170,7 @@ export default function Doginfo({ navigation, route }) {
         })}>
           <View style={styles.card}>
             <ImageBackground
-              source={{ uri: item.habit + path }}
+              source={{ uri: item.imgcut }}
               style={{ width: '100%', height: '100%' }}
               imageStyle={{ borderRadius: 10 }}
             >
@@ -142,17 +239,206 @@ export default function Doginfo({ navigation, route }) {
             inputStyle={{ backgroundColor: '#575757' }}
             containerStyle={{ backgroundColor: '#575757', width: '90%', height: 50, borderRadius: 50 }}
             inputContainerStyle={{ backgroundColor: '#575757', width: '100%', height: "100%" }}
-            placeholder="Type Here..."
+            placeholder="ค้นหา ...."
             onChangeText={(text) => seachFilter(text)}
             value={search}
           />
+          <TouchableOpacity
+            onPress={() => setToggle(!Toggle)}
+            style={{
+              width: '13%',
+              elevation: 8,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: Toggle ? '#1A508B' : 'white',
+              borderRadius: 12,
+              height: 50
+            }}>
+            <FontAwesome5
+              name={'filter'}
+              size={25}
+              color={Toggle ? 'white' : '#1A508B'}
+            />
+          </TouchableOpacity>
+
         </View>
+        {Toggle ? (
+          <>
+            <View
+              style={{
+                width: '100%',
+                height: 45,
+                backgroundColor: 'white',
+
+                justifyContent: 'center',
+                paddingLeft: 20,
+                flexDirection: 'row'
+              }}>
+              <View style={{ width: '50%', alignItems: 'center', justifyContent: 'center' }}>
+                <Text style={{ color: '#1A508B', fontFamily: 'FC_Iconic', fontSize: 24 }}>เลือกตัวกรอง</Text>
+              </View>
+              <View style={{ width: '50%', flexDirection: 'row', justifyContent: 'flex-end' }}>
+                <TouchableOpacity
+                  // onPress={() => { setStatus(); setWool(); setToggle(false); setDatalist(info); }}
+                  onPress={setfilter}
+                  style={{
+                    width: '30%',
+                    alignItems: 'center',
+                    backgroundColor: '#1A508B',
+                    height: 35,
+                    marginRight: 10,
+                    justifyContent: 'center',
+                    elevation: 8,
+                    borderRadius: 8
+                  }}>
+                  <FontAwesome5
+                    name={'search'}
+                    size={15}
+                    color={'white'}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => { setStatus(null); setWool(null); setEar(null); setDatalist(info); }}
+                  style={{
+                    width: '30%',
+                    alignItems: 'center',
+                    backgroundColor: '#FF5A5A',
+                    height: 35,
+                    marginRight: 10,
+                    justifyContent: 'center',
+                    elevation: 8,
+                    borderRadius: 8
+                  }}>
+                  <Text style={{ marginTop: 5, fontFamily: 'FC_Iconic', color: 'white', fontSize: 18 }}>ล้าง </Text>
+                </TouchableOpacity>
+              </View>
+
+            </View>
+            <View
+              style={{
+                width: '100%',
+                flexDirection: 'row',
+                height: 65,
+                backgroundColor: 'white',
+                alignItems: 'center',
+                paddingLeft: 20
+              }}>
+              {listSize.map(item => (
+                <>
+                  <TouchableOpacity
+                    onPress={() => { setStatus(item.status); }}
+                    style={{
+                      width: '30.5%',
+                      alignItems: 'center',
+                      backgroundColor: status == item.status ? '#1A508B' : 'white',
+                      height: 50,
+                      marginRight: 10,
+                      justifyContent: 'center',
+                      elevation: 8,
+                      borderRadius: 8
+                    }}>
+                    <FontAwesome5
+                      name={'dog'}
+                      size={item.size}
+                      color={status == item.status ? 'white' : '#1A508B'}
+                    />
+                    <Text style={{ marginTop: 5, fontFamily: 'FC_Iconic', color: status == item.status ? 'white' : '#1A508B' }}>{item.title} </Text>
+                  </TouchableOpacity>
+                </>
+              ))}
+
+            </View>
+            {/**------------------------------------------------------------------------------------------- */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', width: '100%' }}>
+              <View style={{ flex: 1, height: 2, backgroundColor: '#EBEBEB', marginTop: 5, marginBottom: 2 }} />
+              <View style={{ flex: 1, height: 2, backgroundColor: '#EBEBEB', marginTop: 5, marginBottom: 2 }} />
+            </View>
+            {/**------------------------------------------------------------------------------------------- */}
+            <View
+              style={{
+                width: '100%',
+                paddingLeft: 20,
+                flexDirection: 'row',
+                height: 70,
+                backgroundColor: 'white',
+                alignItems: 'center'
+              }}>
+              {listWool.map(item => (
+                <TouchableOpacity
+                  onPress={() => setWool(item.wool)}
+                  style={{
+                    width: '47%',
+                    alignItems: 'center',
+                    backgroundColor: wool == item.wool ? '#1A508B' : 'white',
+                    height: 50,
+                    marginRight: 10,
+                    justifyContent: 'center',
+                    elevation: 8,
+                    borderRadius: 8
+                  }}>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      color: wool == item.wool ? 'white' : '#1A508B',
+                      fontFamily: 'FC_Iconic'
+                    }}>
+                    {item.title}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+              <View style={{ width: '90%', height: 2 }}></View>
+            </View>
+            {/**------------------------------------------------------------------------------------------- */}
+            <View style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: 'white', width: '100%' }}>
+              <View style={{ flex: 1, height: 2, backgroundColor: '#EBEBEB', marginTop: 5, marginBottom: 2 }} />
+              <View style={{ flex: 1, height: 2, backgroundColor: '#EBEBEB', marginTop: 5, marginBottom: 2 }} />
+            </View>
+            {/**------------------------------------------------------------------------------------------- */}
+            <View
+              style={{
+                width: '100%',
+                paddingLeft: 20,
+                flexDirection: 'row',
+                height: 70,
+                backgroundColor: 'white',
+                alignItems: 'center'
+              }}>
+              {listEars.map(item => (
+                <>
+                  <TouchableOpacity
+                    onPress={() => setEar(item.status)}
+                    style={{
+                      width: '47%',
+                      alignItems: 'center',
+                      backgroundColor: ear == item.status ? '#1A508B' : 'white',
+                      height: 50,
+                      marginRight: 10,
+                      justifyContent: 'center',
+                      elevation: 8,
+                      borderRadius: 8
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: ear == item.status ? 'white' : '#1A508B',
+                        fontFamily: 'FC_Iconic'
+                      }}>
+                      {item.title}
+                    </Text>
+                  </TouchableOpacity>
+
+                </>
+              ))}
+              <View style={{ width: '90%', height: 2 }}></View>
+            </View>
+          </>
+        ) : null}
         <SafeAreaView >
           <ScrollView >
-            <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: 30 }}>
+            <View style={{ width: '100%', alignItems: 'center', justifyContent: 'center' }}>
               <View style={styles.container}>
                 <FlatList
-                  data={formatData(info, numColumns)}
+                  data={formatData(datalist, numColumns)}
                   renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
                   numColumns={numColumns}
@@ -173,7 +459,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexWrap: 'wrap',
     width: '80%',
-    marginBottom: 250
+    marginBottom: 300
   },
   square: {
     width: 100,
@@ -206,7 +492,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 15,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: '12%'
   },
   headercontainer: {
     width: '100%',

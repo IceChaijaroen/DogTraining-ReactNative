@@ -73,8 +73,8 @@ export default function testdata4({ navigation }) {
                 setLoadingpage(true);
                 setAll(response.data);
                 console.log(all)
-            } catch {
-                alert("allstatis")
+            } catch (error) {
+                console.log(error)
             }
         }
         fetchData();
@@ -97,8 +97,8 @@ export default function testdata4({ navigation }) {
                 setIsLoadingweek(true);
                 setWeekvalue(response.data);
 
-            } catch {
-                alert("threeweek")
+            } catch (error) {
+                console.log(error)
             }
         }
         fetchData();
@@ -120,8 +120,8 @@ export default function testdata4({ navigation }) {
 
                 setIsLoadingmonth(true);
                 setJan(response.data);
-            } catch {
-                alert("statisjan")
+            } catch (error) {
+                console.log(error)
             }
         }
         fetchData();
@@ -291,8 +291,8 @@ export default function testdata4({ navigation }) {
                                             <>
                                                 <TouchableOpacity
                                                     style={{
-                                                        width: 80,
-                                                        height: 30,
+                                                        width: 85,
+                                                        height: 32,
                                                         backgroundColor: active == item.id ? '#555555' : 'white',
                                                         borderRadius: 12,
                                                         justifyContent: 'center',
@@ -305,7 +305,7 @@ export default function testdata4({ navigation }) {
                                                     active={active === item.id}
                                                     onPress={() => setActive(item.id)}
                                                 >
-                                                    <Text style={{ color: active == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 16 }}>{item.name}</Text>
+                                                    <Text style={{ color: active == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 22 }}>{item.name}</Text>
                                                 </TouchableOpacity>
                                             </>
                                         ))}
@@ -326,7 +326,7 @@ export default function testdata4({ navigation }) {
                                                             <TouchableOpacity
                                                                 style={{
                                                                     height: 27,
-                                                                    width: 80,
+                                                                    width: 85,
                                                                     backgroundColor: begin == item.id ? '#555555' : 'white',
                                                                     borderRadius: 12,
                                                                     margin: 5,
@@ -339,7 +339,7 @@ export default function testdata4({ navigation }) {
                                                                 active={begin === item.id}
                                                                 onPress={() => { setBegin(item.value); setEnd(item.value2) }}
                                                             >
-                                                                <Text style={{ color: begin == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.name}</Text>
+                                                                <Text style={{ color: begin == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 18 }}>{item.name}</Text>
                                                             </TouchableOpacity>
                                                         ))}
                                                     </ScrollView>
@@ -349,7 +349,7 @@ export default function testdata4({ navigation }) {
                                                         {weekvalue == 'null' ? (
                                                             <>
                                                                 <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>ยังไม่มีข้อมูลสถิติ</Text>
                                                                 </View>
 
                                                             </>
@@ -380,6 +380,10 @@ export default function testdata4({ navigation }) {
                                                                         />
                                                                     </View>
                                                                 </ScrollView>
+                                                                <View style={{ width: '100%' }}>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = ระดับพัฒนาการ/200</Text>
+                                                                </View>
                                                             </>
                                                         )}
 
@@ -397,8 +401,8 @@ export default function testdata4({ navigation }) {
                                                         {setyear.map((item) => (
                                                             <TouchableOpacity
                                                                 style={{
-                                                                    height: 25,
-                                                                    width: 50,
+                                                                    height: 28,
+                                                                    width: 55,
                                                                     backgroundColor: yearmonth == item.id ? '#555555' : 'white',
                                                                     borderRadius: 12,
                                                                     margin: 5,
@@ -411,7 +415,7 @@ export default function testdata4({ navigation }) {
                                                                 active={yearmonth === item.id}
                                                                 onPress={() => setYearMonth(item.id)}
                                                             >
-                                                                <Text style={{ color: yearmonth == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.id}</Text>
+                                                                <Text style={{ color: yearmonth == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 20 }}>{item.id}</Text>
                                                             </TouchableOpacity>
                                                         ))}
                                                     </ScrollView>
@@ -421,8 +425,8 @@ export default function testdata4({ navigation }) {
                                                         {month.map((item) => (
                                                             <TouchableOpacity
                                                                 style={{
-                                                                    height: 25,
-                                                                    width: 50,
+                                                                    height: 28,
+                                                                    width: 55,
                                                                     backgroundColor: setmonth == item.id ? '#555555' : 'white',
                                                                     borderRadius: 12,
                                                                     margin: 5,
@@ -435,7 +439,7 @@ export default function testdata4({ navigation }) {
                                                                 active={setmonth === item.id}
                                                                 onPress={() => setSetmonth(item.id)}
                                                             >
-                                                                <Text style={{ color: setmonth == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.name}</Text>
+                                                                <Text style={{ color: setmonth == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 20 }}>{item.name}</Text>
                                                             </TouchableOpacity>
                                                         ))}
                                                     </ScrollView>
@@ -445,7 +449,7 @@ export default function testdata4({ navigation }) {
                                                         {jan == 'null' ? (
                                                             <>
                                                                 <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>ยังไม่มีข้อมูลสถิติ</Text>
                                                                 </View>
                                                             </>
                                                         ) : (
@@ -475,6 +479,10 @@ export default function testdata4({ navigation }) {
                                                                         />
                                                                     </View>
                                                                 </ScrollView>
+                                                                <View style={{ width: '100%' }}>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = ระดับพัฒนาการ/200</Text>
+                                                                </View>
                                                             </>
                                                         )}
 
@@ -492,8 +500,8 @@ export default function testdata4({ navigation }) {
                                                         {setyear.map((item) => (
                                                             <TouchableOpacity
                                                                 style={{
-                                                                    height: 25,
-                                                                    width: 50,
+                                                                    height: 28,
+                                                                    width: 55,
                                                                     backgroundColor: allyear == item.id ? '#555555' : 'white',
                                                                     borderRadius: 8,
                                                                     margin: 5,
@@ -506,7 +514,7 @@ export default function testdata4({ navigation }) {
                                                                 active={allyear === item.id}
                                                                 onPress={() => setAllyear(item.id)}
                                                             >
-                                                                <Text style={{ color: allyear == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 14 }}>{item.id}</Text>
+                                                                <Text style={{ color: allyear == item.id ? 'white' : '#555555', fontFamily: 'FC_Iconic', fontSize: 20 }}>{item.id}</Text>
                                                             </TouchableOpacity>
                                                         ))}
                                                     </ScrollView>
@@ -516,7 +524,7 @@ export default function testdata4({ navigation }) {
                                                         {all == 'null' ? (
                                                             <>
                                                                 <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
-                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#AFAFAF' }}>ยังไม่มีข้อมูลสถิติ</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>ยังไม่มีข้อมูลสถิติ</Text>
                                                                 </View>
                                                             </>
                                                         ) : (
@@ -545,6 +553,10 @@ export default function testdata4({ navigation }) {
                                                                         />
                                                                     </View>
                                                                 </ScrollView>
+                                                                <View style={{ width: '100%' }}>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = ระดับพัฒนาการ/200</Text>
+                                                                </View>
                                                             </>
                                                         )}
 
@@ -556,7 +568,9 @@ export default function testdata4({ navigation }) {
                                         )
                                     } else {
                                         return (
-                                            <Text> กรุณาเลือกดูสถิติ</Text>
+                                            <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}> กรุณาเลือกดูสถิติ</Text>
+                                            </View>
                                         )
                                     }
                                 })()}

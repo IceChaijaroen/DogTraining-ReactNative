@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, Component, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, Image, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Image, TouchableOpacity, FlatList,ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconImg from 'react-native-vector-icons/Entypo';
@@ -27,13 +27,14 @@ export default function testtest({ navigation, route }) {
     const [isshow, setIsshow] = useState(false);
     const [visible, setVisible] = useState(false);
     const [visible2, setVisible2] = useState(false);
+    const [successPopup, setSuccess] = useState(false);
+    const [FailPopup, setFail] = useState(false);
     const [udata, setUdata] = useState([]);
     const [user, setValue] = useState([]);
     const [dogdata, setDogdata] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [udogid, setUdogid] = useState();
     const [getudog, setGetudog] = useState();
-    const [doglevel, setDoglevel] = useState([]);
     const [train, setTrain] = useState([]);
     const [sex, setSex] = useState('');
     const [birthday, setBirthday] = useState();
@@ -41,33 +42,11 @@ export default function testtest({ navigation, route }) {
     const [name, setName] = useState();
     const [breed, setBreed] = useState();
     const [sexpic, setSexpic] = useState(['ผู้', 'เมีย']);
-    const [dogbreed, setDogbreed] = useState(['Golden Retriver', 'Labrador Retriver', 'Begle', 'Corgi', 'dutchun']);
+    const [dogbreed, setDogbreed] = useState();
     const [confirm, setConfirm] = useState(false);
     const [image, setImage] = useState();
     const [dognull, setDognull] = useState([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://35.187.253.40/showdoglevel.php',
-                    {
-                        params: {
-                            id: user,
-                            udogid: udogid
-                        }
-                    })
-                if (response.data == 'null') {
-                    console.log('null');
-                } else {
-                    setDoglevel(response.data);
-
-                }
-            } catch {
-                alert("showdoglevel")
-            }
-        }
-        fetchData();
-    }, [udogid])
 
 
     useEffect(() => {
@@ -133,6 +112,16 @@ export default function testtest({ navigation, route }) {
         fetchData();
     })
 
+    useEffect(() => {
+        axios.get('http://35.187.253.40/admin/doginfo.php')
+            .then(res => {
+                setDogbreed(res.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }, [dogbreed])
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -149,7 +138,7 @@ export default function testtest({ navigation, route }) {
                     setTrain(response.data);
                 }
             } catch (err) {
-                alert(err)
+                console.log(err)
             }
         }
         fetchData();
@@ -169,11 +158,11 @@ export default function testtest({ navigation, route }) {
                 })
             )
                 .then((response) => {
-                    alert(response.data);
+                    setSuccess(true);
                     setConfirm(false);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    setFail(true);
                 });
         }; if (confirm) authenticate();
     }, [confirm]);
@@ -331,6 +320,63 @@ export default function testtest({ navigation, route }) {
     return (
         <>
 
+            <Modalinsertdog visible={successPopup}>
+                <View style={{
+                    width: '100%',
+                    alignItems: 'center',
+                    height: 350,
+                    paddingHorizontal: 20,
+                    paddingVertical: 20
+                }}>
+                    <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon
+                            name={'checkcircle'}
+                            size={120}
+                            color={'#79E386'}
+
+                        />
+                    </View>
+                    <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>บันทึกข้อมูลเสร็จสิ้น </Text>
+                    </View>
+                    <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => setSuccess(false)} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalinsertdog>
+
+
+            <Modalinsertdog visible={FailPopup}>
+                <View style={{
+                    width: '100%',
+                    alignItems: 'center',
+                    height: 350,
+                    paddingHorizontal: 20,
+                    paddingVertical: 20
+                }}>
+                    <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon
+                            name={'checkcircle'}
+                            size={120}
+                            color={'#79E386'}
+
+                        />
+                    </View>
+                    <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>บันทึกข้อมูลไม่สำเร็จ </Text>
+                    </View>
+                    <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => setFail(false)} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalinsertdog>
+
+
+
             <ModalPopup visible={visible}>
                 <View style={styles.PopupHeader}>
                     <View style={styles.popClose}>
@@ -390,8 +436,8 @@ export default function testtest({ navigation, route }) {
 
 
             {!isLoading ? (
-                <View style={{ flex: 1, fontSize: 100 }}>
-                    <Text>Loading .. </Text>
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <ActivityIndicator size="large" color="#FFB97D" />
                 </View>
                 // If there is a delay in data, let's let the user know it's loading
             ) : (
@@ -429,12 +475,12 @@ export default function testtest({ navigation, route }) {
                                                         <View style={{ width: '100%', alignItems: 'flex-end' }}>
                                                             {sex != item.udogsex || birthday != item.udogbd || name != item.udogname || breed != item.udogbreed || image != item.udogimg ? (
                                                                 <>
-                                                                    <TouchableOpacity onPress={() => setConfirm(true)} style={{ width: 200, flexDirection: 'row', height: 25, justifyContent: 'flex-end', alignItems: 'center' }}>
-                                                                        <View style={{ width: '50%' }}>
-                                                                            <Text style={{ color: 'green', fontFamily: 'FC_Iconic', fontSize: 18 }}>คลิกเพื่อยืนยัน</Text>
+                                                                    <TouchableOpacity onPress={() => { setConfirm(true); }} style={{ width: 200, flexDirection: 'row', height: 25, justifyContent: 'flex-end', alignItems: 'center' }}>
+                                                                        <View style={{ width: '50%', alignItems: 'flex-end' }}>
+                                                                            <Text style={{ color: 'green', fontFamily: 'FC_Iconic', fontSize: 24 }}>ยืนยัน</Text>
                                                                         </View>
 
-                                                                        <View style={{ width: '20%' }}>
+                                                                        <View style={{ width: '20%', marginLeft: 5 }}>
                                                                             <Icon
                                                                                 name='checkcircle'
                                                                                 color={'green'}
@@ -490,14 +536,16 @@ export default function testtest({ navigation, route }) {
                                                                 )}
                                                             </View>
                                                             <View style={{ width: '40%', justifyContent: 'center', }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic' }}>ชื่อสุนัข</Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic' }}>ชื่อสุนัข</Text>
                                                                 <TextInput
                                                                     value={name}
                                                                     onChangeText={text => setName(text)}
                                                                     style={{
-                                                                        color: '#555555', fontFamily: 'FC_Iconic',
+                                                                        color: '#555555',
+                                                                        fontFamily: 'FC_Iconic',
                                                                         borderBottomWidth: 0.5,
-                                                                        width: '80%'
+                                                                        width: '80%',
+                                                                        fontSize: 22
                                                                     }}
 
                                                                 />
@@ -505,21 +553,21 @@ export default function testtest({ navigation, route }) {
                                                         </View>
                                                         <View style={styles.rowcontent}>
                                                             <View style={{ width: '60%' }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', marginBottom: 10 }}>สายพันธุ์</Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic', marginBottom: 10 }}>สายพันธุ์</Text>
 
                                                                 <Picker style={{ width: '80%', fontFamily: 'FC_Iconic', color: '#555555' }}
                                                                     selectedValue={breed}
                                                                     onValueChange={(itemValue) => setBreed(itemValue)}
                                                                 >
                                                                     {dogbreed.map((item, key) => (
-                                                                        <Picker.Item label={item} value={item} key={key}></Picker.Item>
+                                                                        <Picker.Item label={item.dogname} value={item.dogname} key={key}></Picker.Item>
                                                                     ))}
 
                                                                 </Picker>
 
                                                             </View>
                                                             <View style={{ width: '40%', justifyContent: 'center', }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic' }}>เพศ </Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic' }}>เพศ </Text>
                                                                 <Picker style={{ width: '80%', fontFamily: 'FC_Iconic', color: '#555555' }}
                                                                     selectedValue={sex}
                                                                     onValueChange={(itemValue) => setSex(itemValue)}
@@ -533,7 +581,7 @@ export default function testtest({ navigation, route }) {
                                                         </View>
                                                         <View style={styles.rowcontent}>
                                                             <View style={{ width: '60%', justifyContent: 'center' }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic' }}>วันเกิด</Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic' }}>วันเกิด</Text>
                                                                 <DatePicker
                                                                     style={{ width: '80%' }}
                                                                     date={birthday}
@@ -560,26 +608,26 @@ export default function testtest({ navigation, route }) {
                                                                 />
                                                             </View>
                                                             <View style={{ width: '40%', justifyContent: 'center', }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic' }}>อายุ</Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic' }}>อายุ</Text>
                                                                 {birthday == null ? (
                                                                     <>
-                                                                        <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>กรุณากรอกวันเกิดให้น้อน</Text>
+                                                                        <Text style={{ fontSize: 22, color: '#555555', fontFamily: 'FC_Iconic' }}>กรุณากรอกวันเกิดให้น้อน</Text>
                                                                     </>
                                                                 ) : (
                                                                     <>
                                                                         {age == '51 ปี  9 เดือน' ? (
                                                                             <>
-                                                                                <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>กรุณากรอกวันเกิดให้น้อน</Text>
+                                                                                <Text style={{ fontSize: 22, color: '#555555', fontFamily: 'FC_Iconic' }}>กรุณากรอกวันเกิดให้น้อน</Text>
                                                                             </>
                                                                         ) : (
                                                                             <>
                                                                                 {age == '' ? (
                                                                                     <>
-                                                                                        <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>น้อยกว่า 1 เดือน</Text>
+                                                                                        <Text style={{ fontSize: 22, color: '#555555', fontFamily: 'FC_Iconic' }}>น้อยกว่า 1 เดือน</Text>
                                                                                     </>
                                                                                 ) : (
                                                                                     <>
-                                                                                        <Text style={{ fontSize: 20, color: '#555555', fontFamily: 'FC_Iconic' }}>{age}</Text>
+                                                                                        <Text style={{ fontSize: 24, color: '#555555', fontFamily: 'FC_Iconic' }}>{age}</Text>
                                                                                     </>
                                                                                 )}
 
@@ -605,13 +653,10 @@ export default function testtest({ navigation, route }) {
 
 
                                                         <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                                            <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic' }}>ระดับฝึกฝน : </Text>
-                                                            {doglevel.map((item, key) => (
-                                                                <View style={{ width: '50%' }}>
-                                                                    <Progress key={key} step={item.sumstep} steps={5000} height={15} />
-                                                                </View>
-
-                                                            ))}
+                                                            <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic' }}>ระดับฝึกฝน : </Text>
+                                                            <View style={{ width: '50%' }}>
+                                                                <Progress step={item.udogprocess} steps={200} height={15} />
+                                                            </View>
                                                         </View>
 
 
@@ -626,7 +671,7 @@ export default function testtest({ navigation, route }) {
 
                                                         <TouchableOpacity onPress={() => setVisible(true)}>
                                                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', marginRight: 10 }}>กำลังดำเนินการ</Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic', marginRight: 10 }}>กำลังดำเนินการ</Text>
                                                                 <MaterialCommunityIcons
                                                                     name='arrow-right-drop-circle'
                                                                     size={15}
@@ -645,7 +690,7 @@ export default function testtest({ navigation, route }) {
 
                                                         <TouchableOpacity onPress={() => setVisible2(true)}>
                                                             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center' }}>
-                                                                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', marginRight: 10 }}>ความสำเร็จ</Text>
+                                                                <Text style={{ fontSize: 26, fontFamily: 'FC_Iconic', marginRight: 10 }}>ความสำเร็จ</Text>
                                                                 <Image
                                                                     source={require('../../img/pngtree-gold-trophy-icon-trophy-icon-winner-icon-png-image_1692648.jpg')}
                                                                     style={{
@@ -939,7 +984,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
 
         marginTop: 10,
-        marginBottom: 10,
+        marginBottom: 80,
     },
     card: {
         alignItems: 'center',

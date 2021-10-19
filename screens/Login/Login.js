@@ -257,7 +257,9 @@ export default function Login(props, disabled) {
                 </>
             ) : (
                 <>
-                    <Text style={{ fontSize: 100 }}> Loading...... </Text>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <ActivityIndicator size="large" color="#FFB97D" />
+                    </View>
                 </>
             )}
         </>

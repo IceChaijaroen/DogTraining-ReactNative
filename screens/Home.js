@@ -47,8 +47,8 @@ export default function Home({ navigation }) {
       try {
         const response = await axios.get('http://35.187.253.40/getbanner.php');
         setBanner(response.data);
-      } catch {
-        alert('error');
+      } catch (error){
+        console.log(err)
       }
     }
     fetchData();
@@ -85,7 +85,6 @@ export default function Home({ navigation }) {
     fetchData();
   }, [train])
 
-  console.log(process)
 
 
   let [fontsLoaded] = useFonts({

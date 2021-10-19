@@ -50,7 +50,6 @@ export function DrawerContent(props) {
         fetchData();
     })
 
-    console.log('udog ' + udog)
 
 
     useEffect(() => {
