@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, Component, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView, TextInput, Image, TouchableOpacity, FlatList,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TextInput, Image, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import Icon from 'react-native-vector-icons/AntDesign';
 import IconImg from 'react-native-vector-icons/Entypo';
@@ -42,7 +42,7 @@ export default function testtest({ navigation, route }) {
     const [name, setName] = useState();
     const [breed, setBreed] = useState();
     const [sexpic, setSexpic] = useState(['ผู้', 'เมีย']);
-    const [dogbreed, setDogbreed] = useState();
+    const [dogbreed, setDogbreed] = useState([]);
     const [confirm, setConfirm] = useState(false);
     const [image, setImage] = useState();
     const [dognull, setDognull] = useState([]);
@@ -113,14 +113,17 @@ export default function testtest({ navigation, route }) {
     })
 
     useEffect(() => {
-        axios.get('http://35.187.253.40/admin/doginfo.php')
-            .then(res => {
+        const Dogbreed = async () => {
+            try {
+                const res = await axios.get('http://35.187.253.40/admin/doginfo.php')
                 setDogbreed(res.data);
-            })
-            .catch(err => {
+            } catch (err) {
                 console.log(err)
-            })
+            }
+        }
+        Dogbreed();
     }, [dogbreed])
+
 
 
     useEffect(() => {
@@ -166,6 +169,7 @@ export default function testtest({ navigation, route }) {
                 });
         }; if (confirm) authenticate();
     }, [confirm]);
+
 
 
 

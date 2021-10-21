@@ -46,15 +46,22 @@ export default function testdata4({ navigation }) {
             })
     })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await AsyncStorage.getItem('udogid')
-                .then((value) => {
-                    setUdog(value);
-                })
+
+    const Load = async () => {
+        try {
+            let res = await AsyncStorage.getItem('udogid')
+            setUdog(res);
+        } catch (err) {
+            console.log(err)
         }
-        fetchData();
-    })
+    }
+
+
+    useEffect(() => {
+        Load();
+    });
+
+    console.log(udog)
 
 
     useEffect(() => {
@@ -72,7 +79,6 @@ export default function testdata4({ navigation }) {
                 setIsLoadingyear(true);
                 setLoadingpage(true);
                 setAll(response.data);
-                console.log(all)
             } catch (error) {
                 console.log(error)
             }

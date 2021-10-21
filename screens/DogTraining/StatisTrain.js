@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
 import { useFonts } from 'expo-font';
+import Headertraining from './Header';
 
 const Progress = ({ step, steps, height }) => {
     const [width, setWidth] = useState(0);
@@ -92,15 +93,21 @@ export default function StatisTrain({ navigation, route }) {
         fetchData();
     }, [user])
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await AsyncStorage.getItem('udogid')
-                .then((value) => {
-                    setUdogid(value);
-                })
+
+    const Load = async () => {
+        try {
+            let res = await AsyncStorage.getItem('udogid');
+            setUdogid(res);
+        } catch (err) {
+            console.log(err);
         }
-        fetchData();
-    }, [udogid])
+    }
+
+
+    useEffect(() => {
+        Load();
+    });
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -118,7 +125,7 @@ export default function StatisTrain({ navigation, route }) {
                     setDogdata(response.data.all);
                 }
             } catch {
-                alert("showuserdogfromuser")
+                console.log("showuserdogfromuser")
             }
         }
         fetchData();
@@ -141,7 +148,7 @@ export default function StatisTrain({ navigation, route }) {
                     setDoglevel(response.data);
                 }
             } catch {
-                alert("showdoglevel")
+                console.log("showdoglevel")
             }
         }
         fetchData();
@@ -165,6 +172,8 @@ export default function StatisTrain({ navigation, route }) {
             })
     })*/}
 
+
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -178,11 +187,11 @@ export default function StatisTrain({ navigation, route }) {
                     })
                 setStatis(response.data);
             } catch {
-                alert("ERROR------getudogid.php")
+                console.log("ERROR------getudogid.php")
             }
         }
         fetchData();
-    }, [idtrain, dogdata])
+    }, [idtrain, dogdata, statis, udogid])
 
     useEffect(() => {
         if (statis == 'null' || statis == '') {
@@ -203,18 +212,19 @@ export default function StatisTrain({ navigation, route }) {
                             udogid: udogid
                         }
                     })
-                if (response.data == 'null') {
-                    alert("null")
+                if (response.data.all == 'null') {
+                    console.log("null")
                 } else {
-                    setSumsit(response.data);
+                    setSumsit(response.data.step);
+                    console.log(response.data.step)
                     setIsLoading2(true);
                 }
-            } catch {
-                alert("ERROR------getudogid.php")
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchData();
-    }, [dogdata])
+    }, [idtrain, dogdata, statis, sumsit])
 
 
 
@@ -263,7 +273,7 @@ export default function StatisTrain({ navigation, route }) {
         navigation.navigate('Tabs');
         setIsLoading(false);
     }
-    console.log('isloading = ' + isLoading + 'statis = ' + statis)
+
 
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
@@ -278,72 +288,7 @@ export default function StatisTrain({ navigation, route }) {
             <>
 
                 {/** -----------Header------------------ */}
-                <View style={styles.headercontainer}>
-                    <View style={styles.header}>
-                        <View style={{ width: '100%', flexDirection: 'row', marginTop: '10%' }}>
-                            <View style={{ width: '50%' }}>
-                                <TouchableOpacity
-                                    style={{ marginLeft: 15 }}
-                                    onPress={() => navigation.openDrawer()}
-                                >
-                                    <View style={{ width: '15%', height: 28, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                        <FontAwesome5 name='bars' size={16} color="#5E5E5E" />
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                            <View style={{ width: '50%', alignItems: 'flex-end' }}>
-                                <TouchableOpacity
-                                    style={{ marginRight: 15 }}
-                                    onPress={() => navigation.navigate('Noti')}
-                                >
-                                    <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                        <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
-                                    </View>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-
-                        <FlatList
-                            data={dogdata}
-                            renderItem={({ item }) => (
-                                <View style={{ width: '100%', alignItems: 'center', flexDirection: 'row', height: 140 }}>
-                                    <View style={{ width: '40%', alignItems: 'center', height: '100%', justifyContent: 'center' }}>
-                                        <View style={{ backgroundColor: 'white', width: '60%', height: 100, borderRadius: 80, justifyContent: 'center', alignItems: 'center' }}>
-                                            <Image
-                                                source={{ uri: item.udogimg }}
-                                                style={{
-                                                    width: '60%',
-                                                    height: '60%',
-
-                                                }}
-                                            />
-                                        </View>
-
-                                    </View>
-                                    <View style={{ width: '60%', height: '100%', justifyContent: 'center' }}>
-                                        <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
-                                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogname} </Text>
-                                        </View>
-                                        <View style={{ width: '80%', height: '25%', justifyContent: 'center' }}>
-                                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
-                                        </View>
-                                        <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-
-                                            <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                                                <Progress step={item.udogprocess} steps={5000} height={15} />
-                                            </View>
-
-                                        </View>
-
-                                    </View>
-                                </View>
-                            )}
-                        />
-
-
-                    </View>
-                </View>
+                <Headertraining />
                 {/** -----------Header------------------ */}
 
 
@@ -413,18 +358,20 @@ export default function StatisTrain({ navigation, route }) {
                                 <Text style={{ color: '#737373', fontFamily: 'FC_Iconic', fontSize: 18 }}>ระดับความสำเร็จ</Text>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                {isLoading2 ? (
-                                    <FlatList
-                                        width={'80%'}
-                                        data={sumsit}
-                                        renderItem={({ item }) => (
-                                            <Progress step={item.sumstep} steps={500} height={10} />
-                                        )}
-                                    />
+                                {sumsit !== null ? (
+                                    <>
+                                        <View style={{ width: '80%' }}>
+                                            <Progress step={sumsit} steps={20} height={10} />
+                                        </View>
+                                    </>
                                 ) : (
                                     <>
+                                        <View style={{ width: '80%' }}>
+                                            <Progress step={0} steps={20} height={10} />
+                                        </View>
                                     </>
                                 )}
+
 
 
                             </View>

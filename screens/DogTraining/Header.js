@@ -30,15 +30,19 @@ export default function headertraining({ navigation, route }, disabled) {
         fetchData();
     })
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await AsyncStorage.getItem('udogid')
-                .then((value) => {
-                    setUdogid(value);
-                })
+    const Load = async () => {
+        try {
+            let res = await AsyncStorage.getItem('udogid')
+            setUdogid(res);
+
+        } catch (err) {
+            console.log(err)
         }
-        fetchData();
-    })
+    }
+
+    useEffect(() => {
+        Load();
+    });
 
 
     useEffect(() => {
@@ -162,11 +166,11 @@ export default function headertraining({ navigation, route }, disabled) {
                                                     <Text style={{ fontFamily: 'FC_Iconic', fontSize: 25, color: 'white' }}> {item.udogbreed} </Text>
                                                 </View>
                                                 <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                                                    {doglevel.map((item, key) => (
-                                                        <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                                                            <Progress key={key} step={item.sumstep} steps={5000} height={15} />
-                                                        </View>
-                                                    ))}
+
+                                                    <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
+                                                        <Progress  step={item.udogprocess} steps={200} height={15} />
+                                                    </View>
+
                                                 </View>
 
                                             </View>

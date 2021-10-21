@@ -22,6 +22,7 @@ export default function Training({ navigation, route }) {
     const [train, setTrain] = useState([]);
     const [udogid, setUdogid] = useState();
     const [user, setUser] = useState();
+    const [countdesc, setCountdesc] = useState([]);
 
 
     useEffect(() => {
@@ -35,6 +36,47 @@ export default function Training({ navigation, route }) {
     }, [user])
 
     useEffect(() => {
+        const Countdesc = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
+                    params: {
+                        idtrain: idtrain,
+                        uid: user,
+                        udogid: udogid
+                    }
+                });
+                setCountdesc(response.data.count);
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        Countdesc();
+    })
+
+
+    const load = async () => {
+        try {
+            let dogid = await AsyncStorage.getItem('udogid');
+
+            if (dogid !== null) {
+                setUdogid(dogid);
+            }
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        load();
+    });
+
+
+    console.log(udogid + '  countdesc:' + countdesc);
+
+
+    {/**
+
+    useEffect(() => {
         const fetchData = async () => {
             await AsyncStorage.getItem('udogid')
                 .then((value) => {
@@ -43,7 +85,7 @@ export default function Training({ navigation, route }) {
         }
         fetchData();
     }, [udogid])
-
+ */}
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -83,9 +125,9 @@ export default function Training({ navigation, route }) {
     const [count, setCount] = useState(null);
     const [submit, setSubmit] = useState("");
     const [visible, setVisible] = useState(false);
-    const [countdesc, setCountdesc] = useState([]);
+
     const [minute, setMinute] = useState(0);
-    const [perseconds, setPersecound] = useState(59);
+    const [perseconds, setPersecound] = useState(10);
     const [timestop, setTimestop] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -93,7 +135,7 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         if (perseconds < 0) {
             setMinute(minute => minute - 1)
-            setPersecound(59);
+            setPersecound(20);
         }
     }, [perseconds])
 
@@ -158,23 +200,7 @@ export default function Training({ navigation, route }) {
 
     {/**----------------------------goto check.php--------------------------------------------------------- */ }
 
-    useEffect(() => {
-        const fetchpost = async () => {
-            try {
-                const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
-                    params: {
-                        idtrain: idtrain,
-                        uid: user,
-                        udogid: udogid
-                    }
-                });
-                setCountdesc(response.data);
-            } catch (err) {
-                alert('countlimit.php//error')
-            }
-        }
-        fetchpost();
-    },[countdesc])
+
 
 
 
@@ -209,7 +235,7 @@ export default function Training({ navigation, route }) {
 
     const popup = useEffect(() => {
         setVisible(true);
-        if(minute < 0){
+        if (minute < 0) {
             setTimestop(false);
         }
     })
@@ -342,12 +368,16 @@ export default function Training({ navigation, route }) {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                <FlatList
-                                    data={countdesc}
-                                    renderItem={({ item }) => (
-                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count}</Text>
-                                    )}
-                                />
+                                {countdesc == '' ? (
+                                    <>
+                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ 0 </Text>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {countdesc} </Text>
+                                    </>
+                                )}
+
                             </View>
                         </View>
                     </>
@@ -398,12 +428,17 @@ export default function Training({ navigation, route }) {
                                 </TouchableOpacity>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                <FlatList
-                                    data={countdesc}
-                                    renderItem={({ item }) => (
-                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {item.count} </Text>
-                                    )}
-                                />
+                                {countdesc == '' ? (
+                                    <>
+                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ 0 </Text>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {countdesc} </Text>
+                                    </>
+                                )}
+
+
                             </View>
                         </View>
                     </>
