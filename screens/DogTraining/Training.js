@@ -35,23 +35,23 @@ export default function Training({ navigation, route }) {
         fetchData();
     }, [user])
 
-    useEffect(() => {
-        const Countdesc = async () => {
-            try {
-                const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
-                    params: {
-                        idtrain: idtrain,
-                        uid: user,
-                        udogid: udogid
-                    }
-                });
-                setCountdesc(response.data.count);
-            } catch (err) {
-                console.log(err)
-            }
+
+    const Countdesc = async () => {
+        try {
+            const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
+                params: {
+                    idtrain: idtrain,
+                    uid: user,
+                    udogid: udogid
+                }
+            });
+            setCountdesc(response.data.count);
+        } catch (err) {
+            console.log(err)
         }
-        Countdesc();
-    })
+    }
+
+
 
 
     const load = async () => {
@@ -68,10 +68,9 @@ export default function Training({ navigation, route }) {
 
     useEffect(() => {
         load();
+        Countdesc();
     });
 
-
-    console.log(udogid + '  countdesc:' + countdesc);
 
 
     {/**
@@ -245,7 +244,9 @@ export default function Training({ navigation, route }) {
         setMinute(0);
         setTimestop(false);
         setVisible(false);
+        setCount(0);
     }
+    console.log(idtrain, udogid)
 
 
     const renderItem = ({ item }) => {

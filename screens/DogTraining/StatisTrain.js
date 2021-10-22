@@ -226,7 +226,7 @@ export default function StatisTrain({ navigation, route }) {
         fetchData();
     }, [idtrain, dogdata, statis, sumsit])
 
-
+    console.log(sumsit)
 
 
     const [text, onChangeText] = React.useState("น้องโบ้");
@@ -355,14 +355,23 @@ export default function StatisTrain({ navigation, route }) {
                         </View>
                         <View style={{ width: '100%', height: 60 }}>
                             <View style={{ width: '80%', justifyContent: 'center', height: 30, marginLeft: 40, marginBottom: 5 }}>
-                                <Text style={{ color: '#737373', fontFamily: 'FC_Iconic', fontSize: 18 }}>ระดับความสำเร็จ</Text>
+                                <Text style={{ color: '#737373', fontFamily: 'FC_Iconic', fontSize: 18 }}>ระดับความสำเร็จ : <Text style={{ color: sumsit >= 20 ? '#79E386' : '#FFB97D' }}> {sumsit >= 20 ? 20 : sumsit}</Text> /{20}</Text>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                                 {sumsit !== null ? (
                                     <>
-                                        <View style={{ width: '80%' }}>
-                                            <Progress step={sumsit} steps={20} height={10} />
-                                        </View>
+                                        {sumsit >= 20 ? (
+                                            <>
+                                                <View style={{ width: '80%', backgroundColor: '#79E386', height: 10, borderRadius: 10 }}></View>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <View style={{ width: '80%' }}>
+                                                    <Progress step={sumsit} steps={20} height={10} />
+                                                </View>
+                                            </>
+                                        )}
+
                                     </>
                                 ) : (
                                     <>

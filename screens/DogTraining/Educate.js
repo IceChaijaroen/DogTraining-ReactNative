@@ -49,6 +49,7 @@ export default function Educate({ navigation, route }) {
   const [dogdata, setDogdata] = useState([]);
   const [doglevel, setDoglevel] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [train, setTrain] = useState([]);
 
 
   useEffect(() => {
@@ -71,7 +72,22 @@ export default function Educate({ navigation, route }) {
     fetchData();
   }, [udogid])
 
-
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/educate.php',
+          {
+            params: {
+              idtrain: idtrain
+            }
+          })
+        setTrain(response.data)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, [train])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,28 +127,33 @@ export default function Educate({ navigation, route }) {
         ) : (
           <>
             {/** -----------Header------------------ */}
-           <Headertraining />
+            <Headertraining />
             {/** -----------Header------------------ */}
 
 
 
             <View style={styles.container}>
               <View style={styles.card}>
+                {train.map(item => (
+                  <>
+                    <View style={{ width: '98%', height: '10%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                      <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', justifyContent: 'flex-start' }}>{item.trainname} </Text>
+                      <Image
+                        source={{ uri: item.trainimg }}
+                        style={{
+                          width: 50,
+                          height: 50
+                        }}
+                      />
+                    </View>
+                  </>
+                ))}
                 <FlatList
                   data={gif}
                   renderItem={
                     ({ item }) => (
                       <View style={{ width: 350, alignItems: 'center' }}>
-                        <View style={{ width: '98%', height: '10%', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                          <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', justifyContent: 'flex-start' }}>{item.gifname} </Text>
-                          <Image
-                            source={{ uri: item.trainimg }}
-                            style={{
-                              width: 50,
-                              height: 50
-                            }}
-                          />
-                        </View>
+
                         <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
                           <Image
                             source={{ uri: item.gif }}
@@ -144,11 +165,11 @@ export default function Educate({ navigation, route }) {
                         </View>
 
                         <View style={{ width: '100%', height: '11%', justifyContent: 'center', alignItems: 'center' }}>
-                          <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> {item.step} </Text>
+                          <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
                         </View>
                         <View style={{ width: '88%', height: '20%' }}>
                           <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
-                          
+
                         </View>
                       </View>
                     )

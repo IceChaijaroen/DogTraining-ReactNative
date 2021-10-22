@@ -42,12 +42,14 @@ export default function Home({ navigation }) {
       })
   })
 
+  console.log(udogid + '//' + user)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://35.187.253.40/getbanner.php');
         setBanner(response.data);
-      } catch (error){
+      } catch (error) {
         console.log(err)
       }
     }
@@ -229,7 +231,8 @@ export default function Home({ navigation }) {
                 showsHorizontalScrollIndicator={false}
                 pagingEnabled={true}
                 data={train}
-                renderItem={({ item }) => (
+                keyExtractor={(item, index) => { return index.toString(); }}
+                renderItem={({ item, index }) => (
                   <>
                     {(() => {
                       if (process < 40) {
@@ -237,7 +240,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 0 ? (
                               <>
-                                <TouchableOpacity style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -250,7 +253,7 @@ export default function Home({ navigation }) {
                               </>
                             ) : (
                               <>
-                                <View style={{ backgroundColor: 'transparent' }}></View>
+                                <View key={index} style={{ backgroundColor: 'transparent' }}></View>
                               </>
                             )}
                           </>
@@ -261,7 +264,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 1 ? (
                               <>
-                                <TouchableOpacity style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -274,7 +277,7 @@ export default function Home({ navigation }) {
                               </>
                             ) : (
                               <>
-                                <View style={{ backgroundColor: 'transparent' }}></View>
+                                <View key={index} style={{ backgroundColor: 'transparent' }}></View>
                               </>
                             )}
                           </>
@@ -285,7 +288,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 2 ? (
                               <>
-                                <TouchableOpacity style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -298,7 +301,7 @@ export default function Home({ navigation }) {
                               </>
                             ) : (
                               <>
-                                <View style={{ backgroundColor: 'transparent' }}></View>
+                                <View key={index} style={{ backgroundColor: 'transparent' }}></View>
                               </>
                             )}
                           </>
@@ -307,7 +310,7 @@ export default function Home({ navigation }) {
                       } else if (!process) {
                         return (
                           <>
-                            <View style={{ backgroundColor: 'transparent' }}></View>
+                            <View key={index} style={{ backgroundColor: 'transparent' }}></View>
                           </>
                         )
 
@@ -316,7 +319,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 3 ? (
                               <>
-                                <TouchableOpacity style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -329,7 +332,7 @@ export default function Home({ navigation }) {
                               </>
                             ) : (
                               <>
-                                <View style={{ backgroundColor: 'transparent' }}></View>
+                                <View key={index} style={{ backgroundColor: 'transparent' }}></View>
                               </>
                             )}
                           </>

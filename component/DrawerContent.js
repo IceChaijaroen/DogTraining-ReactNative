@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import {
     Avatar,
     Title,
@@ -20,7 +20,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Icons from 'react-native-vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { FlatList } from 'react-native-gesture-handler';
 import { PickerIOSItem } from 'react-native';
 import Progress from './Progress';
 
@@ -99,9 +98,10 @@ export function DrawerContent(props) {
                             <View style={{ flexDirection: 'row' }}>
                                 <FlatList
                                     data={udata}
+                                    keyExtractor={(item, index) => { return index.toString(); }}
                                     renderItem={
-                                        ({ item }) => (
-                                            <View style={{ width: '100%', flexDirection: 'row' }}>
+                                        ({ item, index }) => (
+                                            <View key={index} style={{ width: '100%', flexDirection: 'row' }}>
                                                 <Avatar.Image
                                                     source={{ uri: item.img }}
                                                     size={50}
@@ -137,26 +137,31 @@ export function DrawerContent(props) {
                             <View>
                                 <FlatList
                                     data={dogdata}
+                                    keyExtractor={(item, index) => { return index.toString(); }}
                                     renderItem={
-                                        ({ item }) => (
-                                            <TouchableOpacity style={{
-                                                flexDirection: 'row',
-                                                width: '90%',
-                                                height: 65,
-                                                backgroundColor: udog === item.udogid ? '#6A6A6A' : 'white',
-                                                borderRadius: 25,
-                                                marginTop: 8,
-                                                marginLeft: 3,
-                                                marginBottom: 8,
-                                                shadowColor: '#000',
-                                                shadowOffset: {
-                                                    width: 0,
-                                                    height: 2,
-                                                },
-                                                shadowOpacity: 0.23,
-                                                shadowRadius: 2.62,
-                                                elevation: 6
-                                            }} onPress={() => { props.navigation.goBack(AsyncStorage.setItem('udogid', item.udogid)) }}>
+                                        ({ item, index }) => (
+                                            <TouchableOpacity
+                                                key={index}
+                                                style={{
+                                                    flexDirection: 'row',
+                                                    width: '90%',
+                                                    height: 65,
+                                                    backgroundColor: udog === item.udogid ? '#6A6A6A' : 'white',
+                                                    borderRadius: 25,
+                                                    marginTop: 8,
+                                                    marginLeft: 3,
+                                                    marginBottom: 8,
+                                                    shadowColor: '#000',
+                                                    shadowOffset: {
+                                                        width: 0,
+                                                        height: 2,
+                                                    },
+                                                    shadowOpacity: 0.23,
+                                                    shadowRadius: 2.62,
+                                                    elevation: 6
+                                                }}
+                                                onPress={() => { props.navigation.goBack(AsyncStorage.setItem('udogid', item.udogid)) }}
+                                            >
                                                 <View style={{ width: '30%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
                                                     <Avatar.Image
                                                         source={{ uri: item.udogimg }}
