@@ -13,6 +13,8 @@ import {
     DrawerContentScrollView,
     DrawerItem
 } from '@react-navigation/drawer';
+import * as Facebook from 'expo-facebook';
+import * as Google from 'expo-google-app-auth';
 
 
 
@@ -30,6 +32,8 @@ export function DrawerContent(props) {
     const [dogdata, setDogdata] = useState([]);
     const [udog, setUdog] = useState();
     const [isLoading, setIsLoading] = useState(false);
+    const [socialname, setSocialname] = useState();
+    const [url, setUrl] = useState();
 
     useEffect(() => {
         AsyncStorage.getItem('id')
@@ -48,6 +52,31 @@ export function DrawerContent(props) {
         }
         fetchData();
     })
+
+    const Facebook = async () => {
+        try {
+            const name = await AsyncStorage.getItem('name');
+            const url = await AsyncStorage.getItem('url');
+            setSocialname(name);
+            setUrl(url);
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        Facebook();
+    });
+
+    const logout = () => {
+        props.navigation.navigate('Login');
+        AsyncStorage.removeItem('udogid');
+        AsyncStorage.removeItem('id');
+        AsyncStorage.removeItem('name');
+        AsyncStorage.removeItem('url');
+        AsyncStorage.removeItem('facebookmail');
+        AsyncStorage.removeItem('googlemail');
+    }
 
 
 
@@ -88,7 +117,6 @@ export function DrawerContent(props) {
     }, [dogdata])
 
 
-
     return (
         <View style={{ flex: 1 }}>
             <DrawerContentScrollView {...props}>
@@ -96,22 +124,35 @@ export function DrawerContent(props) {
                     <View style={style.userInfoSection}>
                         <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
                             <View style={{ flexDirection: 'row' }}>
-                                <FlatList
-                                    data={udata}
-                                    keyExtractor={(item, index) => { return index.toString(); }}
-                                    renderItem={
-                                        ({ item, index }) => (
-                                            <View key={index} style={{ width: '100%', flexDirection: 'row' }}>
-                                                <Avatar.Image
-                                                    source={{ uri: item.img }}
-                                                    size={50}
-                                                />
-                                                <View style={{ padding: 10 }}>
-                                                    <Title style={{ fontSize: 15 }}>{item.name}  {item.lastname} </Title>
+                                {socialname ? (
+                                    <View style={{ width: '100%', flexDirection: 'row' }}>
+                                        <Avatar.Image
+                                            source={{ uri: url }}
+                                            size={50}
+                                        />
+                                        <View style={{ padding: 10 }}>
+                                            <Title style={{ fontSize: 15 }}>{socialname} </Title>
+                                        </View>
+                                    </View>
+                                ) : (
+                                    <FlatList
+                                        data={udata}
+                                        keyExtractor={(item, index) => { return index.toString(); }}
+                                        renderItem={
+                                            ({ item, index }) => (
+                                                <View key={index} style={{ width: '100%', flexDirection: 'row' }}>
+                                                    <Avatar.Image
+                                                        source={{ uri: item.img }}
+                                                        size={50}
+                                                    />
+                                                    <View style={{ padding: 10 }}>
+                                                        <Title style={{ fontSize: 15 }}>{item.name}  {item.lastname} </Title>
+                                                    </View>
                                                 </View>
-                                            </View>
-                                        )}
-                                />
+                                            )}
+                                    />
+                                )}
+
 
                             </View>
                         </TouchableOpacity>
@@ -218,7 +259,7 @@ export function DrawerContent(props) {
                                     size={size}
                                 />
                             )}
-                            label="หน้าแรก"
+                            label={'Home'}
                             labelStyle={{ fontWeight: 'bold' }}
                             onPress={() => { props.navigation.navigate('Home') }}
                         />
@@ -272,7 +313,7 @@ export function DrawerContent(props) {
                     )}
                     label="ออกจากระบบ"
                     labelStyle={{ fontWeight: 'bold' }}
-                    onPress={() => { props.navigation.navigate('Login', AsyncStorage.removeItem('id'), AsyncStorage.removeItem('udogid')) }}
+                    onPress={logout}
                 />
             </Drawer.Section>
         </View>

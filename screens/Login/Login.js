@@ -8,40 +8,18 @@ import { Input } from 'react-native-elements';
 import axios from 'axios';
 import * as Facebook from 'expo-facebook';
 import * as Google from 'expo-google-app-auth';
+import Expo from 'expo';
 import {
     SessionStorageProvider,
     useSessionStorage,
 } from "react-sessionstorage";
+import { Alert } from 'react-native';
 
 import MyDrawer from '../../component/Drawer';
 import ModalPopup from '../../component/ModalPopup';
 
 
-async function FacebookLogin() {
-    try {
-        await Facebook.initializeAsync({
-            appId: '325365022363734',
-        });
-        const {
-            type,
-            token,
-            expirationDate,
-            permissions,
-            declinedPermissions,
-        } = await Facebook.logInWithReadPermissionsAsync({
-            permissions: ['public_profile'],
-        });
-        if (type === 'success') {
-            // Get the user's name using Facebook's Graph API
-            const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-            Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-        } else {
-            // type === 'cancel'
-        }
-    } catch ({ message }) {
-        alert(`Facebook Login Error: ${message}`);
-    }
-}
+
 
 
 export default function Login(props, disabled) {
@@ -51,10 +29,47 @@ export default function Login(props, disabled) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [googleSubmitting, setGoogleSubmitting] = useState(false);
+    const [facedata, setFacedata] = useState();
+    const [facemail, setFacemail] = useState();
 
     const [submit, setSubmit] = useState("");
 
-
+    async function FacebookLogin() {
+        try {
+            await Facebook.initializeAsync({
+                appId: '325365022363734',
+            });
+            const {
+                type,
+                token,
+                expirationDate,
+                permissions,
+                declinedPermissions,
+            } = await Facebook.logInWithReadPermissionsAsync({
+                permissions: ['public_profile', 'email'],
+            });
+            if (type === 'success') {
+                // Get the user's name using Facebook's Graph API
+                const response = await fetch(`https://graph.facebook.com/v2.9/me?access_token=${token}&fields=id,name,email,picture.height(500)`)
+                const userdata = await response.json()
+                AsyncStorage.setItem('id', userdata.id)
+                AsyncStorage.setItem('name', userdata.name)
+                AsyncStorage.setItem('facebookmail', userdata.email)
+                AsyncStorage.setItem('url', userdata.picture.data.url)
+                Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+                props.navigation.navigate("MyDrawer");
+            } else {
+                // type === 'cancel'
+            }
+        } catch ({ message }) {
+            if (message == 'Already read') {
+                alert(`Facebook Login Error: ${message}`);
+                props.navigation.navigate("MyDrawer");
+            } else {
+                alert(`Facebook Login Error: ${message}`);
+            }
+        }
+    }
 
 
     useEffect(() => {
@@ -90,27 +105,81 @@ export default function Login(props, disabled) {
 
     const [id, setId] = useState();
     const [isLoading, setIsLoading] = useState(false);
-    useEffect(() => {
-        const fetchData = async () => {
-            await AsyncStorage.getItem('id')
-                .then((value) => {
-                    setId(value);
-                    setIsLoading(true);
-                })
+
+    const Getid = async () => {
+        try {
+            const res = await AsyncStorage.getItem('id');
+            setId(res);
+            setIsLoading(true);
+        } catch (err) {
+            console.log(err);
         }
-        fetchData();
-    })
+
+    }
+
+    useEffect(() => {
+        Getid();
+    });
 
 
     const emailHandler = (text) => {
         setEmail(text);
     }
 
+
+
+
+    const [user, setUser] = useState();
+
+    useEffect(() => {
+        initAsync();
+    })
+
+    const initAsync = async () => {
+        await GoogleSignIn.initAsync({
+            // You may ommit the clientId when the firebase `googleServicesFile` is configured
+            clientId: '<YOUR_IOS_CLIENT_ID>',
+        });
+        _syncUserWithStateAsync();
+    };
+
+    const _syncUserWithStateAsync = async () => {
+        const user = await GoogleSignIn.signInSilentlyAsync();
+        setUser(user);
+    };
+
+    const signOutAsync = async () => {
+        await GoogleSignIn.signOutAsync();
+        setUser(null);
+    };
+
+    const signInAsync = async () => {
+        try {
+            await GoogleSignIn.askForPlayServicesAsync();
+            const { type, user } = await GoogleSignIn.signInAsync();
+            if (type === 'success') {
+                _syncUserWithStateAsync();
+            }
+        } catch ({ message }) {
+            alert('login: Error:' + message);
+        }
+    };
+
+    const onPress = () => {
+        if (user) {
+            signOutAsync();
+        } else {
+            signInAsync();
+        }
+    };
+
+
+
     {/*---------------------------- Google Login ------------------------------------------*/ }
     const handleGoogleSignin = () => {
         setGoogleSubmitting(true);
         const config = {
-            androidClientId: '161152619465-skl4n676q8hf0hvuvbci96a88erontpa.apps.googleusercontent.com',
+            androidClientId: '890812534571-mgfbngebf6qjk770du3iajacdobao57v.apps.googleusercontent.com',
             scopes: ['profile', 'email']
         };
 
@@ -119,17 +188,21 @@ export default function Login(props, disabled) {
                 const { type, user } = result;
 
                 if (type == 'success') {
-                    const { email, name, photoUrl } = user;
-                    handleMessage('Google signin successful', 'SUCCESS');
-                    setTimeout(() => props.navigation.navigate('Home', { email, name, photoUrl }), 1000);
+                    const { id, email, name, photoUrl } = user;
+                    AsyncStorage.setItem('id', id);
+                    AsyncStorage.setItem('name', name);
+                    AsyncStorage.setItem('googlemail', email);
+                    AsyncStorage.setItem('url', photoUrl);
+                    alert('Google signin successful', 'SUCCESS');
+                    setTimeout(() => props.navigation.navigate('MyDrawer', { email, name, photoUrl }), 1000);
                 } else {
-                    handleMessage('Google login is fail..');
+                    alert('Google login is fail..');
                 }
                 setGoogleSubmitting(false);
             })
             .catch((error) => {
                 console.log(error);
-                handleMessage('An error. Try again');
+                alert('An error. Try again');
                 setGoogleSubmitting(false);
             });
     };
@@ -169,6 +242,7 @@ export default function Login(props, disabled) {
                                 <View style={styles.ImageContent}>
                                     <Image
                                         style={{ width: '35%', height: 195 }}
+                                        //source={require('../../img/LOGOcom.png')}
                                         source={require('../../img/LOGOcom.png')}
                                     />
                                 </View>
@@ -218,7 +292,7 @@ export default function Login(props, disabled) {
                                     </View>
                                 </TouchableOpacity>
                                 <View style={styles.FacGoo}>
-                                    <TouchableOpacity onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
+                                    <TouchableOpacity readPermissions={["email"]} onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
                                         <View style={styles.Facebook}>
                                             <Text style={{ color: 'white', fontWeight: 'bold' }}>Facebook</Text>
                                         </View>

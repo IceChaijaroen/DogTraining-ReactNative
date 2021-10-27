@@ -25,6 +25,7 @@ export default function Home({ navigation }) {
   const [banner, setBanner] = useState([]);
   const [train, setTrain] = useState([]);
   const [process, setProcess] = useState();
+  const [facebook, setFacebook] = useState();
   const scrollX = new Animated.Value(0);
   const position = Animated.divide(scrollX, width);
 
@@ -42,7 +43,13 @@ export default function Home({ navigation }) {
       })
   })
 
-  console.log(udogid + '//' + user)
+  useEffect(() => {
+    AsyncStorage.getItem('facebook')
+      .then((value) => {
+        setFacebook(value);
+      })
+  })
+
 
   useEffect(() => {
     const fetchData = async () => {

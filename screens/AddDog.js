@@ -51,7 +51,6 @@ export default function AddDog({ navigation }) {
       quality: 1,
     });
     const base64 = await FileSystem.readAsStringAsync(result.uri, { encoding: 'base64' });
-    console.log(base64);
     const base = 'data:image/jpeg;base64,'
     if (!result.cancelled) {
       setImage(base + base64);
@@ -70,6 +69,7 @@ export default function AddDog({ navigation }) {
     }
     fetchData();
   })
+
 
   useEffect(() => {
     const authenticate = async () => {
@@ -127,46 +127,46 @@ export default function AddDog({ navigation }) {
 
         <Modalinsertdog visible={visiblefail}>
           <View style={styles.PopupContent}>
-                  <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon
-                      name={'closecircle'}
-                      size={120}
-                      color={'red'}
+            <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+              <Icon
+                name={'closecircle'}
+                size={120}
+                color={'red'}
 
-                    />
-                  </View>
-                  <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>บันทึกข้อมูลไม่สำเร็จ </Text>
-                  </View>
-                  <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => setVisiblefail(false)} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
-                      <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
-                    </TouchableOpacity>
-                  </View>
+              />
+            </View>
+            <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>บันทึกข้อมูลไม่สำเร็จ </Text>
+            </View>
+            <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity onPress={() => setVisiblefail(false)} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modalinsertdog>
 
         <Modalinsertdog visible={visible}>
           <View style={styles.PopupContent}>
-                  <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon
-                      name={'checkcircle'}
-                      size={120}
-                      color={'#79E386'}
+            <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+              <Icon
+                name={'checkcircle'}
+                size={120}
+                color={'#79E386'}
 
-                    />
-                  </View>
-                  <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>บันทึกข้อมูลเสร็จสิ้น </Text>
-                  </View>
-                  <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={() => setVisible(false)} style={{ width: '40%', height: '80%', backgroundColor: '#FEC043', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginRight: 10 }}>
-                      <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', color: 'white' }}>เพิ่มสุนัขอีก</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
-                      <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ถัดไป</Text>
-                    </TouchableOpacity>
-                  </View>
+              />
+            </View>
+            <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+              <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>บันทึกข้อมูลเสร็จสิ้น </Text>
+            </View>
+            <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+              <TouchableOpacity onPress={() => setVisible(false)} style={{ width: '40%', height: '80%', backgroundColor: '#FEC043', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginRight: 10 }}>
+                <Text style={{ fontSize: 22, fontFamily: 'FC_Iconic', color: 'white' }}>เพิ่มสุนัขอีก</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
+                <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ถัดไป</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </Modalinsertdog>
 
@@ -195,7 +195,7 @@ export default function AddDog({ navigation }) {
                   <View style={{ width: '50%', alignItems: 'center' }}>
                     {image == null ? (
                       <>
-                        <TouchableOpacity style={{ width: 90, height: 90, justifyContent: 'center',alignItems:'center',backgroundColor:'#EEEEEE',borderRadius:50 }} onPress={pickImage}>
+                        <TouchableOpacity style={{ width: 90, height: 90, justifyContent: 'center', alignItems: 'center', backgroundColor: '#EEEEEE', borderRadius: 50 }} onPress={pickImage}>
                           <IconImg
                             name='image'
                             color={'grey'}

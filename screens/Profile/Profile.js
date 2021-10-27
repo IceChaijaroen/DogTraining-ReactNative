@@ -25,29 +25,50 @@ export default function Profile({ navigation }) {
     const [confirm, setConfirm] = useState(false);
     const [successPopup, setSuccess] = useState(false);
     const [FailPopup, setFail] = useState(false);
+    const [socialname, setSocialname] = useState();
+    const [url, setUrl] = useState();
+    const [facebookmail, setFacebookmail] = useState();
+    const [googlemail, setGooglemail] = useState();
 
+
+    const Getid = async () => {
+        try {
+            const id = await AsyncStorage.getItem('id');
+            setValue(id);
+            const name = await AsyncStorage.getItem('name');
+            setSocialname(name);
+            const facebookmail = await AsyncStorage.getItem('facebookmail');
+            const googlemail = await AsyncStorage.getItem('googlemail');
+            setFacebookmail(facebookmail);
+            setGooglemail(googlemail);
+            const url = await AsyncStorage.getItem('url');
+            setUrl(url);
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     useEffect(() => {
-        AsyncStorage.getItem('id')
-            .then((value) => {
-                setValue(value);
-                axios.get('http://35.187.253.40/showuser.php',
-                    {
-                        params: {
-                            id: user
-                        }
-                    })
-                    .then(response => {
-                        setUdata(response.data.all);
-                        setName(response.data.name);
-                        setLastname(response.data.lastname);
-                        setUsername(response.data.username);
-                        setImg(response.data.img);
-                        setEmail(response.data.email);
-                    })
-                    .catch(err => {
-                        console.log(err)
-                    })
+        Getid();
+    });
+
+    useEffect(() => {
+        axios.get('http://35.187.253.40/showuser.php',
+            {
+                params: {
+                    id: user
+                }
+            })
+            .then(response => {
+                setUdata(response.data.all);
+                setName(response.data.name);
+                setLastname(response.data.lastname);
+                setUsername(response.data.username);
+                setImg(response.data.img);
+                setEmail(response.data.email);
+            })
+            .catch(err => {
+                console.log(err)
             })
     }, [user])
 
@@ -100,6 +121,19 @@ export default function Profile({ navigation }) {
         }
     };
     //-----------------------------------------------------------------------------------------------
+
+
+    const logout = () => {
+        navigation.navigate('Login');
+        AsyncStorage.removeItem('udogid');
+        AsyncStorage.removeItem('id');
+        AsyncStorage.removeItem('name');
+        AsyncStorage.removeItem('url');
+        AsyncStorage.removeItem('facebookmail');
+        AsyncStorage.removeItem('googlemail');
+    }
+
+
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
         'bahnschrift': require('../../assets/fonts/bahnschrift.ttf'),
@@ -198,195 +232,331 @@ export default function Profile({ navigation }) {
                     {/* -------------------------------Header----------------------------------------- */}
 
                     <View style={{ width: '100%', height: '100%', alignItems: 'center' }}>
-                        <FlatList
-                            data={udata}
-                            renderItem={
-                                ({ item }) => (
-                                    <View >
-                                        <View style={{ width: '100%', height: 160, justifyContent: 'center', alignItems: 'center' }}>
-                                            {img == null ? (
-                                                <>
-                                                    <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 50, backgroundColor: '#EBEBEB', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
+                        {socialname ? (
+                            <>
+                                <View style={{ width: '100%', height: 160, justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{ width: 90, height: 90 }}>
+                                        <Image source={{ uri: url }} style={{ width: 90, height: 90, borderRadius: 50 }} />
+                                    </View>
+                                </View>
+                                <View style={{ width: '100%', alignItems: 'center' }}>
+                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 28, color: '#555555' }}>ข้อมูลผู้ใช้</Text>
+                                </View>
 
-                                                        <IconImg
-                                                            name='image'
-                                                            color={'grey'}
-                                                            size={20}
-                                                        />
-                                                        <Text style={{ fontSize: 20, fontFamily: 'FC_Iconic', color: '#555555' }}>เลือกรูปภาพ</Text>
 
-                                                    </TouchableOpacity>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <TouchableOpacity style={{ flexDirection: 'row' }} onPress={pickImage}>
-                                                        <View style={{ width: 90, height: 90 }}>
-                                                            <Image source={{ uri: img }} style={{ width: 90, height: 90, borderRadius: 50 }} />
-                                                        </View>
-                                                        <View style={{ width: 20, height: 90, justifyContent: 'flex-end', marginLeft: -15 }}>
-                                                            <View style={{ width: 30, height: 30, backgroundColor: '#EBEBEB', borderRadius: 50, marginLeft: -15, justifyContent: 'center', alignItems: 'center', opacity: 0.9 }}>
+                                {/**------------------------------------------------------------------------------------------- */}
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                </View>
+                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                <View style={{ width: '75%', height: 65, justifyContent: 'center' }}>
+                                    <View style={{ width: '100%' }}>
+                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 30 }}>ชื่อผู้ใช้</Text>
+                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 22, height: 30, color: '#555555' }}>{socialname}</Text>
+                                    </View>
+                                </View>
+
+                                {/**------------------------------------------------------------------------------------------- */}
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                </View>
+                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                <View style={{ width: '75%', height: 65, justifyContent: 'center' }}>
+                                    <View style={{ width: '100%' }}>
+                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 35 }}>อีเมล </Text>
+                                        {facebookmail ? (
+                                            <>
+                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 22, height: 35, color: '#555555' }}>{facebookmail} </Text>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 22, height: 35, color: '#555555' }}>{googlemail} </Text>
+                                            </>
+                                        )}
+
+                                    </View>
+                                </View>
+
+
+                                {/**------------------------------------------------------------------------------------------- */}
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                </View>
+                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                <View style={{ width: '75%', height: 60, justifyContent: 'center' }}>
+                                    <View style={{ width: '100%', height: '60%', flexDirection: 'row', alignItems: 'center' }}>
+                                        {facebookmail ? (
+                                            <>
+                                                <Image
+                                                    source={require('../../img/145802.png')}
+                                                    style={{
+                                                        width: '11%',
+                                                        height: '100%'
+                                                    }}
+                                                />
+                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 20, marginLeft: 10 }}>ล็อกอินด้วย Facebook</Text>
+
+                                            </>
+                                        ) : (
+                                            <>
+                                                <AntDesign
+                                                    name={'google'}
+                                                    size={30}
+                                                    color={'#D43B12'}
+                                                />
+                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 20, marginLeft: 10 }}>ล็อกอินด้วย Google</Text>
+                                            </>
+                                        )}
+
+                                    </View>
+                                </View>
+
+
+                                {/**------------------------------------------------------------------------------------------- */}
+                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                </View>
+                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                <View style={{ width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', marginTop: '3%' }}>
+                                    <TouchableOpacity onPress={() => { setConfirm(true); }} style={{ width: '80%', height: '75%' }}>
+                                        <View style={{ width: '100%', height: '100%', backgroundColor: '#5CC368', borderRadius: 30, justifyContent: 'center', alignItems: 'center' }}>
+                                            <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 24 }}>บันทึก</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+
+                                <View style={{ width: '100%', height: 65, alignItems: 'center', justifyContent: 'center' }}>
+                                    <TouchableOpacity onPress={logout} style={{ width: '80%', height: '75%' }}>
+                                        <View style={{ width: '100%', height: '100%', backgroundColor: '#EA6666', borderRadius: 30, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                            <Icon
+                                                name='logout'
+                                                size={30}
+                                                color={'white'}
+                                            />
+                                            <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 24 }}>ออกจากระบบ</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            </>
+                        ) : (
+                            <>
+                                <FlatList
+                                    data={udata}
+                                    renderItem={
+                                        ({ item }) => (
+                                            <View >
+                                                <View style={{ width: '100%', height: 160, justifyContent: 'center', alignItems: 'center' }}>
+                                                    {img == null ? (
+                                                        <>
+                                                            <TouchableOpacity style={{ width: 90, height: 90, borderRadius: 50, backgroundColor: '#EBEBEB', justifyContent: 'center', alignItems: 'center' }} onPress={pickImage}>
+
                                                                 <IconImg
                                                                     name='image'
                                                                     color={'grey'}
-                                                                    size={15}
+                                                                    size={20}
                                                                 />
-                                                            </View>
+                                                                <Text style={{ fontSize: 20, fontFamily: 'FC_Iconic', color: '#555555' }}>เลือกรูปภาพ</Text>
 
+                                                            </TouchableOpacity>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <TouchableOpacity style={{ flexDirection: 'row' }} onPress={pickImage}>
+                                                                <View style={{ width: 90, height: 90 }}>
+                                                                    <Image source={{ uri: img }} style={{ width: 90, height: 90, borderRadius: 50 }} />
+                                                                </View>
+                                                                <View style={{ width: 20, height: 90, justifyContent: 'flex-end', marginLeft: -15 }}>
+                                                                    <View style={{ width: 30, height: 30, backgroundColor: '#EBEBEB', borderRadius: 50, marginLeft: -15, justifyContent: 'center', alignItems: 'center', opacity: 0.9 }}>
+                                                                        <IconImg
+                                                                            name='image'
+                                                                            color={'grey'}
+                                                                            size={15}
+                                                                        />
+                                                                    </View>
+
+                                                                </View>
+
+                                                            </TouchableOpacity>
+                                                        </>
+                                                    )}
+                                                </View>
+                                                <View style={{ width: '100%', alignItems: 'center' }}>
+                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 28, color: '#555555' }}>ข้อมูลผู้ใช้</Text>
+                                                </View>
+
+
+                                                {/**------------------------------------------------------------------------------------------- */}
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                                </View>
+                                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                                <View style={{ width: '75%', height: 65, flexDirection: 'row', justifyContent: 'center' }}>
+                                                    <View style={{ width: '50%' }}>
+                                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 25 }}>ชื่อ</Text>
+                                                        <TextInput
+                                                            style={{
+                                                                borderBottomWidth: 0.5,
+                                                                width: '80%',
+                                                                height: 30
+                                                            }}
+                                                            onChangeText={setName}
+                                                            value={name}
+                                                            placeholder="Name"
+                                                        />
+                                                    </View>
+                                                    <View style={{ width: '50%' }}>
+                                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 25 }}>นามสกุล</Text>
+                                                        <TextInput
+                                                            style={{
+                                                                borderBottomWidth: 0.5,
+                                                                width: '80%',
+                                                                height: 30
+                                                            }}
+                                                            onChangeText={setLastname}
+                                                            value={lastname}
+                                                            placeholder="Lastname"
+                                                        />
+                                                    </View>
+                                                </View>
+
+                                                {/**------------------------------------------------------------------------------------------- */}
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                                </View>
+                                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                                <View style={{ width: '75%', height: 65, justifyContent: 'center' }}>
+                                                    <View style={{ width: '50%' }}>
+                                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 35 }}>ขื่อผู้ใช้</Text>
+                                                        <TextInput
+                                                            style={{
+                                                                borderBottomWidth: 0.5,
+                                                                width: '80%',
+                                                                height: 30
+                                                            }}
+                                                            onChangeText={setUsername}
+                                                            value={username}
+                                                            placeholder="Lastname"
+                                                        />
+                                                    </View>
+                                                </View>
+
+
+                                                {/**------------------------------------------------------------------------------------------- */}
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                                </View>
+                                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                                <View style={{ width: '75%', height: 65, justifyContent: 'center' }}>
+                                                    <View style={{ width: '100%' }}>
+                                                        <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 35 }}>อีเมล </Text>
+                                                        <TextInput
+                                                            style={{
+                                                                borderBottomWidth: 0.5,
+                                                                width: '80%',
+                                                                height: 30
+                                                            }}
+                                                            onChangeText={setEmail}
+                                                            value={email}
+                                                            placeholder="Lastname"
+                                                        />
+                                                    </View>
+                                                </View>
+
+
+                                                {/**------------------------------------------------------------------------------------------- */}
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                                </View>
+                                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                                <View style={{ width: '100%', height: 60, justifyContent: 'center' }}>
+
+
+                                                    <View style={{ width: '100%', height: '60%', flexDirection: 'row', alignItems: 'center' }}>
+                                                        {facename ? (
+                                                            <>
+                                                                <Image
+                                                                    source={require('../../img/145802.png')}
+                                                                    style={{
+                                                                        width: '11%',
+                                                                        height: '100%'
+                                                                    }}
+                                                                />
+                                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 18, marginLeft: 10 }}>ล็อกอินด้วยเฟสบุ๊ค</Text>
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <Icon
+                                                                    name={'email-outline'}
+                                                                    size={25}
+                                                                />
+                                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 22, marginLeft: 10, color: '#555555' }}>ล็อกอินด้วยอีเมล</Text>
+                                                            </>
+                                                        )}
+
+                                                    </View>
+
+                                                </View>
+
+
+                                                {/**------------------------------------------------------------------------------------------- */}
+                                                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
+                                                    <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
+                                                </View>
+                                                {/**------------------------------------------------------------------------------------------- */}
+
+
+                                                <View style={{ width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', marginTop: '3%' }}>
+                                                    <TouchableOpacity onPress={() => { setConfirm(true); }} style={{ width: '80%', height: '75%' }}>
+                                                        <View style={{ width: '100%', height: '100%', backgroundColor: '#5CC368', borderRadius: 30, justifyContent: 'center', alignItems: 'center' }}>
+                                                            <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 24 }}>บันทึก</Text>
                                                         </View>
-
                                                     </TouchableOpacity>
-                                                </>
-                                            )}
-                                        </View>
-                                        <View style={{ width: '100%', alignItems: 'center' }}>
-                                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 28, color: '#555555' }}>ข้อมูลผู้ใช้</Text>
-                                        </View>
+                                                </View>
 
-
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-
-                                        <View style={{ width: '75%', height: 65, flexDirection: 'row', justifyContent: 'center' }}>
-                                            <View style={{ width: '50%' }}>
-                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 25 }}>ชื่อ</Text>
-                                                <TextInput
-                                                    style={{
-                                                        borderBottomWidth: 0.5,
-                                                        width: '80%',
-                                                        height: 30
-                                                    }}
-                                                    onChangeText={setName}
-                                                    value={name}
-                                                    placeholder="Name"
-                                                />
-                                            </View>
-                                            <View style={{ width: '50%' }}>
-                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 25 }}>นามสกุล</Text>
-                                                <TextInput
-                                                    style={{
-                                                        borderBottomWidth: 0.5,
-                                                        width: '80%',
-                                                        height: 30
-                                                    }}
-                                                    onChangeText={setLastname}
-                                                    value={lastname}
-                                                    placeholder="Lastname"
-                                                />
-                                            </View>
-                                        </View>
-
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-
-                                        <View style={{ width: '75%', height: 65, justifyContent: 'center' }}>
-                                            <View style={{ width: '50%' }}>
-                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 35 }}>ขื่อผู้ใช้</Text>
-                                                <TextInput
-                                                    style={{
-                                                        borderBottomWidth: 0.5,
-                                                        width: '80%',
-                                                        height: 30
-                                                    }}
-                                                    onChangeText={setUsername}
-                                                    value={username}
-                                                    placeholder="Lastname"
-                                                />
-                                            </View>
-                                        </View>
-
-
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-
-                                        <View style={{ width: '75%', height: 65, justifyContent: 'center' }}>
-                                            <View style={{ width: '100%' }}>
-                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 24, height: 35 }}>อีเมล </Text>
-                                                <TextInput
-                                                    style={{
-                                                        borderBottomWidth: 0.5,
-                                                        width: '80%',
-                                                        height: 30
-                                                    }}
-                                                    onChangeText={setEmail}
-                                                    value={email}
-                                                    placeholder="Lastname"
-                                                />
-                                            </View>
-                                        </View>
-
-
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-
-                                        <View style={{ width: '100%', height: 60, justifyContent: 'center' }}>
-                                            <View style={{ width: '100%' }}>
-                                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 20, height: '50%' }}>Change Password</Text>
-                                                <View style={{ width: '100%', height: '50%', flexDirection: 'row', alignItems: 'center' }}>
-                                                    <Image
-                                                        source={require('../../img/145802.png')}
-                                                        style={{
-                                                            width: '9.5%',
-                                                            height: '100%'
-                                                        }}
-                                                    />
-                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 18, marginLeft: 10 }}>Connected!</Text>
+                                                <View style={{ width: '100%', height: 65, alignItems: 'center', justifyContent: 'center' }}>
+                                                    <TouchableOpacity onPress={logout} style={{ width: '80%', height: '75%' }}>
+                                                        <View style={{ width: '100%', height: '100%', backgroundColor: '#EA6666', borderRadius: 30, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                                            <Icon
+                                                                name='logout'
+                                                                size={30}
+                                                                color={'white'}
+                                                            />
+                                                            <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 24 }}>ออกจากระบบ</Text>
+                                                        </View>
+                                                    </TouchableOpacity>
                                                 </View>
                                             </View>
-                                        </View>
 
+                                        )}
+                                />
+                            </>
+                        )}
 
-                                        {/**------------------------------------------------------------------------------------------- */}
-                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginLeft: 15, marginTop: 10, marginBottom: 10 }} />
-                                            <View style={{ flex: 1, height: 2, backgroundColor: '#ECECEC', marginTop: 10, marginBottom: 10, marginRight: 15 }} />
-                                        </View>
-                                        {/**------------------------------------------------------------------------------------------- */}
-
-
-                                        <View style={{ width: '100%', height: 65, alignItems: 'center', justifyContent: 'center', marginTop: '3%' }}>
-                                            <TouchableOpacity onPress={() => { setConfirm(true); }} style={{ width: '80%', height: '75%' }}>
-                                                <View style={{ width: '100%', height: '100%', backgroundColor: '#5CC368', borderRadius: 30, justifyContent: 'center', alignItems: 'center' }}>
-                                                    <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 24 }}>บันทึก</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-
-                                        <View style={{ width: '100%', height: 65, alignItems: 'center', justifyContent: 'center' }}>
-                                            <TouchableOpacity onPress={() => { navigation.navigate('Login', AsyncStorage.removeItem('id'), AsyncStorage.removeItem('udogid')) }} style={{ width: '80%', height: '75%' }}>
-                                                <View style={{ width: '100%', height: '100%', backgroundColor: '#EA6666', borderRadius: 30, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                                                    <Icon
-                                                        name='logout'
-                                                        size={30}
-                                                        color={'white'}
-                                                    />
-                                                    <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 24 }}>ออกจากระบบ</Text>
-                                                </View>
-                                            </TouchableOpacity>
-                                        </View>
-                                    </View>
-
-                                )}
-                        />
                     </View>
                 </View >
             </>);
