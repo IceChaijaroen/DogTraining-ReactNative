@@ -496,7 +496,7 @@ export default function Profile({ navigation }) {
 
 
                                                     <View style={{ width: '100%', height: '60%', flexDirection: 'row', alignItems: 'center' }}>
-                                                        {facename ? (
+                                                        {facebookmail ? (
                                                             <>
                                                                 <Image
                                                                     source={require('../../img/145802.png')}

@@ -368,10 +368,10 @@ export default function testdata4({ navigation }) {
                                                                         <LineChart
                                                                             style={{ flex: 1, width: '90%', height: '100%' }}
                                                                             data={{
-                                                                                labels: weekvalue.map(item => (item.day)),
+                                                                                labels: weekvalue.map(item => (item.day + '/' + item.month)),
                                                                                 datasets: [
                                                                                     {
-                                                                                        data: weekvalue.map(item => (item.step)),
+                                                                                        data: weekvalue.map(item => (item.evovalue)),
                                                                                         color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                                                         strokeWidth: 2 // optional
                                                                                     }
@@ -387,7 +387,7 @@ export default function testdata4({ navigation }) {
                                                                     </View>
                                                                 </ScrollView>
                                                                 <View style={{ width: '100%' }}>
-                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่/เดือน</Text>
                                                                     <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = ระดับพัฒนาการ/200</Text>
                                                                 </View>
                                                             </>
@@ -467,10 +467,10 @@ export default function testdata4({ navigation }) {
                                                                         <LineChart
                                                                             style={{ flex: 1, width: '90%', height: '100%' }}
                                                                             data={{
-                                                                                labels: jan.map(item => (item.day)),
+                                                                                labels: jan.map(item => (item.day + '/' + item.month)),
                                                                                 datasets: [
                                                                                     {
-                                                                                        data: jan.map(item => (item.step)),
+                                                                                        data: jan.map(item => (item.evovalue)),
                                                                                         color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                                                         strokeWidth: 2 // optional
                                                                                     }
@@ -486,7 +486,7 @@ export default function testdata4({ navigation }) {
                                                                     </View>
                                                                 </ScrollView>
                                                                 <View style={{ width: '100%' }}>
-                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่/เดือน</Text>
                                                                     <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = ระดับพัฒนาการ/200</Text>
                                                                 </View>
                                                             </>
@@ -541,10 +541,10 @@ export default function testdata4({ navigation }) {
                                                                         <LineChart
                                                                             style={{ flex: 1, width: '90%', height: '100%' }}
                                                                             data={{
-                                                                                labels: all.map(item => (item.day)),
+                                                                                labels: all.map(item => (item.day + '/' + item.month)),
                                                                                 datasets: [
                                                                                     {
-                                                                                        data: all.map(item => (item.step)),
+                                                                                        data: all.map(item => (item.evovalue)),
                                                                                         color: (opacity = 1) => `rgba(166, 206, 227)`, // optional
                                                                                         strokeWidth: 2 // optional
                                                                                     }
@@ -560,7 +560,7 @@ export default function testdata4({ navigation }) {
                                                                     </View>
                                                                 </ScrollView>
                                                                 <View style={{ width: '100%' }}>
-                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่</Text>
+                                                                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = วันที่/เดือน</Text>
                                                                     <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = ระดับพัฒนาการ/200</Text>
                                                                 </View>
                                                             </>
