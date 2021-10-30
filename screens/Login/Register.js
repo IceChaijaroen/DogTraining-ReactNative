@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState,Component, useEffect } from "react";
+import React, { useState, Component, useEffect } from "react";
 import { TouchableOpacity, StyleSheet, Text, View, ScrollView, SafeAreaView, TextInput, Image, ImageBackground } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -8,45 +8,45 @@ import { Input } from 'react-native-elements';
 import axios from 'axios';
 import { Alert } from 'react-native';
 
-export default function Register (props,disabled) {
-        const [username,setUsername] = useState("");
-        const [email,setEmail] = useState("");
-        const [password,setPassword] = useState("");
+export default function Register(props, disabled) {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
-        const [submit,setSubmit] = useState("");
+    const [submit, setSubmit] = useState("");
 
-        useEffect(() => {
-            const authenticate = async () => {
-                axios
-                    .post(
-                        "http://35.187.253.40/insert.php",
-                        JSON.stringify({
-                            username : username,
-                            email : email,
-                            password : password
-                        })
-                    )
-                    .then((response) => {
-                        if (response.data=="ok") {
-                            props.navigation.navigate("Login");
-                            setSubmit(false)
-                        } else {
-                            alert(JSON.stringify(response.data));
-                            setSubmit(false)
-                        }
-                        
+    useEffect(() => {
+        const authenticate = async () => {
+            axios
+                .post(
+                    "http://35.187.253.40/insert.php",
+                    JSON.stringify({
+                        username: username,
+                        email: email,
+                        password: password
                     })
-                    .catch((err) => {
-                        console.log(err);
-                    });
-            };
-            if (submit) authenticate();
-        },[submit]);
+                )
+                .then((response) => {
+                    if (response.data == "ok") {
+                        props.navigation.navigate("Login");
+                        setSubmit(false)
+                    } else {
+                        alert(JSON.stringify(response.data));
+                        setSubmit(false)
+                    }
 
-        const usernameHandler = (text) => {
-            setUsername(text);
-        }
-  
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        };
+        if (submit) authenticate();
+    }, [submit]);
+
+    const usernameHandler = (text) => {
+        setUsername(text);
+    }
+
     return (
         <>
             <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -89,6 +89,7 @@ export default function Register (props,disabled) {
                     </View>
                     <View style={styles.InputStyle}>
                         <Input
+                            secureTextEntry={true}
                             placeholder=' Password'
                             leftIcon={
                                 <Icon
@@ -110,7 +111,7 @@ export default function Register (props,disabled) {
                 </View>
                 <View style={styles.AlreadyTextContent}>
                     <Text style={{ color: '#555555', fontWeight: 'bold' }}>มีบัญชีอยู่แล้ว?</Text>
-                    <TouchableOpacity  onPress = {() => props.navigation.navigate('Login')}>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
                         <Text style={{ color: '#559BF8', fontWeight: 'bold' }}>เข้าสู่ระบบที่นี่</Text>
                     </TouchableOpacity>
                 </View>

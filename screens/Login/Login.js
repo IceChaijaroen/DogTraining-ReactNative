@@ -262,6 +262,7 @@ export default function Login(props, disabled) {
                                     </View>
                                     <View style={styles.InputStyle}>
                                         <Input
+                                            secureTextEntry={true}
                                             placeholder=' Password'
                                             leftIcon={
                                                 <Icon
@@ -287,9 +288,7 @@ export default function Login(props, disabled) {
                                     </TouchableOpacity>
                                 </View>
                                 <TouchableOpacity >
-                                    <View style={{ width: '100%', height: 20, alignItems: 'center', justifyContent: 'flex-end' }}>
-                                        <Text style={{ color: '#9C9C9C', fontWeight: 'bold' }}>{id}</Text>
-                                    </View>
+
                                 </TouchableOpacity>
                                 <View style={styles.FacGoo}>
                                     <TouchableOpacity readPermissions={["email"]} onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>

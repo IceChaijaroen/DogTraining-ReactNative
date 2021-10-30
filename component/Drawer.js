@@ -24,6 +24,7 @@ import Educate2 from '../screens/DogTraining/Educate2';
 import showGraph from '../screens/Mydog/showGraph';
 import showGraph2 from '../screens/Mydog/showGraph2';
 import Login from '../screens/Login/Login';
+import Ranking from '../screens/ranking';
 
 
 
@@ -51,6 +52,7 @@ function MyDrawer() {
       <Drawer.Screen name="Doginfo" component={Doginfo} />
       <Drawer.Screen name="showGraph" component={showGraph} />
       <Drawer.Screen name="showGraph2" component={showGraph2} />
+      <Drawer.Screen name="Ranking" component={Ranking} />
       
     </Drawer.Navigator>
 

@@ -23,6 +23,7 @@ import testslide from './testdata/testslide';
 import testdata2 from './testdata/testdata2';
 import testdata3 from './testdata/testdata3';
 import testdata4 from './testdata/testdata4';
+import Ranking from './screens/ranking';
 
 const Stack = createStackNavigator();
 
@@ -33,6 +34,7 @@ export default function App() {
         <Stack.Navigator>
 
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="Ranking" component={Ranking} options={{ headerShown: false }} />
           <Stack.Screen name="MyDrawer" component={MyDrawer} options={{ headerShown: false }} />
           <Stack.Screen name="testdata" component={testdata} options={{ headerShown: false }} />
           <Stack.Screen name="testdata4" component={testdata4} options={{ headerShown: false }} />

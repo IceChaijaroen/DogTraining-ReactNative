@@ -212,7 +212,16 @@ export function DrawerContent(props) {
                                                 </View>
                                                 <View style={{ width: '70%', paddingTop: 10 }}>
                                                     <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>ชื่อ : {item.udogname}</Text>
-                                                    <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>สถานะ : {item.udogstatus}</Text>
+                                                    <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>สถานะ : {item.udogprocess >= 20 ? (
+                                                        <>
+                                                            ฝึกฝนเสร็จสิ้น
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            กำลังฝึกฝน
+                                                        </>
+                                                    )}
+                                                    </Text>
 
                                                     <View style={style.capsule}>
                                                         <Progress step={item.udogprocess} steps={200} height={10} />
@@ -274,6 +283,18 @@ export function DrawerContent(props) {
                             label="Tabs"
                             labelStyle={{ fontWeight: 'bold' }}
                             onPress={() => { props.navigation.navigate('Tabs') }}
+                        />
+                        <DrawerItem
+                            icon={({ color, size }) => (
+                                <Icon
+                                    name="page-layout-footer"
+                                    color={color}
+                                    size={size}
+                                />
+                            )}
+                            label="อันดับสุนัขน่าเลี้ยง"
+                            labelStyle={{ fontWeight: 'bold' }}
+                            onPress={() => { props.navigation.navigate('Ranking') }}
                         />
                     </Drawer.Section>
                 </View>

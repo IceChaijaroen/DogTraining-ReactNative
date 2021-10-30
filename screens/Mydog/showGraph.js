@@ -75,10 +75,9 @@ export default function testdata4({ navigation }) {
                             udogid: udog,
                         }
                     })
-
-                setIsLoadingyear(true);
                 setLoadingpage(true);
                 setAll(response.data);
+                setIsLoadingyear(true);
             } catch (error) {
                 console.log(error)
             }
@@ -99,10 +98,8 @@ export default function testdata4({ navigation }) {
                             end: end
                         }
                     })
-
-                setIsLoadingweek(true);
                 setWeekvalue(response.data);
-
+                setIsLoadingweek(true);
             } catch (error) {
                 console.log(error)
             }
@@ -123,9 +120,8 @@ export default function testdata4({ navigation }) {
                             month: setmonth
                         }
                     })
-
-                setIsLoadingmonth(true);
                 setJan(response.data);
+                setIsLoadingmonth(true);
             } catch (error) {
                 console.log(error)
             }
