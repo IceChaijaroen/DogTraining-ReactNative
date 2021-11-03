@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
 import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
@@ -39,14 +39,16 @@ export default function Recommend({ navigation, route }) {
         })
     }
     fetchData();
-  },[udogid])
+  }, [udogid])
 
 
   return (
     <>
       {!isLoading ? (
         <>
-          <Text style={{ fontSize: 100 }}> Loading ... Recommend </Text>
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#FFB97D" />
+          </View>
         </>
       ) : (
         <>

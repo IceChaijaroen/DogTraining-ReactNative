@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { Button } from 'react-native';
+import { Button, ImageBackground } from 'react-native';
 import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, Animated, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -24,6 +24,7 @@ export default function Home({ navigation }) {
   const [udogid, setUdog] = useState();
   const [banner, setBanner] = useState([]);
   const [train, setTrain] = useState([]);
+  const [showfav, setShowfav] = useState([]);
   const [process, setProcess] = useState();
   const [facebook, setFacebook] = useState();
   const scrollX = new Animated.Value(0);
@@ -93,6 +94,24 @@ export default function Home({ navigation }) {
     }
     fetchData();
   }, [train])
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://35.187.253.40/showfavoritehome.php',
+          {
+            params: {
+              uid: user
+            }
+          })
+        setShowfav(response.data);
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    fetchData();
+  }, [showfav]);
 
 
 
@@ -361,16 +380,32 @@ export default function Home({ navigation }) {
               />
               <Text style={{ fontFamily: 'FC_Iconic', fontSize: 20, color: '#555555' }}>สุนัขพันธุ์โปรด</Text>
             </View>
-            <View style={{ flexDirection: 'row', marginLeft: 20, marginBottom: 100 }}>
-              <View style={styles.favcard}>
-                <Image
-                  style={{ width: 50, height: 49, marginBottom: 10 }}
-                  source={require('../img/plusgreen.png')}
-                />
-                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 20, color: '#555555' }}>เพิ่มสุนัขตัวโปรด</Text>
-              </View>
-            </View>
-
+            <FlatList
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              data={showfav}
+              renderItem={({ item, index }) => (
+                <>
+                  <View style={{ flexDirection: 'row', marginLeft: index > 0 ? 5 : 20, marginBottom: 100 }}>
+                    <View style={styles.favcard}>
+                      <ImageBackground
+                        style={{ width: '100%', height: '100%' }}
+                        imageStyle={{ borderRadius: 30 }}
+                        source={{ uri: item.imgcut }}
+                      >
+                        <View style={styles.cardcontent}>
+                          <View style={{ width: '80%', height: '20%', backgroundColor: '#4E4E4E', marginBottom: 10, borderBottomRightRadius: 10, borderTopRightRadius: 10, alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ fontSize: 15, color: 'white', fontFamily: 'FC_Iconic', width: '90%', marginLeft: 10 }}>
+                              {item.dogname}
+                            </Text>
+                          </View>
+                        </View>
+                      </ImageBackground>
+                    </View>
+                  </View>
+                </>
+              )}
+            />
           </ScrollView>
         </View >
       </>
@@ -480,6 +515,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.23,
     shadowRadius: 2.62,
     elevation: 6
+  },
+  cardcontent: {
+    height: '100%',
+    justifyContent: 'flex-end'
   },
 
 });

@@ -80,6 +80,7 @@ export default function StatisTrain({ navigation, route }) {
     const [user, setUser] = useState();
     const [dogdata, setDogdata] = useState([]);
     const [doglevel, setDoglevel] = useState([]);
+    const [train, setTrain] = useState([]);
 
 
 
@@ -108,6 +109,22 @@ export default function StatisTrain({ navigation, route }) {
         Load();
     });
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('http://35.187.253.40/educate.php',
+                    {
+                        params: {
+                            idtrain: idtrain
+                        }
+                    })
+                setTrain(response.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchData();
+    }, [idtrain])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -296,10 +313,12 @@ export default function StatisTrain({ navigation, route }) {
                 <View style={styles.container}>
                     <View style={styles.card}>
                         <View style={{ height: 70, width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 30, backgroundColor: '#555555', borderTopLeftRadius: 40, borderTopRightRadius: 40 }}>
-                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 40, color: 'white' }}>สถิติ</Text>
+                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 40, color: 'white' }}>สถิติการฝึก</Text>
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: 20, marginBottom: 30 }}>
-                            <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>ท่านั่ง</Text>
+                            {train.map((item) => (
+                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>{item.trainname}</Text>
+                            ))}
                         </View>
                         <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 20 }}>
 
@@ -385,7 +404,11 @@ export default function StatisTrain({ navigation, route }) {
 
                             </View>
                         </View>
-                        <View style={{ width: '95%', height: 60, alignItems: 'flex-end' }}>
+                        <View style={{ width: '95%', height: 60, flexDirection: 'row', justifyContent: 'flex-end' }}>
+                            <View style={{ width: '65%' }}>
+                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน x = จำนวนครั้งที่ฝึก</Text>
+                                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 16, color: '#9F9F9F' }}>*แกน y = เวลา(วินาที)</Text>
+                            </View>
                             <TouchableOpacity onPress={next} style={{ width: '25%', height: '70%' }}>
                                 <View style={styles.nextbutton}>
                                     <Text style={styles.textinbutton} >ถัดไป</Text>

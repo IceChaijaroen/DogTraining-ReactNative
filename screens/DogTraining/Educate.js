@@ -3,7 +3,7 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
 import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Animated } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Animated ,ActivityIndicator} from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
@@ -122,7 +122,9 @@ export default function Educate({ navigation, route }) {
       <>
         {!isLoading ? (
           <>
-            <Text style={{ fontSize: 100 }}> Loading ... Education </Text>
+            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" color="#FFB97D" />
+            </View>
           </>
         ) : (
           <>

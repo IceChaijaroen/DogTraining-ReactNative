@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList,ActivityIndicator } from 'react-native';
 import Opendrawer from '../../component/OpenDrawer';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
@@ -109,7 +109,7 @@ export default function headertraining({ navigation, route }, disabled) {
                 {/** -----------Header------------------ */}
                 {!isLoading ? (
                     <>
-                        <Text style={{ fontSize: 100 }}> Loading ... </Text>
+                        <ActivityIndicator size="large" color="#FFB97D" />
                     </>
                 ) : (
                     <>
