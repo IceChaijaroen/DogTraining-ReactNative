@@ -91,8 +91,8 @@ export function DrawerContent(props) {
                     })
                 setUdata(response.data.all);
 
-            } catch {
-                alert('ssss');
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchData();
@@ -109,8 +109,8 @@ export function DrawerContent(props) {
                         }
                     })
                 setDogdata(response.data.all);
-            } catch {
-                alert("ERROR------getudogid.php")
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchData();

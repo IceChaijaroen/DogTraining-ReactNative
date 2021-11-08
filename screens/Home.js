@@ -75,7 +75,7 @@ export default function Home({ navigation }) {
         })
         setTrain(response.data);
       } catch (err) {
-        alert(err)
+        console.log(err)
       }
     }
     fetchData();
@@ -129,8 +129,8 @@ export default function Home({ navigation }) {
           <View style={styles.header}>
             <View style={{ width: '40%', alignItems: 'flex-end' }}>
               <Image
-                style={{ width: 50, height: '58%' }}
-                source={require('../img/LOGOcomwhite.png')}
+                style={{ width: '45%', height: '58%' }}
+                source={require('../img/Dogtraining-logo.png')}
               />
             </View>
             <View style={{ width: '60%', alignItems: 'flex-start', marginLeft: 15 }}>
@@ -387,7 +387,9 @@ export default function Home({ navigation }) {
               renderItem={({ item, index }) => (
                 <>
                   <View style={{ flexDirection: 'row', marginLeft: index > 0 ? 5 : 20, marginBottom: 100 }}>
-                    <View style={styles.favcard}>
+                    <TouchableOpacity onPress={() => navigation.navigate('HomeInfo', {
+                      dogid: item.iddoginfo,
+                    })} style={styles.favcard}>
                       <ImageBackground
                         style={{ width: '100%', height: '100%' }}
                         imageStyle={{ borderRadius: 30 }}
@@ -401,7 +403,7 @@ export default function Home({ navigation }) {
                           </View>
                         </View>
                       </ImageBackground>
-                    </View>
+                    </TouchableOpacity>
                   </View>
                 </>
               )}

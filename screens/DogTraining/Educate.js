@@ -3,7 +3,7 @@ import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
 import { Feather, FontAwesome5, Fontisto } from '@expo/vector-icons';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Animated ,ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, FlatList, Animated, ActivityIndicator } from 'react-native';
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import AppLoading from 'expo-app-loading';
@@ -100,8 +100,8 @@ export default function Educate({ navigation, route }) {
           })
         setGif(response.data);
         setIsLoading(true);
-      } catch {
-        alert('error');
+      } catch (err) {
+        console.log(err)
       }
     }
     fetchData();

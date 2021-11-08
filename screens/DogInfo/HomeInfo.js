@@ -59,7 +59,7 @@ export default function HomeInfo({ route, navigation }) {
           })
         setDogimg(response.data)
       } catch (err) {
-        alert(err)
+        console.log(err);
       }
     }
     fetchData();
@@ -110,10 +110,9 @@ export default function HomeInfo({ route, navigation }) {
           iddoginfo: dogid,
           uid: uid
         })
-        alert(response.data);
         setIsSubmit(false);
       } catch (err) {
-        alert(err)
+        console.log(err);
         setIsSubmit(false);
       }
     }
@@ -123,7 +122,6 @@ export default function HomeInfo({ route, navigation }) {
 
 
 
-  console.log(favdata)
 
 
   let [fontsLoaded] = useFonts({

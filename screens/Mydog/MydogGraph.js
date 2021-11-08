@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView, Image, Button, TouchableOpacity } from 'react-native';
 import {
   LineChart,
@@ -43,8 +43,8 @@ export default function MydogInfo({ navigation }) {
         })
         setUdata(response.data);
         setIsLoading(true);
-      } catch {
-        alert("ERROR------getudogid.php")
+      } catch (err) {
+        console.log(err);
       }
     }
     fetchData();
@@ -53,19 +53,19 @@ export default function MydogInfo({ navigation }) {
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const response = await axios.get('http://35.187.253.40/getudogid.php', {
-                params: {
-                    id: user
-                }
-            })
-            setGetudog(response.data);
-        } catch {
-            alert("ERROR------getudogid.php")
-        }
+      try {
+        const response = await axios.get('http://35.187.253.40/getudogid.php', {
+          params: {
+            id: user
+          }
+        })
+        setGetudog(response.data);
+      } catch (err) {
+        console.log(err);
+      }
     }
     fetchData();
-}, [getudog])
+  }, [getudog])
 
 
 
@@ -110,25 +110,25 @@ export default function MydogInfo({ navigation }) {
       <ScrollView>
         <View style={styles.container}>
           {udata == 'null' ? (
-            
+
             <TouchableOpacity onPress={() => navigation.navigate('AddDog')} style={styles.cardinsert}>
 
-                <View style={{ width: '80%', height: '50%', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 10 }}>
-                    <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>เพิ่มสุนัขของคุณ</Text>
-                </View>
-                <View style={{ width: '80%', height: '50%', justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <Icon
-                        name={'pluscircle'}
-                        size={50}
-                        color={'#555555'}
-                    />
-                </View>
+              <View style={{ width: '80%', height: '50%', justifyContent: 'flex-end', alignItems: 'center', paddingBottom: 10 }}>
+                <Text style={{ fontFamily: 'FC_Iconic', fontSize: 30, color: '#555555' }}>เพิ่มสุนัขของคุณ</Text>
+              </View>
+              <View style={{ width: '80%', height: '50%', justifyContent: 'flex-start', alignItems: 'center' }}>
+                <Icon
+                  name={'pluscircle'}
+                  size={50}
+                  color={'#555555'}
+                />
+              </View>
             </TouchableOpacity>
 
           ) : (
             <>
               <View style={styles.card}>
-                <TouchableOpacity onPress={() => navigation.navigate('showGraph',setIsLoading(false))} style={{ width: '100%' }}>
+                <TouchableOpacity onPress={() => navigation.navigate('showGraph', setIsLoading(false))} style={{ width: '100%' }}>
                   <View style={{ width: '100%', height: '100%', justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', marginRight: 20, color: '#555555' }}>พัฒนาการโดยรวม</Text>
                     <Image
@@ -203,20 +203,20 @@ const styles = StyleSheet.create({
   },
   cardinsert: {
     marginTop: -10,
-      alignItems: 'center',
-      width: '90%',
-      height: 180,
-      backgroundColor: 'white',
-      borderRadius: 50,
-      margin: 5,
-      shadowColor: '#000',
-      shadowOffset: {
-          width: 0,
-          height: 2,
-      },
-      shadowOpacity: 0.23,
-      shadowRadius: 2.62,
-      elevation: 6
+    alignItems: 'center',
+    width: '90%',
+    height: 180,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    margin: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+    elevation: 6
   },
   rowcontent: {
     flexDirection: 'row',

@@ -68,8 +68,8 @@ export default function showGraph2({ navigation }) {
           setLoading(true);
         }
 
-      } catch {
-        alert("showdoglevel");
+      } catch (err) {
+        console.log(err)
       }
     }
     fetchData();
@@ -86,13 +86,13 @@ export default function showGraph2({ navigation }) {
           }
         })
         if (response.data == 'null') {
-          alert("train null");
+          console.log("train null");
         } else {
           setTrain(response.data);
           setTrainloading(true);
         }
       } catch (err) {
-        alert(err)
+        console.log(err)
       }
     }
     fetchData();

@@ -136,7 +136,7 @@ export default function testtest({ navigation, route }) {
                     }
                 })
                 if (response.data == 'null') {
-                    alert("train null");
+                    console.log("train null");
                 } else {
                     setTrain(response.data);
                 }
@@ -268,7 +268,7 @@ export default function testtest({ navigation, route }) {
             return <View style={{ backgroundColor: 'transparent' }}></View>
         } else {
             if (item.sumstep <= 20) {
-                return <View style={{ backgroundColor: 'transparent' }}><Text>ยังไม่มีท่าสำเร็จ</Text></View>
+                return <View style={{ backgroundColor: 'transparent' }}></View>
             } else {
                 return (
                     <View style={{ width: 80, height: 110, alignItems: 'center', justifyContent: 'center', margin: 10 }}>

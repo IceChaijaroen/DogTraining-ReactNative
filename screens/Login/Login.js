@@ -4,6 +4,7 @@ import { Keyboard, TouchableOpacity, StyleSheet, Text, View, ScrollView, SafeAre
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Input } from 'react-native-elements';
 import axios from 'axios';
 import * as Facebook from 'expo-facebook';
@@ -241,9 +242,9 @@ export default function Login(props, disabled) {
                             <View style={{ flex: 1, backgroundColor: 'white' }}>
                                 <View style={styles.ImageContent}>
                                     <Image
-                                        style={{ width: '35%', height: 195 }}
+                                        style={{ width: '50%', height: '80%' }}
                                         //source={require('../../img/LOGOcom.png')}
-                                        source={require('../../img/LOGOcom.png')}
+                                        source={require('../../img/Dogtraining-logo.png')}
                                     />
                                 </View>
                                 <View style={styles.InputContent}>
@@ -275,12 +276,10 @@ export default function Login(props, disabled) {
                                         />
                                     </View>
                                     <View style={{ width: '60%', height: 25, alignItems: 'flex-end' }}>
-                                        <TouchableOpacity>
-                                            <Text style={{ color: '#555555', fontWeight: 'bold' }}>ลืมรหัสผ่าน?</Text>
-                                        </TouchableOpacity>
+
                                     </View>
                                 </View>
-                                <View style={{ width: '100%', height: 100, justifyContent: 'center', alignItems: 'center' }}>
+                                <View style={{ width: '100%', height: 150, alignItems: 'center' }}>
                                     <TouchableOpacity activeOpacity={disabled ? 0.85 : 1} onPress={() => setSubmit(true)} style={{ width: '35%', alignItems: 'center' }}>
                                         <View style={styles.ButtonLog}>
                                             <Text style={{ color: 'white', fontWeight: 'bold' }}>เข้าสู่ระบบ</Text>
@@ -291,31 +290,27 @@ export default function Login(props, disabled) {
 
                                 </TouchableOpacity>
                                 <View style={styles.FacGoo}>
-                                    <TouchableOpacity readPermissions={["email"]} onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
-                                        <View style={styles.Facebook}>
-                                            <Text style={{ color: 'white', fontWeight: 'bold' }}>Facebook</Text>
-                                        </View>
+                                    <TouchableOpacity readPermissions={["email"]} onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'flex-end',marginRight:15 }}>
+                                        <MaterialCommunityIcons
+                                            name={'facebook'}
+                                            size={80}
+                                            color={'#064BA6'}
+                                        />
                                     </TouchableOpacity>
 
-                                    {!googleSubmitting && (
-                                        <TouchableOpacity google={true} onPress={handleGoogleSignin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'center' }}>
-                                            <View style={styles.Google}>
-                                                <Text style={{ color: 'white', fontWeight: 'bold' }}>Google</Text>
-                                            </View>
-                                        </TouchableOpacity>
-                                    )}
 
-                                    {googleSubmitting && (
-                                        <TouchableOpacity google={true} disabled={true} style={{ width: '28%', alignItems: 'center' }}>
-                                            <View style={styles.Google}>
-                                                <ActivityIndicator size='small' color='white' />
-                                            </View>
+                                        <TouchableOpacity google={true} onPress={handleGoogleSignin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', marginLeft: 10 }}>
+                                            <Image
+                                                source={require('../../img/googlelogo.png')}
+                                                style={{
+                                                    width: '50%',
+                                                    height: '102%'
+                                                }}
+                                            />
                                         </TouchableOpacity>
-                                    )}
-
                                 </View>
                                 <View style={styles.AlreadyContent}>
-                                    <Text style={{ color: '#555555', fontWeight: 'bold' }}>มีบัญชีอยู่แล้ว?</Text>
+                                    <Text style={{ color: '#555555', fontWeight: 'bold' }}>ยังไม่มีบัญชี?</Text>
                                     <TouchableOpacity onPress={() => props.navigation.navigate('Register')} >
                                         <Text style={{ color: '#559BF8', fontWeight: 'bold' }}>สมัครสมาชิกที่นี่</Text>
                                     </TouchableOpacity>
@@ -349,6 +344,7 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     ImageContent: {
+        marginTop:20,
         width: '100%',
         height: 270,
         alignItems: 'center',

@@ -52,8 +52,8 @@ export default function Register(props, disabled) {
             <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <View style={styles.ImageContent}>
                     <Image
-                        style={{ width: '30%', height: 170 }}
-                        source={require('../../img/LOGOcom.png')}
+                        style={{ width: '40%', height: '70%' }}
+                        source={require('../../img/Dogtraining-logo.png')}
                     />
                 </View>
                 <View style={styles.TextHerder}>

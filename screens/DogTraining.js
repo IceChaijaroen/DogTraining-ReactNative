@@ -62,35 +62,12 @@ export default function Dogtraining({ navigation, route }, disabled) {
           setProcess(response.data.process);
           setIsLoading(true);
         }
-      } catch (error){
-        console.log(error)
+      } catch (err) {
+        console.log(err)
       }
     }
     fetchData();
   }, [dogdata, udogid])
-
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://35.187.253.40/showdoglevel.php',
-          {
-            params: {
-              id: user,
-              udogid: udogid
-            }
-          })
-        if (response.data == 'null') {
-          console.log('null');
-        } else {
-          setDoglevel(response.data);
-        }
-      } catch(error) {
-        console.log(error)
-      }
-    }
-    fetchData();
-  }, [udogid])
 
 
   useEffect(() => {
@@ -205,7 +182,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
           {process < 40 ? (
             <>
               <View style={styles.minicardcontainer}>
-                <TouchableOpacity onPress={() => alert('ยังไม่ปลดล็อก')} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <TouchableOpacity activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                   <View key={index} style={{ width: '90%', height: '99%', backgroundColor: '#FFFFFF', borderRadius: 25, elevation: 5, alignItems: 'center', backgroundColor: '#E1E1E1' }}>
                     <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                       <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80, opacity: 0.6 }}>

@@ -96,7 +96,7 @@ export default function Training({ navigation, route }) {
                     })
                 setGif(response.data)
             } catch (err) {
-                alert('gif.php//Error');
+                console.log(err)
             }
         }
         fetchData();
@@ -112,8 +112,8 @@ export default function Training({ navigation, route }) {
                         }
                     })
                 setTrain(response.data)
-            } catch {
-                alert('.....Educate.php//Error.....')
+            } catch (err) {
+                console.log(err)
             }
         }
         fetchData();
@@ -125,8 +125,8 @@ export default function Training({ navigation, route }) {
     const [submit, setSubmit] = useState("");
     const [visible, setVisible] = useState(false);
 
-    const [minute, setMinute] = useState(0);
-    const [perseconds, setPersecound] = useState(10);
+    const [minute, setMinute] = useState(14);
+    const [perseconds, setPersecound] = useState(59);
     const [timestop, setTimestop] = useState(false);
     const [loading, setLoading] = useState(false);
 
@@ -134,7 +134,7 @@ export default function Training({ navigation, route }) {
     useEffect(() => {
         if (perseconds < 0) {
             setMinute(minute => minute - 1)
-            setPersecound(20);
+            setPersecound(59);
         }
     }, [perseconds])
 
@@ -216,9 +216,9 @@ export default function Training({ navigation, route }) {
                 )
                 .then((response) => {
                     if (response.data == 'notyet') {
-                        alert('Fuck');
+                        console.log('Fuck');
                     } else {
-                        alert(JSON.stringify(response.data));
+                        console.log(JSON.stringify(response.data));
                     }
                 })
                 .catch((err) => {
@@ -241,12 +241,11 @@ export default function Training({ navigation, route }) {
 
     const next = () => {
         navigation.navigate('StatisTrain', { idtrain: idtrain });
-        setMinute(0);
+        setMinute(15);
         setTimestop(false);
         setVisible(false);
         setCount(0);
     }
-    console.log(idtrain, udogid)
 
 
     const renderItem = ({ item }) => {
@@ -255,7 +254,7 @@ export default function Training({ navigation, route }) {
                 <View style={{ width: 500, flexDirection: 'row' }}>
                     <View style={{ width: '21%' }}>
                         <Text style={{ fontSize: 25, marginRight: 15, color: 'white', fontFamily: 'FC_Iconic' }}>
-                            {item.step}
+                            ขั้นตอนที่ {item.step}
                         </Text>
                     </View>
 
@@ -267,14 +266,13 @@ export default function Training({ navigation, route }) {
                         />
                         {/**------------------------------------------------------------------------------------------- */}
                         <View style={{ alignItems: 'center' }}>
-                            <View style={{ height: 60, backgroundColor: 'white', width: 3, borderRadius: 3 }} />
+                            <View style={{ height: 60, width: 3, borderRadius: 3 }} />
                         </View>
                         {/**------------------------------------------------------------------------------------------- */}
                     </View>
-
                     <View style={{ width: '50%' }}>
                         <Text style={{ fontSize: 25, marginLeft: 20, color: 'white', fontFamily: 'FC_Iconic' }}>
-                            {item.descrip}กดก้นสุนัขของคุณลง ให้สุนัขอยู่ในท่านั่ง
+                            {item.descrip}
                         </Text>
                     </View>
                 </View>
@@ -368,17 +366,26 @@ export default function Training({ navigation, route }) {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                {countdesc == '' ? (
-                                    <>
-                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ 0 </Text>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {countdesc} </Text>
-                                    </>
-                                )}
-
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ width: '33%', alignItems: 'center' }}>
+                                    <Text></Text>
+                                </View>
+                                <View style={{ width: '33%', alignItems: 'center' }}>
+                                    {countdesc == '' ? (
+                                        <>
+                                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ครั้งที่ 0 </Text>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ครั้งที่ {countdesc} </Text>
+                                        </>
+                                    )}
+                                </View>
+                                <View style={{ width: '33%', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={next} style={{ width: '70%', height: 30, flexDirection: 'row', backgroundColor: 'grey', borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 16 }}>พักการฝึก</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </>
@@ -428,18 +435,26 @@ export default function Training({ navigation, route }) {
                                     </View>
                                 </TouchableOpacity>
                             </View>
-                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-                                {countdesc == '' ? (
-                                    <>
-                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ 0 </Text>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'black' }}>ครั้งที่ {countdesc} </Text>
-                                    </>
-                                )}
-
-
+                            <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ width: '33%', alignItems: 'center' }}>
+                                    <Text></Text>
+                                </View>
+                                <View style={{ width: '33%', alignItems: 'center' }}>
+                                    {countdesc == '' ? (
+                                        <>
+                                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ครั้งที่ 0 </Text>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ครั้งที่ {countdesc} </Text>
+                                        </>
+                                    )}
+                                </View>
+                                <View style={{ width: '33%', alignItems: 'center' }}>
+                                    <TouchableOpacity onPress={next} style={{ width: '70%', height: 30, flexDirection: 'row', backgroundColor: 'grey', borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                                        <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 16 }}>พักการฝึก</Text>
+                                    </TouchableOpacity>
+                                </View>
                             </View>
                         </View>
                     </>
@@ -488,5 +503,21 @@ const styles = StyleSheet.create({
         height: 300,
         paddingHorizontal: 20,
         paddingVertical: 20
+    },
+    nextbutton: {
+        width: '100%',
+        backgroundColor: '#555555',
+        height: '100%',
+        borderRadius: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'row',
+        elevation: 5
+    },
+    textinbutton: {
+        fontFamily: 'FC_Iconic',
+        fontSize: 22,
+        color: 'white',
+        marginRight: 10
     }
 });
