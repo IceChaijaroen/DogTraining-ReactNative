@@ -242,6 +242,7 @@ export default function Training({ navigation, route }) {
     const next = () => {
         navigation.navigate('StatisTrain', { idtrain: idtrain });
         setMinute(15);
+        setPersecound(59);
         setTimestop(false);
         setVisible(false);
         setCount(0);
@@ -359,12 +360,19 @@ export default function Training({ navigation, route }) {
                                 />
 
                             </View>
-                            <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ width: '30%', height: '100%', justifyContent: 'center' }}>
+                                    <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 16 }}>*กดปุ่มจับเวลาเมื่อเริ่มฝึก</Text>
+                                    <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 16 }}>*กดปุ่มหยุดเวลาเมื่อสุนัขทำสำเร็จ</Text>
+                                </View>
                                 <TouchableOpacity onPress={() => setSubmit(true)} >
                                     <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
+                                        <Text style={{ fontSize: 25, color: 'white', fontFamily: 'FC_Iconic' }}>กดเพื่อหยุด</Text>
                                         <Text style={{ color: 'white', fontSize: 40, fontFamily: 'FC_Iconic' }}>{second}</Text>
                                     </View>
                                 </TouchableOpacity>
+                                <View style={{ width: '30%' }}>
+                                </View>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                                 <View style={{ width: '33%', alignItems: 'center' }}>
@@ -427,13 +435,19 @@ export default function Training({ navigation, route }) {
 
 
                             </View>
-                            <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center' }}>
+                            <View style={{ width: '100%', height: 180, justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                                <View style={{ width: '30%', height: '100%', justifyContent: 'center' }}>
+                                    <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 16 }}>*กดปุ่มจับเวลาเมื่อเริ่มฝึก</Text>
+                                    <Text style={{ color: 'white', fontFamily: 'FC_Iconic', fontSize: 16 }}>*กดปุ่มหยุดเวลาเมื่อสุนัขทำสำเร็จ</Text>
+                                </View>
                                 <TouchableOpacity onPress={() => { setIsRunning(true); setTimestop(true); }} >
                                     <View style={{ width: 130, height: 125, backgroundColor: '#E24B4B', borderRadius: 100, justifyContent: 'center', alignItems: 'center', elevation: 5 }}>
                                         <Text style={{ fontSize: 30, color: 'white', fontFamily: 'FC_Iconic' }}>กดปุ่ม</Text>
                                         <Text style={{ fontSize: 20, color: 'white', fontFamily: 'FC_Iconic' }}>เพื่อเริ่มจับเวลา</Text>
                                     </View>
                                 </TouchableOpacity>
+                                <View style={{ width: '30%' }}>
+                                </View>
                             </View>
                             <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
                                 <View style={{ width: '33%', alignItems: 'center' }}>

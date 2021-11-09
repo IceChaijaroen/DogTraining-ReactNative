@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList,ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ScrollView, SafeAreaView, FlatList, ActivityIndicator } from 'react-native';
 import Opendrawer from '../../component/OpenDrawer';
 import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 import { LocaleConfig } from 'react-native-calendars';
@@ -131,10 +131,10 @@ export default function headertraining({ navigation, route }, disabled) {
                                     <View style={{ width: '50%', alignItems: 'flex-end' }}>
                                         <TouchableOpacity
                                             style={{ marginRight: 15 }}
-                                            onPress={() => navigation.navigate('Noti')}
+                                            onPress={() => navigation.navigate('Settings')}
                                         >
                                             <View style={{ width: 30, height: 30, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center', borderRadius: 7 }}>
-                                                <Fontisto name='bell-alt' size={15} color="#5E5E5E" />
+                                                <Fontisto name='player-settings' size={18} color="#555555" />
                                             </View>
                                         </TouchableOpacity>
                                     </View>
@@ -168,7 +168,7 @@ export default function headertraining({ navigation, route }, disabled) {
                                                 <View style={{ width: '80%', height: '25%', justifyContent: 'center', alignItems: 'center' }}>
 
                                                     <View style={{ width: '95%', height: '100%', justifyContent: 'center' }}>
-                                                        <Progress  step={item.udogprocess} steps={200} height={15} />
+                                                        <Progress step={item.udogprocess} steps={200} height={15} />
                                                     </View>
 
                                                 </View>

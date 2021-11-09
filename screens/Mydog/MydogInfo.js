@@ -44,6 +44,10 @@ export default function testtest({ navigation, route }) {
     const [sexpic, setSexpic] = useState(['ผู้', 'เมีย']);
     const [dogbreed, setDogbreed] = useState([]);
     const [confirm, setConfirm] = useState(false);
+    const [del, setDel] = useState(false);
+    const [sure, setSure] = useState(false);
+    const [deldone, setDeldone] = useState(false);
+
     const [image, setImage] = useState();
     const [dognull, setDognull] = useState([]);
 
@@ -169,6 +173,24 @@ export default function testtest({ navigation, route }) {
                 });
         }; if (confirm) authenticate();
     }, [confirm]);
+
+
+    useEffect(() => {
+        const authenticate = async () => {
+            axios.get("http://35.187.253.40/deletedog.php", {
+                params: {
+                    udogid: udogid
+                }
+            })
+                .then((response) => {
+                    setDeldone(true);
+                    setDel(false);
+                })
+                .catch((err) => {
+                    console.log(err)
+                });
+        }; if (del) authenticate();
+    }, [del]);
 
 
 
@@ -381,6 +403,67 @@ export default function testtest({ navigation, route }) {
 
 
 
+            <Modalinsertdog visible={sure}>
+                <View style={{
+                    width: '100%',
+                    alignItems: 'center',
+                    height: 350,
+                    paddingHorizontal: 20,
+                    paddingVertical: 20
+                }}>
+                    <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon
+                            name={'questioncircle'}
+                            size={120}
+                            color={'#FFC372'}
+
+                        />
+                    </View>
+                    <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>ยืนยันการลบข้อมูลสุนัข </Text>
+                    </View>
+                    <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => setSure(false)} style={{ width: '40%', height: '80%', backgroundColor: '#FF7E7E', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยกเลิก</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => { setDel(true); setSure(false) }} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalinsertdog>
+
+
+            <Modalinsertdog visible={deldone}>
+                <View style={{
+                    width: '100%',
+                    alignItems: 'center',
+                    height: 350,
+                    paddingHorizontal: 20,
+                    paddingVertical: 20
+                }}>
+                    <View style={{ height: '50%', width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Icon
+                            name={'checkcircle'}
+                            size={120}
+                            color={'#79E386'}
+
+                        />
+                    </View>
+                    <View style={{ height: '25%', justifyContent: 'center', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: '#B0B0B0' }}>ลบข้อมูลเรียบร้อย </Text>
+                    </View>
+                    <View style={{ width: '100%', height: '20%', justifyContent: 'center', alignItems: 'center' }}>
+                        <TouchableOpacity onPress={() => setDeldone(false)} style={{ width: '40%', height: '80%', backgroundColor: '#79E386', borderRadius: 40, justifyContent: 'center', alignItems: 'center', elevation: 5, marginLeft: 10 }}>
+                            <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ยืนยัน</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modalinsertdog>
+
+
+
+
             <ModalPopup visible={visible}>
                 <View style={styles.PopupHeader}>
                     <View style={styles.popClose}>
@@ -496,7 +579,15 @@ export default function testtest({ navigation, route }) {
 
                                                             ) : (
                                                                 <>
-                                                                    <Text></Text>
+                                                                    <TouchableOpacity onPress={() => { setSure(true); }} style={{ width: 200, flexDirection: 'row', height: 25, justifyContent: 'flex-end', alignItems: 'center' }}>
+                                                                        <View style={{ width: '20%', marginLeft: 5 }}>
+                                                                            <Icon
+                                                                                name='delete'
+                                                                                color={'red'}
+                                                                                size={20}
+                                                                            />
+                                                                        </View>
+                                                                    </TouchableOpacity>
 
                                                                 </>
                                                             )}

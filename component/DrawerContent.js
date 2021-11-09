@@ -263,30 +263,6 @@ export function DrawerContent(props) {
                         <DrawerItem
                             icon={({ color, size }) => (
                                 <Icon
-                                    name="home"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label={'Home'}
-                            labelStyle={{ fontWeight: 'bold' }}
-                            onPress={() => { props.navigation.navigate('Home') }}
-                        />
-                        <DrawerItem
-                            icon={({ color, size }) => (
-                                <Icon
-                                    name="page-layout-footer"
-                                    color={color}
-                                    size={size}
-                                />
-                            )}
-                            label="Tabs"
-                            labelStyle={{ fontWeight: 'bold' }}
-                            onPress={() => { props.navigation.navigate('Tabs') }}
-                        />
-                        <DrawerItem
-                            icon={({ color, size }) => (
-                                <Icon
                                     name="page-layout-footer"
                                     color={color}
                                     size={size}

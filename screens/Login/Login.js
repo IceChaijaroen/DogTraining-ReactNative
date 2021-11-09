@@ -27,7 +27,7 @@ export default function Login(props, disabled) {
     const [visible, setVisible] = React.useState(false);
 
     const [value, setValue] = useState('');
-    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [googleSubmitting, setGoogleSubmitting] = useState(false);
     const [facedata, setFacedata] = useState();
@@ -79,7 +79,7 @@ export default function Login(props, disabled) {
                 .post(
                     "http://35.187.253.40/login.php",
                     JSON.stringify({
-                        email: email,
+                        username: username,
                         password: password
                     })
                 )
@@ -124,7 +124,7 @@ export default function Login(props, disabled) {
 
 
     const emailHandler = (text) => {
-        setEmail(text);
+        setUsername(text);
     }
 
 
@@ -290,7 +290,7 @@ export default function Login(props, disabled) {
 
                                 </TouchableOpacity>
                                 <View style={styles.FacGoo}>
-                                    <TouchableOpacity readPermissions={["email"]} onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'flex-end',marginRight:15 }}>
+                                    <TouchableOpacity readPermissions={["email"]} onPress={FacebookLogin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', alignItems: 'flex-end', marginRight: 15 }}>
                                         <MaterialCommunityIcons
                                             name={'facebook'}
                                             size={80}
@@ -299,15 +299,15 @@ export default function Login(props, disabled) {
                                     </TouchableOpacity>
 
 
-                                        <TouchableOpacity google={true} onPress={handleGoogleSignin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', marginLeft: 10 }}>
-                                            <Image
-                                                source={require('../../img/googlelogo.png')}
-                                                style={{
-                                                    width: '50%',
-                                                    height: '102%'
-                                                }}
-                                            />
-                                        </TouchableOpacity>
+                                    <TouchableOpacity google={true} onPress={handleGoogleSignin} activeOpacity={disabled ? 0.85 : 1} style={{ width: '28%', marginLeft: 10 }}>
+                                        <Image
+                                            source={require('../../img/googlelogo.png')}
+                                            style={{
+                                                width: '50%',
+                                                height: '102%'
+                                            }}
+                                        />
+                                    </TouchableOpacity>
                                 </View>
                                 <View style={styles.AlreadyContent}>
                                     <Text style={{ color: '#555555', fontWeight: 'bold' }}>ยังไม่มีบัญชี?</Text>
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     ImageContent: {
-        marginTop:20,
+        marginTop: 20,
         width: '100%',
         height: 270,
         alignItems: 'center',
