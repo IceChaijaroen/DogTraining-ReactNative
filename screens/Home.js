@@ -30,11 +30,17 @@ export default function Home({ navigation }) {
   const scrollX = new Animated.Value(0);
   const position = Animated.divide(scrollX, width);
 
+  const fetchData = async () => {
+    try {
+      const response = await AsyncStorage.getItem('id');
+      setUser(response);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
-    AsyncStorage.getItem('id')
-      .then((value) => {
-        setUser(value);
-      })
+    fetchData();
   })
 
   useEffect(() => {
@@ -96,22 +102,25 @@ export default function Home({ navigation }) {
   }, [train])
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://35.187.253.40/showfavoritehome.php',
-          {
-            params: {
-              uid: user
-            }
-          })
-        setShowfav(response.data);
-      } catch (err) {
-        console.log(err)
-      }
+
+  const Showfev = async () => {
+    try {
+      const response = await axios.get('http://35.187.253.40/showfavoritehome.php',
+        {
+          params: {
+            uid: user
+          }
+        })
+      setShowfav(response.data);
+    } catch (err) {
+      console.log(err)
     }
-    fetchData();
+  }
+
+  useEffect(() => {
+    Showfev();
   }, [showfav]);
+
 
 
 
@@ -266,7 +275,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 0 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -290,7 +299,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 1 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -309,12 +318,12 @@ export default function Home({ navigation }) {
                           </>
                         )
 
-                      } else if (process < 160) {
+                      } else if (process < 140) {
                         return (
                           <>
                             {item.trainlevel == 2 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -345,7 +354,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 3 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}

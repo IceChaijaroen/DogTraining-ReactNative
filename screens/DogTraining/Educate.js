@@ -107,6 +107,153 @@ export default function Educate({ navigation, route }) {
     fetchData();
   }, [gif])
 
+  const renderItem = ({ item, index }) => {
+    if (item.gifid == '7') {
+      return (
+        <View style={{ width: 350, alignItems: 'center' }}>
+
+          <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
+            <Image
+              source={{ uri: item.gif }}
+              style={{
+                width: index == 1 ? '70%' : '53%',
+                height: '100%'
+              }}
+            />
+          </View>
+
+          <View style={{ width: '100%', height: '15%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
+          </View>
+          <View style={{ width: '88%', height: '20%' }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
+
+          </View>
+        </View>
+      )
+    } else if (item.gifid == '3') {
+      return (
+        <View style={{ width: 350, alignItems: 'center' }}>
+
+          <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
+            <Image
+              source={{ uri: item.gif }}
+              style={{
+                width: index == 2 ? '50%' : '80%',
+                height: index == 2 ? '100%' : '90%'
+              }}
+            />
+          </View>
+
+          <View style={{ width: '100%', height: '15%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
+          </View>
+          <View style={{ width: '88%', height: '20%' }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
+
+          </View>
+        </View>
+      )
+
+    } else if (item.gifid == '8') {
+      return (
+        <View style={{ width: 350, alignItems: 'center' }}>
+
+          <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
+            <Image
+              source={{ uri: item.gif }}
+              style={{
+                width: index == 1 ? '55%' : '50%',
+                height: index == 1 ? '100%' : '100%'
+              }}
+            />
+          </View>
+
+          <View style={{ width: '100%', height: '15%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
+          </View>
+          <View style={{ width: '88%', height: '20%' }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
+
+          </View>
+        </View>
+      )
+
+    } else if (item.gifid == '9') {
+      return (
+        <View style={{ width: 350, alignItems: 'center' }}>
+
+          <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
+            <Image
+              source={{ uri: item.gif }}
+              style={{
+                width: index == 2 || index == 1 ? '100%' : index == 3 ? '75%' : '62%',
+                height: index == 2 || index == 1 ? '75%' : index == 3 ? '82%' : '95%'
+              }}
+            />
+          </View>
+
+          <View style={{ width: '100%', height: '15%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
+          </View>
+          <View style={{ width: '88%', height: '20%' }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
+
+          </View>
+        </View>
+      )
+
+    } else if (item.gifid == '2') {
+      return (
+        <View style={{ width: 350, alignItems: 'center' }}>
+
+          <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
+            <Image
+              source={{ uri: item.gif }}
+              style={{
+                width: index == 2 ? '50%' : '70%',
+                height: index == 2 ? '80%' : '95%'
+              }}
+            />
+          </View>
+
+          <View style={{ width: '100%', height: '15%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
+          </View>
+          <View style={{ width: '88%', height: '20%' }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
+
+          </View>
+        </View>
+      )
+
+    } else {
+      return (
+        <View style={{ width: 350, alignItems: 'center' }}>
+
+          <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
+            <Image
+              source={{ uri: item.gif }}
+              style={{
+                width: index == 2 ? '70%' : '80%',
+                height: index == 2 ? '80%' : '80%'
+              }}
+            />
+          </View>
+
+          <View style={{ width: '100%', height: '15%', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
+          </View>
+          <View style={{ width: '88%', height: '20%' }}>
+            <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
+
+          </View>
+        </View>
+      )
+    }
+
+  }
+
 
   let [fontsLoaded] = useFonts({
     'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
@@ -152,30 +299,7 @@ export default function Educate({ navigation, route }) {
                 ))}
                 <FlatList
                   data={gif}
-                  renderItem={
-                    ({ item }) => (
-                      <View style={{ width: 350, alignItems: 'center' }}>
-
-                        <View style={{ width: '98%', alignItems: 'center', justifyContent: 'center', height: '58%' }}>
-                          <Image
-                            source={{ uri: item.gif }}
-                            style={{
-                              width: '100%',
-                              height: '100%'
-                            }}
-                          />
-                        </View>
-
-                        <View style={{ width: '100%', height: '11%', justifyContent: 'center', alignItems: 'center' }}>
-                          <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic' }}> ขั้นตอนที่ {item.step} </Text>
-                        </View>
-                        <View style={{ width: '88%', height: '20%' }}>
-                          <Text style={{ fontSize: 25, fontFamily: 'FC_Iconic', textAlign: 'left' }}> {item.descrip}</Text>
-
-                        </View>
-                      </View>
-                    )
-                  }
+                  renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
                   horizontal
                   showsHorizontalScrollIndicator={false}

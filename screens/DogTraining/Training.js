@@ -22,7 +22,7 @@ export default function Training({ navigation, route }) {
     const [train, setTrain] = useState([]);
     const [udogid, setUdogid] = useState();
     const [user, setUser] = useState();
-    const [countdesc, setCountdesc] = useState([]);
+    const [countdesc, setCountdesc] = useState();
 
 
     useEffect(() => {
@@ -34,24 +34,6 @@ export default function Training({ navigation, route }) {
         }
         fetchData();
     }, [user])
-
-
-    const Countdesc = async () => {
-        try {
-            const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
-                params: {
-                    idtrain: idtrain,
-                    uid: user,
-                    udogid: udogid
-                }
-            });
-            setCountdesc(response.data.count);
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-
 
 
     const load = async () => {
@@ -68,9 +50,33 @@ export default function Training({ navigation, route }) {
 
     useEffect(() => {
         load();
+    });
+
+    const Countdesc = async () => {
+        try {
+            const response = await axios.get('http://35.187.253.40/testphp/countlimit.php', {
+                params: {
+                    idtrain: idtrain,
+                    uid: user,
+                    udogid: udogid
+                }
+            });
+            if (response.data == null) {
+                setCountdesc(0);
+            } else {
+                setCountdesc(response.data.count);
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
         Countdesc();
     });
 
+    console.log(countdesc)
 
 
     {/**
@@ -281,6 +287,59 @@ export default function Training({ navigation, route }) {
         )
     }
 
+    const Gifall = ({ item }) => {
+        if (item.idtrain == '5') {
+            return (
+                <>
+                    <Image
+                        source={{ uri: item.trainall }}
+                        style={{
+                            width: 280,
+                            height: 210
+                        }}
+                    />
+                </>
+            )
+        } else if (item.idtrain == '8') {
+            return (
+                <>
+                    <Image
+                        source={{ uri: item.trainall }}
+                        style={{
+                            width: 220,
+                            height: 260
+                        }}
+                    />
+                </>
+            )
+        } else if (item.idtrain == '9') {
+            return (
+                <>
+                    <Image
+                        source={{ uri: item.trainall }}
+                        style={{
+                            width: 360,
+                            height: 210
+                        }}
+                    />
+                </>
+            )
+        } else {
+            return (
+                <>
+                    <Image
+                        source={{ uri: item.trainall }}
+                        style={{
+                            width: 240,
+                            height: 260
+                        }}
+                    />
+                </>
+            )
+        }
+
+    }
+
 
     let [fontsLoaded] = useFonts({
         'Inter-SemiBoldItalic': 'https://rsms.me/inter/font-files/Inter-SemiBoldItalic.otf?v=3.12',
@@ -339,15 +398,7 @@ export default function Training({ navigation, route }) {
                             <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
                                 <FlatList
                                     data={train}
-                                    renderItem={({ item }) => (
-                                        <Image
-                                            source={{ uri: item.gifall }}
-                                            style={{
-                                                width: 260,
-                                                height: 260
-                                            }}
-                                        />
-                                    )}
+                                    renderItem={Gifall}
                                     keyExtractor={(item) => item.idtrain}
                                 />
 
@@ -379,7 +430,7 @@ export default function Training({ navigation, route }) {
                                     <Text></Text>
                                 </View>
                                 <View style={{ width: '33%', alignItems: 'center' }}>
-                                    {countdesc == '' ? (
+                                    {countdesc == null ? (
                                         <>
                                             <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ครั้งที่ 0 </Text>
                                         </>
@@ -413,15 +464,7 @@ export default function Training({ navigation, route }) {
                             <View style={{ width: '100%', height: '35%', justifyContent: 'center', alignItems: 'center' }}>
                                 <FlatList
                                     data={train}
-                                    renderItem={({ item }) => (
-                                        <Image
-                                            source={{ uri: item.gifall }}
-                                            style={{
-                                                width: 260,
-                                                height: 260
-                                            }}
-                                        />
-                                    )}
+                                    renderItem={Gifall}
                                     keyExtractor={(item) => item.idtrain}
                                 />
 
@@ -454,7 +497,7 @@ export default function Training({ navigation, route }) {
                                     <Text></Text>
                                 </View>
                                 <View style={{ width: '33%', alignItems: 'center' }}>
-                                    {countdesc == '' ? (
+                                    {countdesc == null ? (
                                         <>
                                             <Text style={{ fontSize: 30, fontFamily: 'FC_Iconic', color: 'white' }}>ครั้งที่ 0 </Text>
                                         </>

@@ -238,48 +238,52 @@ export default function testtest({ navigation, route }) {
 
     const inprogress = ({ item, index }) => {
         if (item.empty) {
-            return <View style={{ backgroundColor: 'transparent' }}></View>
+            return (
+                <View style={{ backgroundColor: 'transparent' }}>
+                </View>)
         } else {
             if (item.sumstep == null) {
-                return <View style={{ backgroundColor: 'transparent' }}></View>
-            } else {
                 return (
-                    <>
-                        {item.sumstep < 20 ? (
-                            <>
-                                <View style={{ width: 80, height: 110, alignItems: 'center', justifyContent: 'center', margin: 10 }}>
-
-                                    <ProgressCircle
-                                        percent={item.sumstep * 100 / 20}
-                                        radius={40}
-                                        borderWidth={4}
-                                        color="#FFBE4F"
-                                        shadowColor="#B8B8B8"
-                                        bgColor='#FFFFFF'
-                                    >
-                                        <Image
-                                            style={{
-                                                width: '50%',
-                                                height: '50%'
-                                            }}
-                                            source={{ uri: item.trainimg }}
-                                        />
-
-                                    </ProgressCircle>
-                                    <View style={{ width: '100%', height: 20, alignItems: 'center' }}>
-                                        <Text style={{ color: '#555555', fontSize: 16, textAlign: 'center', fontFamily: 'FC_Iconic', paddingTop: 5 }}>{item.trainname}</Text>
-                                    </View>
-
-                                </View>
-                            </>
-                        ) : (
-                            <>
-                                <View style={{ backgroundColor: 'transparent' }}></View>
-                            </>
-                        )}
-
-                    </>
+                    <View style={{ backgroundColor: 'transparent' }}>
+                    </View>
                 )
+            } else {
+                if (item.sumstep < 20) {
+                    return (
+                        <>
+                            <View style={{ width: 80, height: 110, alignItems: 'center', justifyContent: 'center', margin: 10 }}>
+                                <ProgressCircle
+                                    percent={item.sumstep * 100 / 20}
+                                    radius={40}
+                                    borderWidth={4}
+                                    color="#FFBE4F"
+                                    shadowColor="#B8B8B8"
+                                    bgColor='#FFFFFF'
+                                >
+                                    <Image
+                                        style={{
+                                            width: '50%',
+                                            height: '50%'
+                                        }}
+                                        source={{ uri: item.trainimg }}
+                                    />
+
+                                </ProgressCircle>
+                                <View style={{ width: '100%', height: 20, alignItems: 'center' }}>
+                                    <Text style={{ color: '#555555', fontSize: 20, textAlign: 'center', fontFamily: 'FC_Iconic', paddingTop: 5 }}>{item.trainname}</Text>
+                                </View>
+                            </View>
+                        </>
+                    )
+                } else {
+                    return (
+                        <>
+
+                        </>
+                    )
+
+                }
+
             }
         }
     }
@@ -289,7 +293,7 @@ export default function testtest({ navigation, route }) {
         if (item.empty) {
             return <View style={{ backgroundColor: 'transparent' }}></View>
         } else {
-            if (item.sumstep <= 20) {
+            if (item.sumstep < 1) {
                 return <View style={{ backgroundColor: 'transparent' }}></View>
             } else {
                 return (

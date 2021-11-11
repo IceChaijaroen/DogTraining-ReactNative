@@ -57,17 +57,17 @@ export default function Login(props, disabled) {
                 AsyncStorage.setItem('name', userdata.name)
                 AsyncStorage.setItem('facebookmail', userdata.email)
                 AsyncStorage.setItem('url', userdata.picture.data.url)
-                Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
+                console.log('Logged in!', `Hi ${(await response.json()).name}!`);
                 props.navigation.navigate("MyDrawer");
             } else {
                 // type === 'cancel'
             }
         } catch ({ message }) {
             if (message == 'Already read') {
-                alert(`Facebook Login Error: ${message}`);
+                console.log(`Facebook Login Error: ${message}`);
                 props.navigation.navigate("MyDrawer");
             } else {
-                alert(`Facebook Login Error: ${message}`);
+                console.log(`Facebook Login Error: ${message}`);
             }
         }
     }
@@ -194,10 +194,10 @@ export default function Login(props, disabled) {
                     AsyncStorage.setItem('name', name);
                     AsyncStorage.setItem('googlemail', email);
                     AsyncStorage.setItem('url', photoUrl);
-                    alert('Google signin successful', 'SUCCESS');
+                    console.log('Google signin successful', 'SUCCESS');
                     setTimeout(() => props.navigation.navigate('MyDrawer', { email, name, photoUrl }), 1000);
                 } else {
-                    alert('Google login is fail..');
+                    console.log('Google login is fail..');
                 }
                 setGoogleSubmitting(false);
             })

@@ -409,7 +409,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
     if (item.trainlevel == '3') {
       return (
         <>
-          {process < 160 ? (
+          {process < 140 ? (
             <>
               <View style={styles.minicardcontainer}>
                 <TouchableOpacity onPress={() => alert('ยังไม่ปลดล็อก')} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
