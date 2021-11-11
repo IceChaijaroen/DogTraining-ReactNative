@@ -73,7 +73,7 @@ export default function Recommend({ navigation, route }) {
                   />
                 </View>
                 <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center', marginBottom: 60 }}>
-                  <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#4D4D4D' }}>จำเป็นต้องมีปลอกคอและเชือกจูง</Text>
+                  <Text style={{ fontWeight: 'bold', fontSize: 20, color: '#4D4D4D' }}>จำเป็นต้องมีขนมสุนัขในการฝึก</Text>
                 </View>
                 <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
                   <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: idtrain })} style={{ width: '40%', height: 50, alignItems: 'center' }}>

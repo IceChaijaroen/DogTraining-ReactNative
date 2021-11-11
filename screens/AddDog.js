@@ -29,7 +29,10 @@ export default function AddDog({ navigation }) {
   const [image, setImage] = useState(null);
 
 
-  const breed = ['Golden Retriver', 'Labrador Retriver', 'Begle', 'Corgi'];
+  const breed = ['โกลเด้น รีทรีฟเวอร์ (Golden retriever)', 'ลาบราเดอร์ รีทรีฟเวอร์ (Labrador Retriver)', 'บีเกิ้ล (Begle)', 
+  'พ็อมโบรค เวล์ช คอร์กี้ (Pembroke Welsh Corgi)',
+  'ชิบะ อินุ (Shiba Inu)','เซนต์เบอร์นาร์ด (St. Bernard)','ไซบีเรียน ฮัสกี (Siberian Husky)'
+];
 
   //------------------------------------Image Picker-------------------------------------------
   useEffect(() => {

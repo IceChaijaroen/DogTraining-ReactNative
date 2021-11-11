@@ -23,7 +23,7 @@
       "package": "com.yourcompany.dogtraining",
       "versionCode": 1,
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/Dogtraining-logo.png",
         "backgroundColor": "#FFFFFF"
       }
     },

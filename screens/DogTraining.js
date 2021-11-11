@@ -102,7 +102,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
           {item.sumstep >= 20 ? (
             <>
               <View style={styles.minicardcontainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                   <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                     <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                       <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -135,7 +135,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
           ) : (
             <>
               <View style={styles.minicardcontainer}>
-                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                   <View key={index} style={styles.minicard}>
                     <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                       <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -217,7 +217,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
               {item.sumstep >= 20 ? (
                 <>
                   <View style={styles.minicardcontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                       <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -250,7 +250,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
               ) : (
                 <>
                   <View style={styles.minicardcontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                       <View key={index} style={styles.minicard}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -330,7 +330,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
               {item.sumstep >= 20 ? (
                 <>
                   <View style={styles.minicardcontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                       <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -363,7 +363,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
               ) : (
                 <>
                   <View style={styles.minicardcontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                       <View key={index} style={styles.minicard}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -447,7 +447,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
               {item.sumstep >= 20 ? (
                 <>
                   <View style={styles.minicardcontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                       <View key={index} style={{ width: '90%', height: '99%', backgroundColor: 'white', borderRadius: 25, elevation: 10, alignItems: 'center' }}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>
@@ -480,7 +480,7 @@ export default function Dogtraining({ navigation, route }, disabled) {
               ) : (
                 <>
                   <View style={styles.minicardcontainer}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} activeOpacity={disabled ? 0.9 : 0} style={{ width: '100%', alignItems: 'center' }}>
                       <View key={index} style={styles.minicard}>
                         <View style={{ width: '100%', flexDirection: 'row', height: '80%' }}>
                           <View style={{ width: '30%', alignItems: 'flex-end', justifyContent: 'center', height: 80 }}>

@@ -212,7 +212,7 @@ export function DrawerContent(props) {
                                                 </View>
                                                 <View style={{ width: '70%', paddingTop: 10 }}>
                                                     <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>ชื่อ : {item.udogname}</Text>
-                                                    <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>สถานะ : {item.udogprocess >= 20 ? (
+                                                    <Text style={{ fontSize: 13, fontFamily: 'FC_Iconic', color: udog === item.udogid ? 'white' : 'black' }}>สถานะ : {item.udogprocess >= 200 ? (
                                                         <>
                                                             ฝึกฝนเสร็จสิ้น
                                                         </>

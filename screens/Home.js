@@ -275,7 +275,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 0 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -299,7 +299,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 1 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -323,7 +323,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 2 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
@@ -354,7 +354,7 @@ export default function Home({ navigation }) {
                           <>
                             {item.trainlevel == 3 ? (
                               <>
-                                <TouchableOpacity onPress={() => navigation.navigate('Educate', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
+                                <TouchableOpacity onPress={() => navigation.navigate('Recommend', { idtrain: item.idtrain })} key={index} style={styles.longcard}>
                                   <Image
                                     style={{ width: '50%', height: '33%', marginBottom: 40 }}
                                     source={{ uri: item.trainimg }}
